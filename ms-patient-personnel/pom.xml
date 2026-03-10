@@ -22,11 +22,11 @@
     </properties>
 
     <dependencies>
-        <!-- Base de données H2 en mémoire pour les tests uniquement -->
+        <!-- H2 pour démo sans MySQL -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <scope>test</scope>
+            <scope>runtime</scope>
         </dependency>
         <!-- Spring Boot Web -->
         <dependency>

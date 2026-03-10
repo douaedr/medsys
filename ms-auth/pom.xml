@@ -79,11 +79,11 @@
             <version>0.12.3</version>
             <scope>runtime</scope>
         </dependency>
-        <!-- H2 pour tests -->
+        <!-- H2 pour démo sans MySQL -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <scope>test</scope>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
