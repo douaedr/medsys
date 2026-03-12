@@ -1,0 +1,8 @@
+2026-03-05 21:42:31.555 +00:00 [INF] Now listening on: http://localhost:5130
+2026-03-05 21:42:31.659 +00:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-03-05 21:42:31.661 +00:00 [INF] Hosting environment: Development
+2026-03-05 21:42:31.663 +00:00 [INF] Content root path: C:\Users\dell\source\repos\PersonnelMS - Copy (2)\PersonnelMS
+2026-03-05 21:42:33.944 +00:00 [INF] Request starting HTTP/1.1 GET http://localhost:5130/ - null null
+2026-03-05 21:42:34.077 +00:00 [WRN] Failed to determine the https port for redirect.
+2026-03-05 21:42:34.094 +00:00 [INF] Request finished HTTP/1.1 GET http://localhost:5130/ - 404 0 null 161.2124ms
+2026-03-05 21:42:34.116 +00:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5130/, Response status code: 404

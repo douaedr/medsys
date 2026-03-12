@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <UserSecretsId>845b032a-c9a3-4ae5-b577-c79a07934906</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.9" />
+    <PackageReference Include="MongoDB.Driver" Version="2.25.3" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.7.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
+    <PackageReference Include="Serilog.AspNetCore" Version="8.0.3" />
+    <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
+  <!-- Exclure les projets de test du projet principal -->
+  <ItemGroup>
+    <Compile Remove="PersonnelMS.Tests.Unit\**" />
+    <Compile Remove="PersonnelMS.Tests.Integration\**" />
+    <None Remove="PersonnelMS.Tests.Unit\**" />
+    <None Remove="PersonnelMS.Tests.Integration\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="PersonnelMS.Tests.Integration" />
+    <InternalsVisibleTo Include="PersonnelMS.Tests.Unit" />
+  </ItemGroup>
+
+</Project>

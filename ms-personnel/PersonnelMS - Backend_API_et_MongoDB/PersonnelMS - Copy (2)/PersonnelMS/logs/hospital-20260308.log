@@ -1,0 +1,488 @@
+2026-03-08 21:08:43.148 +00:00 [INF] Now listening on: http://localhost:5130
+2026-03-08 21:08:43.313 +00:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-03-08 21:08:43.317 +00:00 [INF] Hosting environment: Development
+2026-03-08 21:08:43.321 +00:00 [INF] Content root path: C:\Users\dell\source\repos\PersonnelMS - Copy (2)\PersonnelMS
+2026-03-08 21:08:48.129 +00:00 [INF] Request starting HTTP/1.1 GET http://localhost:5130/ - null null
+2026-03-08 21:08:48.722 +00:00 [WRN] Failed to determine the https port for redirect.
+2026-03-08 21:08:48.765 +00:00 [INF] Request finished HTTP/1.1 GET http://localhost:5130/ - 404 0 null 673.051ms
+2026-03-08 21:08:48.791 +00:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5130/, Response status code: 404
+2026-03-08 21:08:52.318 +00:00 [INF] Request starting HTTP/1.1 GET http://localhost:5130/api/personnel - null null
+2026-03-08 21:08:52.337 +00:00 [INF] Executing endpoint 'PersonnelMS.Controllers.PersonnelController.ObtenirTous (PersonnelMS)'
+2026-03-08 21:08:52.409 +00:00 [INF] Route matched with {action = "ObtenirTous", controller = "Personnel"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[PersonnelMS.DTOs.PageResult`1[PersonnelMS.DTOs.PersonnelDto]]] ObtenirTous(Int32, Int32, System.String, System.String, System.Nullable`1[PersonnelMS.Enums.Statut]) on controller PersonnelMS.Controllers.PersonnelController (PersonnelMS).
+2026-03-08 21:08:52.779 +00:00 [INF] Executing OkObjectResult, writing value of type 'PersonnelMS.DTOs.PageResult`1[[PersonnelMS.DTOs.PersonnelDto, PersonnelMS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-03-08 21:08:52.849 +00:00 [INF] Executed action PersonnelMS.Controllers.PersonnelController.ObtenirTous (PersonnelMS) in 422.6675ms
+2026-03-08 21:08:52.859 +00:00 [INF] Executed endpoint 'PersonnelMS.Controllers.PersonnelController.ObtenirTous (PersonnelMS)'
+2026-03-08 21:08:52.867 +00:00 [INF] Request finished HTTP/1.1 GET http://localhost:5130/api/personnel - 200 null application/json; charset=utf-8 548.9343ms
+2026-03-08 21:08:53.826 +00:00 [INF] Request starting HTTP/1.1 GET http://localhost:5130/favicon.ico - null null
+2026-03-08 21:08:53.839 +00:00 [INF] Request finished HTTP/1.1 GET http://localhost:5130/favicon.ico - 404 0 null 13.4636ms
+2026-03-08 21:08:53.856 +00:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5130/favicon.ico, Response status code: 404
+2026-03-08 22:18:05.971 +00:00 [INF] Now listening on: http://localhost:5130
+2026-03-08 22:18:06.919 +00:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-03-08 22:18:06.951 +00:00 [INF] Hosting environment: Development
+2026-03-08 22:18:06.954 +00:00 [INF] Content root path: C:\Users\dell\source\repos\PersonnelMS - Copy (2)\PersonnelMS
+2026-03-08 22:18:10.395 +00:00 [INF] Request starting HTTP/1.1 GET http://localhost:5130/api/personnel - null null
+2026-03-08 22:18:11.470 +00:00 [WRN] Failed to determine the https port for redirect.
+2026-03-08 22:18:11.477 +00:00 [INF] Executing endpoint 'PersonnelMS.Controllers.PersonnelController.ObtenirTous (PersonnelMS)'
+2026-03-08 22:18:11.509 +00:00 [INF] Route matched with {action = "ObtenirTous", controller = "Personnel"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[PersonnelMS.DTOs.PageResult`1[PersonnelMS.DTOs.PersonnelDto]]] ObtenirTous(Int32, Int32, System.String, System.String, System.Nullable`1[PersonnelMS.Enums.Statut]) on controller PersonnelMS.Controllers.PersonnelController (PersonnelMS).
+2026-03-08 22:18:11.779 +00:00 [INF] Executing OkObjectResult, writing value of type 'PersonnelMS.DTOs.PageResult`1[[PersonnelMS.DTOs.PersonnelDto, PersonnelMS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-03-08 22:18:11.818 +00:00 [INF] Executed action PersonnelMS.Controllers.PersonnelController.ObtenirTous (PersonnelMS) in 283.2872ms
+2026-03-08 22:18:11.862 +00:00 [INF] Executed endpoint 'PersonnelMS.Controllers.PersonnelController.ObtenirTous (PersonnelMS)'
+2026-03-08 22:18:11.920 +00:00 [INF] Request finished HTTP/1.1 GET http://localhost:5130/api/personnel - 200 null application/json; charset=utf-8 1532.903ms
+2026-03-08 22:37:46.535 +00:00 [INF] Request starting HTTP/1.1 GET http://localhost:5130/api/personnel - null null
+2026-03-08 22:37:46.552 +00:00 [INF] Executing endpoint 'PersonnelMS.Controllers.PersonnelController.ObtenirTous (PersonnelMS)'
+2026-03-08 22:37:46.556 +00:00 [INF] Route matched with {action = "ObtenirTous", controller = "Personnel"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[PersonnelMS.DTOs.PageResult`1[PersonnelMS.DTOs.PersonnelDto]]] ObtenirTous(Int32, Int32, System.String, System.String, System.Nullable`1[PersonnelMS.Enums.Statut]) on controller PersonnelMS.Controllers.PersonnelController (PersonnelMS).
+2026-03-08 22:37:46.579 +00:00 [INF] Executing OkObjectResult, writing value of type 'PersonnelMS.DTOs.PageResult`1[[PersonnelMS.DTOs.PersonnelDto, PersonnelMS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-03-08 22:37:46.585 +00:00 [INF] Executed action PersonnelMS.Controllers.PersonnelController.ObtenirTous (PersonnelMS) in 24.7456ms
+2026-03-08 22:37:46.588 +00:00 [INF] Executed endpoint 'PersonnelMS.Controllers.PersonnelController.ObtenirTous (PersonnelMS)'
+2026-03-08 22:37:46.591 +00:00 [INF] Request finished HTTP/1.1 GET http://localhost:5130/api/personnel - 200 null application/json; charset=utf-8 55.7274ms
+2026-03-08 22:37:56.184 +00:00 [INF] Request starting HTTP/1.1 GET http://localhost:5130/api/personnel/69a4bfaf00627cd016a43e9f - null null
+2026-03-08 22:37:56.192 +00:00 [INF] Executing endpoint 'PersonnelMS.Controllers.PersonnelController.ObtenirParId (PersonnelMS)'
+2026-03-08 22:37:56.200 +00:00 [INF] Route matched with {action = "ObtenirParId", controller = "Personnel"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[PersonnelMS.DTOs.PersonnelDto]] ObtenirParId(System.String) on controller PersonnelMS.Controllers.PersonnelController (PersonnelMS).
+2026-03-08 22:37:56.240 +00:00 [INF] Executing OkObjectResult, writing value of type 'PersonnelMS.DTOs.PersonnelDto'.
+2026-03-08 22:37:56.244 +00:00 [INF] Executed action PersonnelMS.Controllers.PersonnelController.ObtenirParId (PersonnelMS) in 40.56ms
+2026-03-08 22:37:56.249 +00:00 [INF] Executed endpoint 'PersonnelMS.Controllers.PersonnelController.ObtenirParId (PersonnelMS)'
+2026-03-08 22:37:56.251 +00:00 [INF] Request finished HTTP/1.1 GET http://localhost:5130/api/personnel/69a4bfaf00627cd016a43e9f - 200 null application/json; charset=utf-8 66.8869ms
+2026-03-08 22:38:05.099 +00:00 [INF] Request starting HTTP/1.1 GET http://localhost:5130/api/medecins/69a4bfb900627cd016a43ea0 - null null
+2026-03-08 22:38:05.104 +00:00 [INF] Executing endpoint 'PersonnelMS.Controllers.MedecinsController.ObtenirMedecinParId (PersonnelMS)'
+2026-03-08 22:38:05.109 +00:00 [INF] Route matched with {action = "ObtenirMedecinParId", controller = "Medecins"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[PersonnelMS.DTOs.MedecinDto]] ObtenirMedecinParId(System.String) on controller PersonnelMS.Controllers.MedecinsController (PersonnelMS).
+2026-03-08 22:38:05.115 +00:00 [INF] Executing OkObjectResult, writing value of type 'PersonnelMS.DTOs.MedecinSeniorDto'.
+2026-03-08 22:38:05.121 +00:00 [INF] Executed action PersonnelMS.Controllers.MedecinsController.ObtenirMedecinParId (PersonnelMS) in 9.4571ms
+2026-03-08 22:38:05.124 +00:00 [INF] Executed endpoint 'PersonnelMS.Controllers.MedecinsController.ObtenirMedecinParId (PersonnelMS)'
+2026-03-08 22:38:05.127 +00:00 [INF] Request finished HTTP/1.1 GET http://localhost:5130/api/medecins/69a4bfb900627cd016a43ea0 - 200 null application/json; charset=utf-8 27.9883ms
+2026-03-08 22:38:15.602 +00:00 [INF] Request starting HTTP/1.1 GET http://localhost:5130/api/infirmiers/majorant/69a60dc6cc7c836bb6dac169 - null null
+2026-03-08 22:38:15.609 +00:00 [INF] Request finished HTTP/1.1 GET http://localhost:5130/api/infirmiers/majorant/69a60dc6cc7c836bb6dac169 - 404 0 null 6.9283ms
+2026-03-08 22:38:15.617 +00:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5130/api/infirmiers/majorant/69a60dc6cc7c836bb6dac169, Response status code: 404
+2026-03-08 22:38:21.373 +00:00 [INF] Request starting HTTP/1.1 GET http://localhost:5130/api/chefsdeservice/69a62776cc7c836bb6dac16b - null null
+2026-03-08 22:38:21.378 +00:00 [INF] Request finished HTTP/1.1 GET http://localhost:5130/api/chefsdeservice/69a62776cc7c836bb6dac16b - 404 0 null 4.9381ms
+2026-03-08 22:38:21.384 +00:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5130/api/chefsdeservice/69a62776cc7c836bb6dac16b, Response status code: 404
+2026-03-08 22:38:30.019 +00:00 [INF] Request starting HTTP/1.1 POST http://localhost:5130/api/personnel - application/json 192
+2026-03-08 22:38:30.024 +00:00 [INF] Executing endpoint 'PersonnelMS.Controllers.PersonnelController.Creer (PersonnelMS)'
+2026-03-08 22:38:30.029 +00:00 [INF] Route matched with {action = "Creer", controller = "Personnel"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[PersonnelMS.DTOs.PersonnelDto]] Creer(PersonnelMS.DTOs.PersonnelCreateDto) on controller PersonnelMS.Controllers.PersonnelController (PersonnelMS).
+2026-03-08 22:38:30.055 +00:00 [INF] Executing BadRequestObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ValidationProblemDetails'.
+2026-03-08 22:38:30.074 +00:00 [INF] Executed action PersonnelMS.Controllers.PersonnelController.Creer (PersonnelMS) in 41.638ms
+2026-03-08 22:38:30.076 +00:00 [INF] Executed endpoint 'PersonnelMS.Controllers.PersonnelController.Creer (PersonnelMS)'
+2026-03-08 22:38:30.078 +00:00 [INF] Request finished HTTP/1.1 POST http://localhost:5130/api/personnel - 400 null application/json; charset=utf-8 59.1819ms
+2026-03-08 22:38:40.824 +00:00 [INF] Request starting HTTP/1.1 POST http://localhost:5130/api/personnel - application/json 191
+2026-03-08 22:38:40.830 +00:00 [INF] Executing endpoint 'PersonnelMS.Controllers.PersonnelController.Creer (PersonnelMS)'
+2026-03-08 22:38:40.836 +00:00 [INF] Route matched with {action = "Creer", controller = "Personnel"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[PersonnelMS.DTOs.PersonnelDto]] Creer(PersonnelMS.DTOs.PersonnelCreateDto) on controller PersonnelMS.Controllers.PersonnelController (PersonnelMS).
+2026-03-08 22:38:40.842 +00:00 [INF] Executing BadRequestObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ValidationProblemDetails'.
+2026-03-08 22:38:40.846 +00:00 [INF] Executed action PersonnelMS.Controllers.PersonnelController.Creer (PersonnelMS) in 5.5015ms
+2026-03-08 22:38:40.849 +00:00 [INF] Executed endpoint 'PersonnelMS.Controllers.PersonnelController.Creer (PersonnelMS)'
+2026-03-08 22:38:40.852 +00:00 [INF] Request finished HTTP/1.1 POST http://localhost:5130/api/personnel - 400 null application/json; charset=utf-8 28.0386ms
+2026-03-08 22:38:49.912 +00:00 [INF] Request starting HTTP/1.1 POST http://localhost:5130/api/personnel - application/json 194
+2026-03-08 22:38:49.917 +00:00 [INF] Executing endpoint 'PersonnelMS.Controllers.PersonnelController.Creer (PersonnelMS)'
+2026-03-08 22:38:49.919 +00:00 [INF] Route matched with {action = "Creer", controller = "Personnel"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[PersonnelMS.DTOs.PersonnelDto]] Creer(PersonnelMS.DTOs.PersonnelCreateDto) on controller PersonnelMS.Controllers.PersonnelController (PersonnelMS).
+2026-03-08 22:38:49.923 +00:00 [INF] Executing BadRequestObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ValidationProblemDetails'.
+2026-03-08 22:38:49.925 +00:00 [INF] Executed action PersonnelMS.Controllers.PersonnelController.Creer (PersonnelMS) in 3.3641ms
+2026-03-08 22:38:49.927 +00:00 [INF] Executed endpoint 'PersonnelMS.Controllers.PersonnelController.Creer (PersonnelMS)'
+2026-03-08 22:38:49.929 +00:00 [INF] Request finished HTTP/1.1 POST http://localhost:5130/api/personnel - 400 null application/json; charset=utf-8 17.5098ms
+2026-03-08 22:38:57.204 +00:00 [INF] Request starting HTTP/1.1 POST http://localhost:5130/api/personnel - application/json 174
+2026-03-08 22:38:57.209 +00:00 [INF] Executing endpoint 'PersonnelMS.Controllers.PersonnelController.Creer (PersonnelMS)'
+2026-03-08 22:38:57.211 +00:00 [INF] Route matched with {action = "Creer", controller = "Personnel"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[PersonnelMS.DTOs.PersonnelDto]] Creer(PersonnelMS.DTOs.PersonnelCreateDto) on controller PersonnelMS.Controllers.PersonnelController (PersonnelMS).
+2026-03-08 22:38:57.215 +00:00 [INF] Executing BadRequestObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ValidationProblemDetails'.
+2026-03-08 22:38:57.218 +00:00 [INF] Executed action PersonnelMS.Controllers.PersonnelController.Creer (PersonnelMS) in 4.0795ms
+2026-03-08 22:38:57.221 +00:00 [INF] Executed endpoint 'PersonnelMS.Controllers.PersonnelController.Creer (PersonnelMS)'
+2026-03-08 22:38:57.223 +00:00 [INF] Request finished HTTP/1.1 POST http://localhost:5130/api/personnel - 400 null application/json; charset=utf-8 18.4873ms
+2026-03-08 22:39:03.667 +00:00 [INF] Request starting HTTP/1.1 POST http://localhost:5130/api/medecins - application/json 285
+2026-03-08 22:39:03.671 +00:00 [INF] Executing endpoint 'PersonnelMS.Controllers.MedecinsController.CreerMedecin (PersonnelMS)'
+2026-03-08 22:39:03.676 +00:00 [INF] Route matched with {action = "CreerMedecin", controller = "Medecins"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[PersonnelMS.DTOs.MedecinDto]] CreerMedecin(PersonnelMS.DTOs.MedecinCreateDto) on controller PersonnelMS.Controllers.MedecinsController (PersonnelMS).
+2026-03-08 22:39:03.684 +00:00 [INF] Executing BadRequestObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ValidationProblemDetails'.
+2026-03-08 22:39:03.686 +00:00 [INF] Executed action PersonnelMS.Controllers.MedecinsController.CreerMedecin (PersonnelMS) in 7.4028ms
+2026-03-08 22:39:03.689 +00:00 [INF] Executed endpoint 'PersonnelMS.Controllers.MedecinsController.CreerMedecin (PersonnelMS)'
+2026-03-08 22:39:03.691 +00:00 [INF] Request finished HTTP/1.1 POST http://localhost:5130/api/medecins - 400 null application/problem+json; charset=utf-8 23.5813ms
+2026-03-08 22:39:10.247 +00:00 [INF] Request starting HTTP/1.1 POST http://localhost:5130/api/medecins - application/json 278
+2026-03-08 22:39:10.252 +00:00 [INF] Executing endpoint 'PersonnelMS.Controllers.MedecinsController.CreerMedecin (PersonnelMS)'
+2026-03-08 22:39:10.254 +00:00 [INF] Route matched with {action = "CreerMedecin", controller = "Medecins"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[PersonnelMS.DTOs.MedecinDto]] CreerMedecin(PersonnelMS.DTOs.MedecinCreateDto) on controller PersonnelMS.Controllers.MedecinsController (PersonnelMS).
+2026-03-08 22:39:10.258 +00:00 [INF] Executing BadRequestObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ValidationProblemDetails'.
+2026-03-08 22:39:10.261 +00:00 [INF] Executed action PersonnelMS.Controllers.MedecinsController.CreerMedecin (PersonnelMS) in 4.4635ms
+2026-03-08 22:39:10.264 +00:00 [INF] Executed endpoint 'PersonnelMS.Controllers.MedecinsController.CreerMedecin (PersonnelMS)'
+2026-03-08 22:39:10.266 +00:00 [INF] Request finished HTTP/1.1 POST http://localhost:5130/api/medecins - 400 null application/problem+json; charset=utf-8 18.4633ms
+2026-03-08 22:39:16.840 +00:00 [INF] Request starting HTTP/1.1 POST http://localhost:5130/api/medecins/junior - application/json 335
+2026-03-08 22:39:16.846 +00:00 [INF] Executing endpoint '405 HTTP Method Not Supported'
+2026-03-08 22:39:16.848 +00:00 [INF] Executed endpoint '405 HTTP Method Not Supported'
+2026-03-08 22:39:16.850 +00:00 [INF] Request finished HTTP/1.1 POST http://localhost:5130/api/medecins/junior - 405 0 null 9.3919ms
+2026-03-08 22:39:22.868 +00:00 [INF] Request starting HTTP/1.1 POST http://localhost:5130/api/infirmiers/majorant - application/json 244
+2026-03-08 22:39:22.872 +00:00 [INF] Executing endpoint '405 HTTP Method Not Supported'
+2026-03-08 22:39:22.874 +00:00 [INF] Executed endpoint '405 HTTP Method Not Supported'
+2026-03-08 22:39:22.876 +00:00 [INF] Request finished HTTP/1.1 POST http://localhost:5130/api/infirmiers/majorant - 405 0 null 8.5484ms
+2026-03-08 22:39:30.137 +00:00 [INF] Request starting HTTP/1.1 PUT http://localhost:5130/api/personnel/69a4bfaf00627cd016a43e9f - application/json 190
+2026-03-08 22:39:30.141 +00:00 [INF] Executing endpoint 'PersonnelMS.Controllers.PersonnelController.MettreAJour (PersonnelMS)'
+2026-03-08 22:39:30.147 +00:00 [INF] Route matched with {action = "MettreAJour", controller = "Personnel"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] MettreAJour(System.String, PersonnelMS.DTOs.PersonnelUpdateDto) on controller PersonnelMS.Controllers.PersonnelController (PersonnelMS).
+2026-03-08 22:39:30.154 +00:00 [INF] Executing BadRequestObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ValidationProblemDetails'.
+2026-03-08 22:39:30.156 +00:00 [INF] Executed action PersonnelMS.Controllers.PersonnelController.MettreAJour (PersonnelMS) in 5.7923ms
+2026-03-08 22:39:30.158 +00:00 [INF] Executed endpoint 'PersonnelMS.Controllers.PersonnelController.MettreAJour (PersonnelMS)'
+2026-03-08 22:39:30.160 +00:00 [INF] Request finished HTTP/1.1 PUT http://localhost:5130/api/personnel/69a4bfaf00627cd016a43e9f - 400 null application/json; charset=utf-8 23.2239ms
+2026-03-08 22:39:36.278 +00:00 [INF] Request starting HTTP/1.1 DELETE http://localhost:5130/api/personnel/ID_NOUVEAU_PERSONNEL - null null
+2026-03-08 22:39:36.282 +00:00 [INF] Executing endpoint 'PersonnelMS.Controllers.PersonnelController.Supprimer (PersonnelMS)'
+2026-03-08 22:39:36.286 +00:00 [INF] Route matched with {action = "Supprimer", controller = "Personnel"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Supprimer(System.String) on controller PersonnelMS.Controllers.PersonnelController (PersonnelMS).
+2026-03-08 22:39:41.633 +00:00 [INF] Executed action PersonnelMS.Controllers.PersonnelController.Supprimer (PersonnelMS) in 5343.1243ms
+2026-03-08 22:39:41.637 +00:00 [INF] Executed endpoint 'PersonnelMS.Controllers.PersonnelController.Supprimer (PersonnelMS)'
+2026-03-08 22:39:41.670 +00:00 [ERR] Erreur non gérée : KeyNotFoundException - Personnel introuvable.
+System.Collections.Generic.KeyNotFoundException: Personnel introuvable.
+   at PersonnelMS.Services.ServicePersonnel.SupprimerAsync(String id) in C:\Users\dell\source\repos\PersonnelMS - Copy (2)\PersonnelMS\Services\ServicePersonnel.cs:line 119
+   at PersonnelMS.Controllers.PersonnelController.Supprimer(String id) in C:\Users\dell\source\repos\PersonnelMS - Copy (2)\PersonnelMS\Controllers\PersonnelController.cs:line 108
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at PersonnelMS.Middleware.MiddlewareGestionExceptions.InvokeAsync(HttpContext context) in C:\Users\dell\source\repos\PersonnelMS - Copy (2)\PersonnelMS\Middleware\MiddlewareGestionExceptions.cs:line 29
+2026-03-08 22:39:41.731 +00:00 [INF] Request finished HTTP/1.1 DELETE http://localhost:5130/api/personnel/ID_NOUVEAU_PERSONNEL - 404 null application/problem+json 5453.9381ms
+2026-03-08 22:40:07.147 +00:00 [INF] Request starting HTTP/1.1 GET http://localhost:5130/api/equipes - null null
+2026-03-08 22:40:07.153 +00:00 [INF] Executing endpoint 'PersonnelMS.Controllers.EquipesController.ObtenirTous (PersonnelMS)'
+2026-03-08 22:40:07.160 +00:00 [INF] Route matched with {action = "ObtenirTous", controller = "Equipes"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[PersonnelMS.DTOs.PageResult`1[PersonnelMS.DTOs.EquipeDto]]] ObtenirTous(Int32, Int32, System.String, System.String) on controller PersonnelMS.Controllers.EquipesController (PersonnelMS).
+2026-03-08 22:40:07.192 +00:00 [INF] Executing OkObjectResult, writing value of type 'PersonnelMS.DTOs.PageResult`1[[PersonnelMS.DTOs.EquipeDto, PersonnelMS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-03-08 22:40:07.208 +00:00 [INF] Executed action PersonnelMS.Controllers.EquipesController.ObtenirTous (PersonnelMS) in 44.3009ms
+2026-03-08 22:40:07.211 +00:00 [INF] Executed endpoint 'PersonnelMS.Controllers.EquipesController.ObtenirTous (PersonnelMS)'
+2026-03-08 22:40:07.214 +00:00 [INF] Request finished HTTP/1.1 GET http://localhost:5130/api/equipes - 200 null application/json; charset=utf-8 66.5139ms
+2026-03-08 22:40:13.252 +00:00 [INF] Request starting HTTP/1.1 GET http://localhost:5130/api/equipes/69a627a9cc7c836bb6dac16c - null null
+2026-03-08 22:40:13.257 +00:00 [INF] Executing endpoint 'PersonnelMS.Controllers.EquipesController.ObtenirParId (PersonnelMS)'
+2026-03-08 22:40:13.264 +00:00 [INF] Route matched with {action = "ObtenirParId", controller = "Equipes"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[PersonnelMS.DTOs.EquipeDto]] ObtenirParId(System.String) on controller PersonnelMS.Controllers.EquipesController (PersonnelMS).
+2026-03-08 22:40:13.271 +00:00 [INF] Executing OkObjectResult, writing value of type 'PersonnelMS.DTOs.EquipeDto'.
+2026-03-08 22:40:13.273 +00:00 [INF] Executed action PersonnelMS.Controllers.EquipesController.ObtenirParId (PersonnelMS) in 6.3404ms
+2026-03-08 22:40:13.276 +00:00 [INF] Executed endpoint 'PersonnelMS.Controllers.EquipesController.ObtenirParId (PersonnelMS)'
+2026-03-08 22:40:13.278 +00:00 [INF] Request finished HTTP/1.1 GET http://localhost:5130/api/equipes/69a627a9cc7c836bb6dac16c - 200 null application/json; charset=utf-8 26.4575ms
+2026-03-08 22:40:19.685 +00:00 [INF] Request starting HTTP/1.1 POST http://localhost:5130/api/equipes - application/json 208
+2026-03-08 22:40:19.691 +00:00 [INF] Executing endpoint 'PersonnelMS.Controllers.EquipesController.Creer (PersonnelMS)'
+2026-03-08 22:40:19.697 +00:00 [INF] Route matched with {action = "Creer", controller = "Equipes"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[PersonnelMS.DTOs.EquipeDto]] Creer(PersonnelMS.DTOs.EquipeCreateDto) on controller PersonnelMS.Controllers.EquipesController (PersonnelMS).
+2026-03-08 22:40:19.708 +00:00 [INF] Executing BadRequestObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ValidationProblemDetails'.
+2026-03-08 22:40:19.711 +00:00 [INF] Executed action PersonnelMS.Controllers.EquipesController.Creer (PersonnelMS) in 9.3728ms
+2026-03-08 22:40:19.714 +00:00 [INF] Executed endpoint 'PersonnelMS.Controllers.EquipesController.Creer (PersonnelMS)'
+2026-03-08 22:40:19.716 +00:00 [INF] Request finished HTTP/1.1 POST http://localhost:5130/api/equipes - 400 null application/problem+json; charset=utf-8 31.0406ms
+2026-03-08 22:40:25.676 +00:00 [INF] Request starting HTTP/1.1 POST http://localhost:5130/api/equipes - application/json 212
+2026-03-08 22:40:25.681 +00:00 [INF] Executing endpoint 'PersonnelMS.Controllers.EquipesController.Creer (PersonnelMS)'
+2026-03-08 22:40:25.683 +00:00 [INF] Route matched with {action = "Creer", controller = "Equipes"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[PersonnelMS.DTOs.EquipeDto]] Creer(PersonnelMS.DTOs.EquipeCreateDto) on controller PersonnelMS.Controllers.EquipesController (PersonnelMS).
+2026-03-08 22:40:25.688 +00:00 [INF] Executing BadRequestObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ValidationProblemDetails'.
+2026-03-08 22:40:25.691 +00:00 [INF] Executed action PersonnelMS.Controllers.EquipesController.Creer (PersonnelMS) in 4.3007ms
+2026-03-08 22:40:25.694 +00:00 [INF] Executed endpoint 'PersonnelMS.Controllers.EquipesController.Creer (PersonnelMS)'
+2026-03-08 22:40:25.696 +00:00 [INF] Request finished HTTP/1.1 POST http://localhost:5130/api/equipes - 400 null application/problem+json; charset=utf-8 20.8422ms
+2026-03-08 22:40:30.460 +00:00 [INF] Request starting HTTP/1.1 POST http://localhost:5130/api/equipes - application/json 210
+2026-03-08 22:40:30.465 +00:00 [INF] Executing endpoint 'PersonnelMS.Controllers.EquipesController.Creer (PersonnelMS)'
+2026-03-08 22:40:30.467 +00:00 [INF] Route matched with {action = "Creer", controller = "Equipes"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[PersonnelMS.DTOs.EquipeDto]] Creer(PersonnelMS.DTOs.EquipeCreateDto) on controller PersonnelMS.Controllers.EquipesController (PersonnelMS).
+2026-03-08 22:40:30.471 +00:00 [INF] Executing BadRequestObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ValidationProblemDetails'.
+2026-03-08 22:40:30.474 +00:00 [INF] Executed action PersonnelMS.Controllers.EquipesController.Creer (PersonnelMS) in 3.6418ms
+2026-03-08 22:40:30.476 +00:00 [INF] Executed endpoint 'PersonnelMS.Controllers.EquipesController.Creer (PersonnelMS)'
+2026-03-08 22:40:30.478 +00:00 [INF] Request finished HTTP/1.1 POST http://localhost:5130/api/equipes - 400 null application/problem+json; charset=utf-8 17.8422ms
+2026-03-08 22:40:35.576 +00:00 [INF] Request starting HTTP/1.1 POST http://localhost:5130/api/equipes/69a627a9cc7c836bb6dac16c/membres - application/json 42
+2026-03-08 22:40:35.583 +00:00 [INF] Executing endpoint 'PersonnelMS.Controllers.EquipesController.AjouterMembre (PersonnelMS)'
+2026-03-08 22:40:35.589 +00:00 [INF] Route matched with {action = "AjouterMembre", controller = "Equipes"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] AjouterMembre(System.String, System.Object) on controller PersonnelMS.Controllers.EquipesController (PersonnelMS).
+2026-03-08 22:40:38.028 +00:00 [INF] Executed action PersonnelMS.Controllers.EquipesController.AjouterMembre (PersonnelMS) in 2435.8832ms
+2026-03-08 22:40:38.032 +00:00 [INF] Executed endpoint 'PersonnelMS.Controllers.EquipesController.AjouterMembre (PersonnelMS)'
+2026-03-08 22:40:38.063 +00:00 [ERR] Erreur non gérée : RuntimeBinderException - 'System.Text.Json.JsonElement' does not contain a definition for 'personnelId'
+Microsoft.CSharp.RuntimeBinder.RuntimeBinderException: 'System.Text.Json.JsonElement' does not contain a definition for 'personnelId'
+   at CallSite.Target(Closure, CallSite, Object)
+   at System.Dynamic.UpdateDelegates.UpdateAndExecute1[T0,TRet](CallSite site, T0 arg0)
+   at PersonnelMS.Controllers.EquipesController.AjouterMembre(String id, Object body) in C:\Users\dell\source\repos\PersonnelMS - Copy (2)\PersonnelMS\Controllers\EquipesController.cs:line 89
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at PersonnelMS.Middleware.MiddlewareGestionExceptions.InvokeAsync(HttpContext context) in C:\Users\dell\source\repos\PersonnelMS - Copy (2)\PersonnelMS\Middleware\MiddlewareGestionExceptions.cs:line 29
+2026-03-08 22:40:38.076 +00:00 [INF] Request finished HTTP/1.1 POST http://localhost:5130/api/equipes/69a627a9cc7c836bb6dac16c/membres - 500 null application/problem+json 2499.2793ms
+2026-03-08 22:40:49.227 +00:00 [INF] Request starting HTTP/1.1 GET http://localhost:5130/api/equipes/69a627a9cc7c836bb6dac16c/verifier-effectif - null null
+2026-03-08 22:40:49.233 +00:00 [INF] Executing endpoint 'PersonnelMS.Controllers.EquipesController.VerifierEffectif (PersonnelMS)'
+2026-03-08 22:40:49.239 +00:00 [INF] Route matched with {action = "VerifierEffectif", controller = "Equipes"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Object]] VerifierEffectif(System.String) on controller PersonnelMS.Controllers.EquipesController (PersonnelMS).
+2026-03-08 22:40:49.247 +00:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType1`1[[System.Boolean, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2026-03-08 22:40:49.252 +00:00 [INF] Executed action PersonnelMS.Controllers.EquipesController.VerifierEffectif (PersonnelMS) in 9.241ms
+2026-03-08 22:40:49.254 +00:00 [INF] Executed endpoint 'PersonnelMS.Controllers.EquipesController.VerifierEffectif (PersonnelMS)'
+2026-03-08 22:40:49.257 +00:00 [INF] Request finished HTTP/1.1 GET http://localhost:5130/api/equipes/69a627a9cc7c836bb6dac16c/verifier-effectif - 200 null application/json; charset=utf-8 29.1298ms
+2026-03-08 22:40:56.914 +00:00 [INF] Request starting HTTP/1.1 DELETE http://localhost:5130/api/equipes/69a627a9cc7c836bb6dac16c/membres/69a4bfaf00627cd016a43e9f - null null
+2026-03-08 22:40:56.919 +00:00 [INF] Executing endpoint 'PersonnelMS.Controllers.EquipesController.RetirerMembre (PersonnelMS)'
+2026-03-08 22:40:56.926 +00:00 [INF] Route matched with {action = "RetirerMembre", controller = "Equipes"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] RetirerMembre(System.String, System.String) on controller PersonnelMS.Controllers.EquipesController (PersonnelMS).
+2026-03-08 22:40:56.937 +00:00 [INF] Executing StatusCodeResult, setting HTTP status code 204
+2026-03-08 22:40:56.939 +00:00 [INF] Executed action PersonnelMS.Controllers.EquipesController.RetirerMembre (PersonnelMS) in 9.2911ms
+2026-03-08 22:40:56.942 +00:00 [INF] Executed endpoint 'PersonnelMS.Controllers.EquipesController.RetirerMembre (PersonnelMS)'
+2026-03-08 22:40:56.944 +00:00 [INF] Request finished HTTP/1.1 DELETE http://localhost:5130/api/equipes/69a627a9cc7c836bb6dac16c/membres/69a4bfaf00627cd016a43e9f - 204 null null 30.42ms
+2026-03-08 22:41:04.786 +00:00 [INF] Request starting HTTP/1.1 GET http://localhost:5130/api/plannings - null null
+2026-03-08 22:41:04.791 +00:00 [INF] Executing endpoint 'PersonnelMS.Controllers.PlanningsController.ObtenirTous (PersonnelMS)'
+2026-03-08 22:41:04.797 +00:00 [INF] Route matched with {action = "ObtenirTous", controller = "Plannings"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[PersonnelMS.DTOs.PageResult`1[PersonnelMS.DTOs.PlanningDto]]] ObtenirTous(Int32, Int32, System.String, System.String, System.String, System.Nullable`1[PersonnelMS.Enums.StatutPlanning]) on controller PersonnelMS.Controllers.PlanningsController (PersonnelMS).
+2026-03-08 22:41:04.811 +00:00 [INF] Executing OkObjectResult, writing value of type 'PersonnelMS.DTOs.PageResult`1[[PersonnelMS.DTOs.PlanningDto, PersonnelMS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-03-08 22:41:04.819 +00:00 [INF] Executed action PersonnelMS.Controllers.PlanningsController.ObtenirTous (PersonnelMS) in 18.809ms
+2026-03-08 22:41:04.822 +00:00 [INF] Executed endpoint 'PersonnelMS.Controllers.PlanningsController.ObtenirTous (PersonnelMS)'
+2026-03-08 22:41:04.824 +00:00 [INF] Request finished HTTP/1.1 GET http://localhost:5130/api/plannings - 200 null application/json; charset=utf-8 38.1368ms
+2026-03-08 22:41:10.773 +00:00 [INF] Request starting HTTP/1.1 GET http://localhost:5130/api/plannings/69a60db5cc7c836bb6dac168 - null null
+2026-03-08 22:41:10.777 +00:00 [INF] Executing endpoint 'PersonnelMS.Controllers.PlanningsController.ObtenirParId (PersonnelMS)'
+2026-03-08 22:41:10.782 +00:00 [INF] Route matched with {action = "ObtenirParId", controller = "Plannings"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[PersonnelMS.DTOs.PlanningDto]] ObtenirParId(System.String) on controller PersonnelMS.Controllers.PlanningsController (PersonnelMS).
+2026-03-08 22:41:10.789 +00:00 [INF] Executing OkObjectResult, writing value of type 'PersonnelMS.DTOs.PlanningDto'.
+2026-03-08 22:41:10.791 +00:00 [INF] Executed action PersonnelMS.Controllers.PlanningsController.ObtenirParId (PersonnelMS) in 5.7673ms
+2026-03-08 22:41:10.794 +00:00 [INF] Executed endpoint 'PersonnelMS.Controllers.PlanningsController.ObtenirParId (PersonnelMS)'
+2026-03-08 22:41:10.795 +00:00 [INF] Request finished HTTP/1.1 GET http://localhost:5130/api/plannings/69a60db5cc7c836bb6dac168 - 200 null application/json; charset=utf-8 22.9635ms
+2026-03-08 22:41:16.195 +00:00 [INF] Request starting HTTP/1.1 POST http://localhost:5130/api/plannings - application/json 155
+2026-03-08 22:41:16.200 +00:00 [INF] Executing endpoint 'PersonnelMS.Controllers.PlanningsController.Creer (PersonnelMS)'
+2026-03-08 22:41:16.204 +00:00 [INF] Route matched with {action = "Creer", controller = "Plannings"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[PersonnelMS.DTOs.PlanningDto]] Creer(PersonnelMS.DTOs.PlanningCreateDto) on controller PersonnelMS.Controllers.PlanningsController (PersonnelMS).
+2026-03-08 22:41:16.214 +00:00 [INF] Executing BadRequestObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ValidationProblemDetails'.
+2026-03-08 22:41:16.216 +00:00 [INF] Executed action PersonnelMS.Controllers.PlanningsController.Creer (PersonnelMS) in 8.5629ms
+2026-03-08 22:41:16.218 +00:00 [INF] Executed endpoint 'PersonnelMS.Controllers.PlanningsController.Creer (PersonnelMS)'
+2026-03-08 22:41:16.220 +00:00 [INF] Request finished HTTP/1.1 POST http://localhost:5130/api/plannings - 400 null application/problem+json; charset=utf-8 25.2088ms
+2026-03-08 22:41:21.878 +00:00 [INF] Request starting HTTP/1.1 POST http://localhost:5130/api/creneaux - application/json 174
+2026-03-08 22:41:21.883 +00:00 [INF] Executing endpoint 'PersonnelMS.Controllers.CreneauxController.Creer (PersonnelMS)'
+2026-03-08 22:41:21.888 +00:00 [INF] Route matched with {action = "Creer", controller = "Creneaux"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[PersonnelMS.DTOs.CreneauDto]] Creer(PersonnelMS.DTOs.CreneauCreateDto) on controller PersonnelMS.Controllers.CreneauxController (PersonnelMS).
+2026-03-08 22:41:21.896 +00:00 [INF] Executing BadRequestObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ValidationProblemDetails'.
+2026-03-08 22:41:21.899 +00:00 [INF] Executed action PersonnelMS.Controllers.CreneauxController.Creer (PersonnelMS) in 8.0226ms
+2026-03-08 22:41:21.901 +00:00 [INF] Executed endpoint 'PersonnelMS.Controllers.CreneauxController.Creer (PersonnelMS)'
+2026-03-08 22:41:21.903 +00:00 [INF] Request finished HTTP/1.1 POST http://localhost:5130/api/creneaux - 400 null application/problem+json; charset=utf-8 24.6153ms
+2026-03-08 22:41:27.260 +00:00 [INF] Request starting HTTP/1.1 POST http://localhost:5130/api/creneaux - application/json 174
+2026-03-08 22:41:27.264 +00:00 [INF] Executing endpoint 'PersonnelMS.Controllers.CreneauxController.Creer (PersonnelMS)'
+2026-03-08 22:41:27.266 +00:00 [INF] Route matched with {action = "Creer", controller = "Creneaux"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[PersonnelMS.DTOs.CreneauDto]] Creer(PersonnelMS.DTOs.CreneauCreateDto) on controller PersonnelMS.Controllers.CreneauxController (PersonnelMS).
+2026-03-08 22:41:27.271 +00:00 [INF] Executing BadRequestObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ValidationProblemDetails'.
+2026-03-08 22:41:27.274 +00:00 [INF] Executed action PersonnelMS.Controllers.CreneauxController.Creer (PersonnelMS) in 3.9509ms
+2026-03-08 22:41:27.276 +00:00 [INF] Executed endpoint 'PersonnelMS.Controllers.CreneauxController.Creer (PersonnelMS)'
+2026-03-08 22:41:27.278 +00:00 [INF] Request finished HTTP/1.1 POST http://localhost:5130/api/creneaux - 400 null application/problem+json; charset=utf-8 18.1067ms
+2026-03-08 22:41:32.711 +00:00 [INF] Request starting HTTP/1.1 POST http://localhost:5130/api/creneaux - application/json 151
+2026-03-08 22:41:32.716 +00:00 [INF] Executing endpoint 'PersonnelMS.Controllers.CreneauxController.Creer (PersonnelMS)'
+2026-03-08 22:41:32.718 +00:00 [INF] Route matched with {action = "Creer", controller = "Creneaux"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[PersonnelMS.DTOs.CreneauDto]] Creer(PersonnelMS.DTOs.CreneauCreateDto) on controller PersonnelMS.Controllers.CreneauxController (PersonnelMS).
+2026-03-08 22:41:32.722 +00:00 [INF] Executing BadRequestObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ValidationProblemDetails'.
+2026-03-08 22:41:32.724 +00:00 [INF] Executed action PersonnelMS.Controllers.CreneauxController.Creer (PersonnelMS) in 3.7689ms
+2026-03-08 22:41:32.727 +00:00 [INF] Executed endpoint 'PersonnelMS.Controllers.CreneauxController.Creer (PersonnelMS)'
+2026-03-08 22:41:32.729 +00:00 [INF] Request finished HTTP/1.1 POST http://localhost:5130/api/creneaux - 400 null application/problem+json; charset=utf-8 17.3392ms
+2026-03-08 22:41:37.600 +00:00 [INF] Request starting HTTP/1.1 POST http://localhost:5130/api/creneaux - application/json 151
+2026-03-08 22:41:37.604 +00:00 [INF] Executing endpoint 'PersonnelMS.Controllers.CreneauxController.Creer (PersonnelMS)'
+2026-03-08 22:41:37.606 +00:00 [INF] Route matched with {action = "Creer", controller = "Creneaux"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[PersonnelMS.DTOs.CreneauDto]] Creer(PersonnelMS.DTOs.CreneauCreateDto) on controller PersonnelMS.Controllers.CreneauxController (PersonnelMS).
+2026-03-08 22:41:37.610 +00:00 [INF] Executing BadRequestObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ValidationProblemDetails'.
+2026-03-08 22:41:37.612 +00:00 [INF] Executed action PersonnelMS.Controllers.CreneauxController.Creer (PersonnelMS) in 3.3655ms
+2026-03-08 22:41:37.615 +00:00 [INF] Executed endpoint 'PersonnelMS.Controllers.CreneauxController.Creer (PersonnelMS)'
+2026-03-08 22:41:37.617 +00:00 [INF] Request finished HTTP/1.1 POST http://localhost:5130/api/creneaux - 400 null application/problem+json; charset=utf-8 17.3134ms
+2026-03-08 22:41:43.218 +00:00 [INF] Request starting HTTP/1.1 POST http://localhost:5130/api/creneaux/ID_CRENEAU1/affecter - application/json 85
+2026-03-08 22:41:43.223 +00:00 [INF] Executing endpoint 'PersonnelMS.Controllers.CreneauxController.Affecter (PersonnelMS)'
+2026-03-08 22:41:43.228 +00:00 [INF] Route matched with {action = "Affecter", controller = "Creneaux"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Affecter(System.String, PersonnelMS.DTOs.AffectationCreneauDto) on controller PersonnelMS.Controllers.CreneauxController (PersonnelMS).
+2026-03-08 22:41:46.018 +00:00 [INF] Executed action PersonnelMS.Controllers.CreneauxController.Affecter (PersonnelMS) in 2786.7204ms
+2026-03-08 22:41:46.021 +00:00 [INF] Executed endpoint 'PersonnelMS.Controllers.CreneauxController.Affecter (PersonnelMS)'
+2026-03-08 22:41:46.051 +00:00 [ERR] Erreur non gérée : KeyNotFoundException - Créneau introuvable.
+System.Collections.Generic.KeyNotFoundException: Créneau introuvable.
+   at PersonnelMS.Services.CreneauService.AffecterPersonnelAsync(String creneauId, String personnelId, String utilisateurId) in C:\Users\dell\source\repos\PersonnelMS - Copy (2)\PersonnelMS\Services\CreneauService.cs:line 101
+   at PersonnelMS.Controllers.CreneauxController.Affecter(String id, AffectationCreneauDto requete) in C:\Users\dell\source\repos\PersonnelMS - Copy (2)\PersonnelMS\Controllers\CreneauxController.cs:line 86
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at PersonnelMS.Middleware.MiddlewareGestionExceptions.InvokeAsync(HttpContext context) in C:\Users\dell\source\repos\PersonnelMS - Copy (2)\PersonnelMS\Middleware\MiddlewareGestionExceptions.cs:line 29
+2026-03-08 22:41:46.061 +00:00 [INF] Request finished HTTP/1.1 POST http://localhost:5130/api/creneaux/ID_CRENEAU1/affecter - 404 null application/problem+json 2842.6209ms
+2026-03-08 22:41:55.517 +00:00 [INF] Request starting HTTP/1.1 POST http://localhost:5130/api/creneaux/ID_CRENEAU2/affecter - application/json 85
+2026-03-08 22:41:55.523 +00:00 [INF] Executing endpoint 'PersonnelMS.Controllers.CreneauxController.Affecter (PersonnelMS)'
+2026-03-08 22:41:55.524 +00:00 [INF] Route matched with {action = "Affecter", controller = "Creneaux"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Affecter(System.String, PersonnelMS.DTOs.AffectationCreneauDto) on controller PersonnelMS.Controllers.CreneauxController (PersonnelMS).
+2026-03-08 22:41:57.709 +00:00 [INF] Executed action PersonnelMS.Controllers.CreneauxController.Affecter (PersonnelMS) in 2181.3491ms
+2026-03-08 22:41:57.712 +00:00 [INF] Executed endpoint 'PersonnelMS.Controllers.CreneauxController.Affecter (PersonnelMS)'
+2026-03-08 22:41:57.759 +00:00 [ERR] Erreur non gérée : KeyNotFoundException - Créneau introuvable.
+System.Collections.Generic.KeyNotFoundException: Créneau introuvable.
+   at PersonnelMS.Services.CreneauService.AffecterPersonnelAsync(String creneauId, String personnelId, String utilisateurId) in C:\Users\dell\source\repos\PersonnelMS - Copy (2)\PersonnelMS\Services\CreneauService.cs:line 101
+   at PersonnelMS.Controllers.CreneauxController.Affecter(String id, AffectationCreneauDto requete) in C:\Users\dell\source\repos\PersonnelMS - Copy (2)\PersonnelMS\Controllers\CreneauxController.cs:line 86
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at PersonnelMS.Middleware.MiddlewareGestionExceptions.InvokeAsync(HttpContext context) in C:\Users\dell\source\repos\PersonnelMS - Copy (2)\PersonnelMS\Middleware\MiddlewareGestionExceptions.cs:line 29
+2026-03-08 22:41:57.768 +00:00 [INF] Request finished HTTP/1.1 POST http://localhost:5130/api/creneaux/ID_CRENEAU2/affecter - 404 null application/problem+json 2251.3003ms
+2026-03-08 22:42:05.824 +00:00 [INF] Request starting HTTP/1.1 POST http://localhost:5130/api/creneaux/ID_CRENEAU1/confirmer - application/json 44
+2026-03-08 22:42:05.830 +00:00 [INF] Executing endpoint 'PersonnelMS.Controllers.CreneauxController.Confirmer (PersonnelMS)'
+2026-03-08 22:42:05.837 +00:00 [INF] Route matched with {action = "Confirmer", controller = "Creneaux"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Confirmer(System.String, PersonnelMS.DTOs.RequeteActionDto) on controller PersonnelMS.Controllers.CreneauxController (PersonnelMS).
+2026-03-08 22:42:08.119 +00:00 [INF] Executed action PersonnelMS.Controllers.CreneauxController.Confirmer (PersonnelMS) in 2278.0749ms
+2026-03-08 22:42:08.123 +00:00 [INF] Executed endpoint 'PersonnelMS.Controllers.CreneauxController.Confirmer (PersonnelMS)'
+2026-03-08 22:42:08.154 +00:00 [ERR] Erreur non gérée : KeyNotFoundException - Créneau introuvable.
+System.Collections.Generic.KeyNotFoundException: Créneau introuvable.
+   at PersonnelMS.Services.CreneauService.ConfirmerAsync(String id, String utilisateurId) in C:\Users\dell\source\repos\PersonnelMS - Copy (2)\PersonnelMS\Services\CreneauService.cs:line 139
+   at PersonnelMS.Controllers.CreneauxController.Confirmer(String id, RequeteActionDto requete) in C:\Users\dell\source\repos\PersonnelMS - Copy (2)\PersonnelMS\Controllers\CreneauxController.cs:line 106
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at PersonnelMS.Middleware.MiddlewareGestionExceptions.InvokeAsync(HttpContext context) in C:\Users\dell\source\repos\PersonnelMS - Copy (2)\PersonnelMS\Middleware\MiddlewareGestionExceptions.cs:line 29
+2026-03-08 22:42:08.166 +00:00 [INF] Request finished HTTP/1.1 POST http://localhost:5130/api/creneaux/ID_CRENEAU1/confirmer - 404 null application/problem+json 2341.8418ms
+2026-03-08 22:42:24.007 +00:00 [INF] Request starting HTTP/1.1 POST http://localhost:5130/api/plannings/ID_NOUVEAU_PLANNING/publier - application/json 44
+2026-03-08 22:42:24.012 +00:00 [INF] Executing endpoint 'PersonnelMS.Controllers.PlanningsController.Publier (PersonnelMS)'
+2026-03-08 22:42:24.018 +00:00 [INF] Route matched with {action = "Publier", controller = "Plannings"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Publier(System.String, PersonnelMS.DTOs.RequeteActionDto) on controller PersonnelMS.Controllers.PlanningsController (PersonnelMS).
+2026-03-08 22:42:26.219 +00:00 [INF] Executed action PersonnelMS.Controllers.PlanningsController.Publier (PersonnelMS) in 2198.0134ms
+2026-03-08 22:42:26.222 +00:00 [INF] Executed endpoint 'PersonnelMS.Controllers.PlanningsController.Publier (PersonnelMS)'
+2026-03-08 22:42:26.249 +00:00 [ERR] Erreur non gérée : KeyNotFoundException - Planning introuvable.
+System.Collections.Generic.KeyNotFoundException: Planning introuvable.
+   at PersonnelMS.Services.PlanningService.PublierAsync(String id, String utilisateurId) in C:\Users\dell\source\repos\PersonnelMS - Copy (2)\PersonnelMS\Services\PlanningService.cs:line 143
+   at PersonnelMS.Controllers.PlanningsController.Publier(String id, RequeteActionDto requete) in C:\Users\dell\source\repos\PersonnelMS - Copy (2)\PersonnelMS\Controllers\PlanningsController.cs:line 112
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at PersonnelMS.Middleware.MiddlewareGestionExceptions.InvokeAsync(HttpContext context) in C:\Users\dell\source\repos\PersonnelMS - Copy (2)\PersonnelMS\Middleware\MiddlewareGestionExceptions.cs:line 29
+2026-03-08 22:42:26.260 +00:00 [INF] Request finished HTTP/1.1 POST http://localhost:5130/api/plannings/ID_NOUVEAU_PLANNING/publier - 404 null application/problem+json 2253.4239ms
+2026-03-08 22:42:33.570 +00:00 [INF] Request starting HTTP/1.1 POST http://localhost:5130/api/disponibilites - application/json 127
+2026-03-08 22:42:33.576 +00:00 [INF] Executing endpoint 'PersonnelMS.Controllers.DisponibilitesController.Creer (PersonnelMS)'
+2026-03-08 22:42:33.582 +00:00 [INF] Route matched with {action = "Creer", controller = "Disponibilites"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[PersonnelMS.DTOs.DisponibiliteDto]] Creer(PersonnelMS.DTOs.DisponibiliteCreateDto) on controller PersonnelMS.Controllers.DisponibilitesController (PersonnelMS).
+2026-03-08 22:42:33.599 +00:00 [INF] Executing BadRequestObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ValidationProblemDetails'.
+2026-03-08 22:42:33.602 +00:00 [INF] Executed action PersonnelMS.Controllers.DisponibilitesController.Creer (PersonnelMS) in 15.9719ms
+2026-03-08 22:42:33.605 +00:00 [INF] Executed endpoint 'PersonnelMS.Controllers.DisponibilitesController.Creer (PersonnelMS)'
+2026-03-08 22:42:33.608 +00:00 [INF] Request finished HTTP/1.1 POST http://localhost:5130/api/disponibilites - 400 null application/problem+json; charset=utf-8 37.6171ms
+2026-03-08 22:42:39.768 +00:00 [INF] Request starting HTTP/1.1 POST http://localhost:5130/api/disponibilites - application/json 123
+2026-03-08 22:42:39.773 +00:00 [INF] Executing endpoint 'PersonnelMS.Controllers.DisponibilitesController.Creer (PersonnelMS)'
+2026-03-08 22:42:39.775 +00:00 [INF] Route matched with {action = "Creer", controller = "Disponibilites"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[PersonnelMS.DTOs.DisponibiliteDto]] Creer(PersonnelMS.DTOs.DisponibiliteCreateDto) on controller PersonnelMS.Controllers.DisponibilitesController (PersonnelMS).
+2026-03-08 22:42:39.781 +00:00 [INF] Executing BadRequestObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ValidationProblemDetails'.
+2026-03-08 22:42:39.784 +00:00 [INF] Executed action PersonnelMS.Controllers.DisponibilitesController.Creer (PersonnelMS) in 4.827ms
+2026-03-08 22:42:39.787 +00:00 [INF] Executed endpoint 'PersonnelMS.Controllers.DisponibilitesController.Creer (PersonnelMS)'
+2026-03-08 22:42:39.789 +00:00 [INF] Request finished HTTP/1.1 POST http://localhost:5130/api/disponibilites - 400 null application/problem+json; charset=utf-8 21.1826ms
+2026-03-08 22:42:45.693 +00:00 [INF] Request starting HTTP/1.1 POST http://localhost:5130/api/absences - application/json 167
+2026-03-08 22:42:45.698 +00:00 [INF] Executing endpoint 'PersonnelMS.Controllers.AbsencesController.Creer (PersonnelMS)'
+2026-03-08 22:42:45.703 +00:00 [INF] Route matched with {action = "Creer", controller = "Absences"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[PersonnelMS.DTOs.AbsenceDto]] Creer(PersonnelMS.DTOs.AbsenceCreateDto) on controller PersonnelMS.Controllers.AbsencesController (PersonnelMS).
+2026-03-08 22:42:45.712 +00:00 [INF] Executing BadRequestObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ValidationProblemDetails'.
+2026-03-08 22:42:45.714 +00:00 [INF] Executed action PersonnelMS.Controllers.AbsencesController.Creer (PersonnelMS) in 7.9835ms
+2026-03-08 22:42:45.716 +00:00 [INF] Executed endpoint 'PersonnelMS.Controllers.AbsencesController.Creer (PersonnelMS)'
+2026-03-08 22:42:45.718 +00:00 [INF] Request finished HTTP/1.1 POST http://localhost:5130/api/absences - 400 null application/problem+json; charset=utf-8 25.8448ms
+2026-03-08 22:42:51.264 +00:00 [INF] Request starting HTTP/1.1 POST http://localhost:5130/api/absences - application/json 151
+2026-03-08 22:42:51.270 +00:00 [INF] Executing endpoint 'PersonnelMS.Controllers.AbsencesController.Creer (PersonnelMS)'
+2026-03-08 22:42:51.271 +00:00 [INF] Route matched with {action = "Creer", controller = "Absences"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[PersonnelMS.DTOs.AbsenceDto]] Creer(PersonnelMS.DTOs.AbsenceCreateDto) on controller PersonnelMS.Controllers.AbsencesController (PersonnelMS).
+2026-03-08 22:42:51.276 +00:00 [INF] Executing BadRequestObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ValidationProblemDetails'.
+2026-03-08 22:42:51.278 +00:00 [INF] Executed action PersonnelMS.Controllers.AbsencesController.Creer (PersonnelMS) in 3.5825ms
+2026-03-08 22:42:51.281 +00:00 [INF] Executed endpoint 'PersonnelMS.Controllers.AbsencesController.Creer (PersonnelMS)'
+2026-03-08 22:42:51.282 +00:00 [INF] Request finished HTTP/1.1 POST http://localhost:5130/api/absences - 400 null application/problem+json; charset=utf-8 18.2013ms
+2026-03-08 22:42:55.910 +00:00 [INF] Request starting HTTP/1.1 POST http://localhost:5130/api/absences/ID_ABSENCE1/approuver - application/json 41
+2026-03-08 22:42:55.914 +00:00 [INF] Executing endpoint 'PersonnelMS.Controllers.AbsencesController.Approuver (PersonnelMS)'
+2026-03-08 22:42:55.918 +00:00 [INF] Route matched with {action = "Approuver", controller = "Absences"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Approuver(System.String, PersonnelMS.DTOs.ApprobationDto) on controller PersonnelMS.Controllers.AbsencesController (PersonnelMS).
+2026-03-08 22:42:57.901 +00:00 [INF] Executed action PersonnelMS.Controllers.AbsencesController.Approuver (PersonnelMS) in 1979.3217ms
+2026-03-08 22:42:57.903 +00:00 [INF] Executed endpoint 'PersonnelMS.Controllers.AbsencesController.Approuver (PersonnelMS)'
+2026-03-08 22:42:57.935 +00:00 [ERR] Erreur non gérée : KeyNotFoundException - Absence introuvable.
+System.Collections.Generic.KeyNotFoundException: Absence introuvable.
+   at PersonnelMS.Services.AbsenceService.ApprouverAsync(String id, String valideurId, String commentaire) in C:\Users\dell\source\repos\PersonnelMS - Copy (2)\PersonnelMS\Services\AbsenceService.cs:line 107
+   at PersonnelMS.Controllers.AbsencesController.Approuver(String id, ApprobationDto dto) in C:\Users\dell\source\repos\PersonnelMS - Copy (2)\PersonnelMS\Controllers\AbsencesController.cs:line 109
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at PersonnelMS.Middleware.MiddlewareGestionExceptions.InvokeAsync(HttpContext context) in C:\Users\dell\source\repos\PersonnelMS - Copy (2)\PersonnelMS\Middleware\MiddlewareGestionExceptions.cs:line 29
+2026-03-08 22:42:57.946 +00:00 [INF] Request finished HTTP/1.1 POST http://localhost:5130/api/absences/ID_ABSENCE1/approuver - 404 null application/problem+json 2036.1513ms
+2026-03-08 22:43:04.762 +00:00 [INF] Request starting HTTP/1.1 POST http://localhost:5130/api/absences/ID_ABSENCE1/approuver - application/json 41
+2026-03-08 22:43:04.767 +00:00 [INF] Executing endpoint 'PersonnelMS.Controllers.AbsencesController.Approuver (PersonnelMS)'
+2026-03-08 22:43:04.769 +00:00 [INF] Route matched with {action = "Approuver", controller = "Absences"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Approuver(System.String, PersonnelMS.DTOs.ApprobationDto) on controller PersonnelMS.Controllers.AbsencesController (PersonnelMS).
+2026-03-08 22:43:06.725 +00:00 [INF] Executed action PersonnelMS.Controllers.AbsencesController.Approuver (PersonnelMS) in 1953.3346ms
+2026-03-08 22:43:06.727 +00:00 [INF] Executed endpoint 'PersonnelMS.Controllers.AbsencesController.Approuver (PersonnelMS)'
+2026-03-08 22:43:06.760 +00:00 [ERR] Erreur non gérée : KeyNotFoundException - Absence introuvable.
+System.Collections.Generic.KeyNotFoundException: Absence introuvable.
+   at PersonnelMS.Services.AbsenceService.ApprouverAsync(String id, String valideurId, String commentaire) in C:\Users\dell\source\repos\PersonnelMS - Copy (2)\PersonnelMS\Services\AbsenceService.cs:line 107
+   at PersonnelMS.Controllers.AbsencesController.Approuver(String id, ApprobationDto dto) in C:\Users\dell\source\repos\PersonnelMS - Copy (2)\PersonnelMS\Controllers\AbsencesController.cs:line 109
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at PersonnelMS.Middleware.MiddlewareGestionExceptions.InvokeAsync(HttpContext context) in C:\Users\dell\source\repos\PersonnelMS - Copy (2)\PersonnelMS\Middleware\MiddlewareGestionExceptions.cs:line 29
+2026-03-08 22:43:06.771 +00:00 [INF] Request finished HTTP/1.1 POST http://localhost:5130/api/absences/ID_ABSENCE1/approuver - 404 null application/problem+json 2009.8943ms
+2026-03-08 22:43:14.698 +00:00 [INF] Request starting HTTP/1.1 POST http://localhost:5130/api/demandes-modification - application/json 132
+2026-03-08 22:43:14.703 +00:00 [INF] Executing endpoint 'PersonnelMS.Controllers.DemandesModificationController.Creer (PersonnelMS)'
+2026-03-08 22:43:14.711 +00:00 [INF] Route matched with {action = "Creer", controller = "DemandesModification"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[PersonnelMS.DTOs.DemandeModificationDto]] Creer(PersonnelMS.DTOs.DemandeModificationCreateDto) on controller PersonnelMS.Controllers.DemandesModificationController (PersonnelMS).
+2026-03-08 22:43:14.718 +00:00 [INF] Executing BadRequestObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ValidationProblemDetails'.
+2026-03-08 22:43:14.720 +00:00 [INF] Executed action PersonnelMS.Controllers.DemandesModificationController.Creer (PersonnelMS) in 6.4715ms
+2026-03-08 22:43:14.723 +00:00 [INF] Executed endpoint 'PersonnelMS.Controllers.DemandesModificationController.Creer (PersonnelMS)'
+2026-03-08 22:43:14.725 +00:00 [INF] Request finished HTTP/1.1 POST http://localhost:5130/api/demandes-modification - 400 null application/problem+json; charset=utf-8 27.2019ms
+2026-03-08 22:43:21.959 +00:00 [INF] Request starting HTTP/1.1 POST http://localhost:5130/api/demandes-modification/ID_DEMANDE1/rejeter - application/json 41
+2026-03-08 22:43:21.964 +00:00 [INF] Executing endpoint 'PersonnelMS.Controllers.DemandesModificationController.Rejeter (PersonnelMS)'
+2026-03-08 22:43:21.969 +00:00 [INF] Route matched with {action = "Rejeter", controller = "DemandesModification"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Rejeter(System.String, PersonnelMS.DTOs.ApprobationDto) on controller PersonnelMS.Controllers.DemandesModificationController (PersonnelMS).
+2026-03-08 22:43:21.974 +00:00 [INF] Executing BadRequestObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ValidationProblemDetails'.
+2026-03-08 22:43:21.977 +00:00 [INF] Executed action PersonnelMS.Controllers.DemandesModificationController.Rejeter (PersonnelMS) in 3.6777ms
+2026-03-08 22:43:21.980 +00:00 [INF] Executed endpoint 'PersonnelMS.Controllers.DemandesModificationController.Rejeter (PersonnelMS)'
+2026-03-08 22:43:21.982 +00:00 [INF] Request finished HTTP/1.1 POST http://localhost:5130/api/demandes-modification/ID_DEMANDE1/rejeter - 400 null application/problem+json; charset=utf-8 23.2834ms
+2026-03-08 22:43:28.932 +00:00 [INF] Request starting HTTP/1.1 GET http://localhost:5130/api/rapports/effectif-par-service - null null
+2026-03-08 22:43:28.936 +00:00 [INF] Executing endpoint 'PersonnelMS.Controllers.RapportsController.EffectifParService (PersonnelMS)'
+2026-03-08 22:43:28.941 +00:00 [INF] Route matched with {action = "EffectifParService", controller = "Rapports"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.List`1[PersonnelMS.DTOs.EffectifParServiceDto]]] EffectifParService() on controller PersonnelMS.Controllers.RapportsController (PersonnelMS).
+2026-03-08 22:43:28.965 +00:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[PersonnelMS.DTOs.EffectifParServiceDto, PersonnelMS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-03-08 22:43:28.968 +00:00 [INF] Executed action PersonnelMS.Controllers.RapportsController.EffectifParService (PersonnelMS) in 23.7935ms
+2026-03-08 22:43:28.970 +00:00 [INF] Executed endpoint 'PersonnelMS.Controllers.RapportsController.EffectifParService (PersonnelMS)'
+2026-03-08 22:43:28.972 +00:00 [INF] Request finished HTTP/1.1 GET http://localhost:5130/api/rapports/effectif-par-service - 200 null application/json; charset=utf-8 40.7168ms
+2026-03-08 22:43:36.238 +00:00 [INF] Request starting HTTP/1.1 GET http://localhost:5130/api/rapports/absences-par-mois?annee=2026 - null null
+2026-03-08 22:43:36.244 +00:00 [INF] Executing endpoint 'PersonnelMS.Controllers.RapportsController.AbsencesParMois (PersonnelMS)'
+2026-03-08 22:43:36.248 +00:00 [INF] Route matched with {action = "AbsencesParMois", controller = "Rapports"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.List`1[PersonnelMS.DTOs.AbsencesParMoisDto]]] AbsencesParMois(System.Nullable`1[System.Int32]) on controller PersonnelMS.Controllers.RapportsController (PersonnelMS).
+2026-03-08 22:43:36.263 +00:00 [INF] Executing OkObjectResult, writing value of type 'System.Collections.Generic.List`1[[PersonnelMS.DTOs.AbsencesParMoisDto, PersonnelMS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-03-08 22:43:36.266 +00:00 [INF] Executed action PersonnelMS.Controllers.RapportsController.AbsencesParMois (PersonnelMS) in 13.9973ms
+2026-03-08 22:43:36.268 +00:00 [INF] Executed endpoint 'PersonnelMS.Controllers.RapportsController.AbsencesParMois (PersonnelMS)'
+2026-03-08 22:43:36.270 +00:00 [INF] Request finished HTTP/1.1 GET http://localhost:5130/api/rapports/absences-par-mois?annee=2026 - 200 null application/json; charset=utf-8 31.8942ms
+2026-03-08 22:43:42.910 +00:00 [INF] Request starting HTTP/1.1 GET http://localhost:5130/api/rapports/taux-occupation?equipeId=69a627a9cc7c836bb6dac16c&dateDebut=2026-03-01&dateFin=2026-03-31 - null null
+2026-03-08 22:43:42.914 +00:00 [INF] Executing endpoint 'PersonnelMS.Controllers.RapportsController.TauxOccupation (PersonnelMS)'
+2026-03-08 22:43:42.919 +00:00 [INF] Route matched with {action = "TauxOccupation", controller = "Rapports"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[PersonnelMS.DTOs.TauxOccupationDto]] TauxOccupation(System.String, System.Nullable`1[System.DateTime], System.Nullable`1[System.DateTime]) on controller PersonnelMS.Controllers.RapportsController (PersonnelMS).
+2026-03-08 22:43:42.934 +00:00 [INF] Executing OkObjectResult, writing value of type 'PersonnelMS.DTOs.TauxOccupationDto'.
+2026-03-08 22:43:42.940 +00:00 [INF] Executed action PersonnelMS.Controllers.RapportsController.TauxOccupation (PersonnelMS) in 17.182ms
+2026-03-08 22:43:42.942 +00:00 [INF] Executed endpoint 'PersonnelMS.Controllers.RapportsController.TauxOccupation (PersonnelMS)'
+2026-03-08 22:43:42.944 +00:00 [INF] Request finished HTTP/1.1 GET http://localhost:5130/api/rapports/taux-occupation?equipeId=69a627a9cc7c836bb6dac16c&dateDebut=2026-03-01&dateFin=2026-03-31 - 200 null application/json; charset=utf-8 34.405ms
+2026-03-08 22:43:48.802 +00:00 [INF] Request starting HTTP/1.1 GET http://localhost:5130/api/rapports/repartition-statut - null null
+2026-03-08 22:43:48.807 +00:00 [INF] Executing endpoint 'PersonnelMS.Controllers.RapportsController.RepartitionStatut (PersonnelMS)'
+2026-03-08 22:43:48.812 +00:00 [INF] Route matched with {action = "RepartitionStatut", controller = "Rapports"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[PersonnelMS.DTOs.RepartitionStatutDto]] RepartitionStatut() on controller PersonnelMS.Controllers.RapportsController (PersonnelMS).
+2026-03-08 22:43:48.831 +00:00 [INF] Executing OkObjectResult, writing value of type 'PersonnelMS.DTOs.RepartitionStatutDto'.
+2026-03-08 22:43:48.836 +00:00 [INF] Executed action PersonnelMS.Controllers.RapportsController.RepartitionStatut (PersonnelMS) in 21.1627ms
+2026-03-08 22:43:48.839 +00:00 [INF] Executed endpoint 'PersonnelMS.Controllers.RapportsController.RepartitionStatut (PersonnelMS)'
+2026-03-08 22:43:48.841 +00:00 [INF] Request finished HTTP/1.1 GET http://localhost:5130/api/rapports/repartition-statut - 200 null application/json; charset=utf-8 39.146ms
+2026-03-08 22:43:57.890 +00:00 [INF] Request starting HTTP/1.1 GET http://localhost:5130/api/personnel?page=2&pageSize=5 - null null
+2026-03-08 22:43:57.895 +00:00 [INF] Executing endpoint 'PersonnelMS.Controllers.PersonnelController.ObtenirTous (PersonnelMS)'
+2026-03-08 22:43:57.897 +00:00 [INF] Route matched with {action = "ObtenirTous", controller = "Personnel"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[PersonnelMS.DTOs.PageResult`1[PersonnelMS.DTOs.PersonnelDto]]] ObtenirTous(Int32, Int32, System.String, System.String, System.Nullable`1[PersonnelMS.Enums.Statut]) on controller PersonnelMS.Controllers.PersonnelController (PersonnelMS).
+2026-03-08 22:43:57.915 +00:00 [INF] Executing OkObjectResult, writing value of type 'PersonnelMS.DTOs.PageResult`1[[PersonnelMS.DTOs.PersonnelDto, PersonnelMS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-03-08 22:43:57.918 +00:00 [INF] Executed action PersonnelMS.Controllers.PersonnelController.ObtenirTous (PersonnelMS) in 17.408ms
+2026-03-08 22:43:57.920 +00:00 [INF] Executed endpoint 'PersonnelMS.Controllers.PersonnelController.ObtenirTous (PersonnelMS)'
+2026-03-08 22:43:57.922 +00:00 [INF] Request finished HTTP/1.1 GET http://localhost:5130/api/personnel?page=2&pageSize=5 - 200 null application/json; charset=utf-8 31.7316ms
+2026-03-08 22:44:03.052 +00:00 [INF] Request starting HTTP/1.1 GET http://localhost:5130/api/personnel?sortBy=nom&sortOrder=asc - null null
+2026-03-08 22:44:03.057 +00:00 [INF] Executing endpoint 'PersonnelMS.Controllers.PersonnelController.ObtenirTous (PersonnelMS)'
+2026-03-08 22:44:03.059 +00:00 [INF] Route matched with {action = "ObtenirTous", controller = "Personnel"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[PersonnelMS.DTOs.PageResult`1[PersonnelMS.DTOs.PersonnelDto]]] ObtenirTous(Int32, Int32, System.String, System.String, System.Nullable`1[PersonnelMS.Enums.Statut]) on controller PersonnelMS.Controllers.PersonnelController (PersonnelMS).
+2026-03-08 22:44:03.064 +00:00 [INF] Executing OkObjectResult, writing value of type 'PersonnelMS.DTOs.PageResult`1[[PersonnelMS.DTOs.PersonnelDto, PersonnelMS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-03-08 22:44:03.067 +00:00 [INF] Executed action PersonnelMS.Controllers.PersonnelController.ObtenirTous (PersonnelMS) in 5.4247ms
+2026-03-08 22:44:03.069 +00:00 [INF] Executed endpoint 'PersonnelMS.Controllers.PersonnelController.ObtenirTous (PersonnelMS)'
+2026-03-08 22:44:03.071 +00:00 [INF] Request finished HTTP/1.1 GET http://localhost:5130/api/personnel?sortBy=nom&sortOrder=asc - 200 null application/json; charset=utf-8 19.6671ms
+2026-03-08 22:44:09.958 +00:00 [INF] Request starting HTTP/1.1 GET http://localhost:5130/api/personnel?statut=ACTIF - null null
+2026-03-08 22:44:09.963 +00:00 [INF] Executing endpoint 'PersonnelMS.Controllers.PersonnelController.ObtenirTous (PersonnelMS)'
+2026-03-08 22:44:09.965 +00:00 [INF] Route matched with {action = "ObtenirTous", controller = "Personnel"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[PersonnelMS.DTOs.PageResult`1[PersonnelMS.DTOs.PersonnelDto]]] ObtenirTous(Int32, Int32, System.String, System.String, System.Nullable`1[PersonnelMS.Enums.Statut]) on controller PersonnelMS.Controllers.PersonnelController (PersonnelMS).
+2026-03-08 22:44:09.988 +00:00 [INF] Executing OkObjectResult, writing value of type 'PersonnelMS.DTOs.PageResult`1[[PersonnelMS.DTOs.PersonnelDto, PersonnelMS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2026-03-08 22:44:09.991 +00:00 [INF] Executed action PersonnelMS.Controllers.PersonnelController.ObtenirTous (PersonnelMS) in 22.8353ms
+2026-03-08 22:44:09.993 +00:00 [INF] Executed endpoint 'PersonnelMS.Controllers.PersonnelController.ObtenirTous (PersonnelMS)'
+2026-03-08 22:44:09.995 +00:00 [INF] Request finished HTTP/1.1 GET http://localhost:5130/api/personnel?statut=ACTIF - 200 null application/json; charset=utf-8 36.4069ms
