@@ -182,7 +182,7 @@ public class AuthService {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
 
-            // Construire le body pour ms-patient
+            // Construire le body pour ms-patient (inclut antécédents/ordonnances/analyses)
             Map<String, Object> body = new HashMap<>();
             body.put("nom", req.getNom());
             body.put("prenom", req.getPrenom());
@@ -196,6 +196,11 @@ public class AuthService {
             body.put("ville", req.getVille());
             body.put("mutuelle", req.getMutuelle());
             body.put("numeroCNSS", req.getNumeroCNSS());
+
+            // Transmettre les antécédents/ordonnances/analyses saisis lors de l'inscription
+            if (req.getAntecedents() != null) body.put("antecedents", req.getAntecedents());
+            if (req.getOrdonnances() != null) body.put("ordonnances", req.getOrdonnances());
+            if (req.getAnalyses() != null) body.put("analyses", req.getAnalyses());
 
             HttpEntity<Map<String, Object>> entity = new HttpEntity<>(body, headers);
             ResponseEntity<Map> response = restTemplate.postForEntity(

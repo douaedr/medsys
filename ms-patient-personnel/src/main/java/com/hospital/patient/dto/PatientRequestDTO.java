@@ -5,6 +5,7 @@ import com.hospital.patient.enums.Sexe;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Builder
@@ -37,4 +38,40 @@ public class PatientRequestDTO {
     private String ville;
     private String mutuelle;
     private String numeroCNSS;
+
+    // Optionnel : antécédents, ordonnances, analyses à créer avec le patient
+    private List<AntecedentItem> antecedents;
+    private List<OrdonnanceItem> ordonnances;
+    private List<AnalyseItem> analyses;
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class AntecedentItem {
+        private String type;           // MEDICAL, CHIRURGICAL, FAMILIAL, ALLERGIE
+        private String description;
+        private LocalDate dateApparition;
+        private Boolean actif = true;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class OrdonnanceItem {
+        private LocalDate date;
+        private String type;           // TRAITEMENT_COURT, TRAITEMENT_LONG, RENOUVELLEMENT
+        private String medicaments;    // texte libre des médicaments
+        private String observations;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class AnalyseItem {
+        private String typeAnalyse;
+        private LocalDate dateAnalyse;
+        private String resultats;
+        private String laboratoire;
+        private String statut;         // EN_ATTENTE, TERMINE, EN_COURS
+    }
 }

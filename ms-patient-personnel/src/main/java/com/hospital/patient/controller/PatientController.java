@@ -1,5 +1,6 @@
 package com.hospital.patient.controller;
 
+import com.hospital.patient.dto.DossierMedicalDTO;
 import com.hospital.patient.dto.PatientRequestDTO;
 import com.hospital.patient.dto.PatientResponseDTO;
 import com.hospital.patient.service.PatientService;
@@ -90,5 +91,11 @@ public class PatientController {
     @GetMapping("/statistiques")
     public ResponseEntity<Map<String, Long>> getStatistiques() {
         return ResponseEntity.ok(patientService.getStatistiques());
+    }
+
+    // ─── GET /api/v1/patients/{id}/dossier ───────────────────────────────────
+    @GetMapping("/{id}/dossier")
+    public ResponseEntity<DossierMedicalDTO> getDossierMedical(@PathVariable Long id) {
+        return ResponseEntity.ok(patientService.getDossierMedical(id));
     }
 }

@@ -1,23 +1,25 @@
 package com.hospital.patient.service;
 
-import com.hospital.patient.dto.PatientRequestDTO;
-import com.hospital.patient.dto.PatientResponseDTO;
-import com.hospital.patient.entity.DossierMedical;
-import com.hospital.patient.entity.Patient;
-import com.hospital.patient.enums.Sexe;
+import com.hospital.patient.dto.*;
+import com.hospital.patient.entity.*;
+import com.hospital.patient.enums.*;
 import com.hospital.patient.exception.PatientAlreadyExistsException;
 import com.hospital.patient.exception.PatientNotFoundException;
 import com.hospital.patient.mapper.PatientMapper;
 import com.hospital.patient.repository.PatientRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -36,10 +38,63 @@ public class PatientService {
 
         Patient patient = patientMapper.toEntity(dto);
 
-        // Création automatique du dossier médical
+        // Création automatique du dossier médical avec les données initiales
         DossierMedical dossier = new DossierMedical();
-        patient.setDossierMedical(dossier);
 
+        // Antécédents initiaux
+        if (dto.getAntecedents() != null) {
+            for (PatientRequestDTO.AntecedentItem item : dto.getAntecedents()) {
+                try {
+                    Antecedent ant = Antecedent.builder()
+                            .typeAntecedent(TypeAntecedent.valueOf(item.getType()))
+                            .description(item.getDescription())
+                            .dateDiagnostic(item.getDateApparition())
+                            .actif(item.getActif() != null ? item.getActif() : true)
+                            .build();
+                    dossier.getAntecedents().add(ant);
+                } catch (Exception ignored) {}
+            }
+        }
+
+        // Ordonnances initiales
+        if (dto.getOrdonnances() != null) {
+            for (PatientRequestDTO.OrdonnanceItem item : dto.getOrdonnances()) {
+                try {
+                    Ordonnance ord = Ordonnance.builder()
+                            .dateOrdonnance(item.getDate())
+                            .typeOrdonnance(TypeOrdonnance.valueOf(item.getType()))
+                            .instructions(item.getObservations())
+                            .estRenouvele(false)
+                            .build();
+                    if (item.getMedicaments() != null && !item.getMedicaments().isBlank()) {
+                        LigneOrdonnance ligne = LigneOrdonnance.builder()
+                                .medicament(item.getMedicaments())
+                                .instructions(item.getObservations())
+                                .build();
+                        ord.getLignes().add(ligne);
+                    }
+                    dossier.getOrdonnances().add(ord);
+                } catch (Exception ignored) {}
+            }
+        }
+
+        // Analyses initiales
+        if (dto.getAnalyses() != null) {
+            for (PatientRequestDTO.AnalyseItem item : dto.getAnalyses()) {
+                try {
+                    AnalyseLaboratoire analyse = AnalyseLaboratoire.builder()
+                            .typeAnalyse(item.getTypeAnalyse())
+                            .dateAnalyse(item.getDateAnalyse())
+                            .resultats(item.getResultats())
+                            .laboratoire(item.getLaboratoire())
+                            .statut(item.getStatut() != null ? StatutAnalyse.valueOf(item.getStatut()) : StatutAnalyse.EN_ATTENTE)
+                            .build();
+                    dossier.getAnalyses().add(analyse);
+                } catch (Exception ignored) {}
+            }
+        }
+
+        patient.setDossierMedical(dossier);
         Patient saved = patientRepository.save(patient);
         return patientMapper.toResponseDTO(saved);
     }
@@ -70,13 +125,37 @@ public class PatientService {
         return patientRepository.search(search, pageable).map(patientMapper::toResponseDTO);
     }
 
+    // ─── Dossier Médical Complet ──────────────────────────────────────────────
+
+    @Transactional(readOnly = true)
+    public DossierMedicalDTO getDossierMedical(Long patientId) {
+        Patient patient = patientRepository.findById(patientId)
+                .orElseThrow(() -> new PatientNotFoundException("Patient non trouvé avec l'id: " + patientId));
+
+        DossierMedical d = patient.getDossierMedical();
+        if (d == null) {
+            throw new PatientNotFoundException("Aucun dossier médical pour ce patient");
+        }
+
+        return DossierMedicalDTO.builder()
+                .id(d.getId())
+                .numeroDossier(d.getNumeroDossier())
+                .dateCreation(d.getDateCreation())
+                .patient(patientMapper.toResponseDTO(patient))
+                .consultations(d.getConsultations().stream().map(this::mapConsultation).collect(Collectors.toList()))
+                .antecedents(d.getAntecedents().stream().map(this::mapAntecedent).collect(Collectors.toList()))
+                .ordonnances(d.getOrdonnances().stream().map(this::mapOrdonnance).collect(Collectors.toList()))
+                .analyses(d.getAnalyses().stream().map(this::mapAnalyse).collect(Collectors.toList()))
+                .radiologies(d.getRadiologies().stream().map(this::mapRadiologie).collect(Collectors.toList()))
+                .build();
+    }
+
     // ─── Mise à jour ─────────────────────────────────────────────────────────
 
     public PatientResponseDTO updatePatient(Long id, PatientRequestDTO dto) {
         Patient patient = patientRepository.findById(id)
                 .orElseThrow(() -> new PatientNotFoundException("Patient non trouvé avec l'id: " + id));
 
-        // Vérifier si le CIN est changé et s'il appartient à un autre patient
         if (!patient.getCin().equals(dto.getCin()) && patientRepository.existsByCin(dto.getCin())) {
             throw new PatientAlreadyExistsException("Le CIN " + dto.getCin() + " est déjà utilisé par un autre patient");
         }
@@ -105,5 +184,88 @@ public class PatientService {
         stats.put("masculins", (long) patientRepository.findBySexe(Sexe.MASCULIN).size());
         stats.put("feminins", (long) patientRepository.findBySexe(Sexe.FEMININ).size());
         return stats;
+    }
+
+    // ─── Mappers internes ─────────────────────────────────────────────────────
+
+    private ConsultationDTO mapConsultation(Consultation c) {
+        return ConsultationDTO.builder()
+                .id(c.getId())
+                .dateConsultation(c.getDateConsultation())
+                .motif(c.getMotif())
+                .diagnostic(c.getDiagnostic())
+                .observations(c.getObservations())
+                .traitement(c.getTraitement())
+                .poids(c.getPoids())
+                .taille(c.getTaille())
+                .tensionSystolique(c.getTensionSystolique())
+                .tensionDiastolique(c.getTensionDiastolique())
+                .temperature(c.getTemperature())
+                .medecinId(c.getMedecin() != null ? c.getMedecin().getId() : null)
+                .medecinNomComplet(c.getMedecin() != null ? c.getMedecin().getNomComplet() : null)
+                .build();
+    }
+
+    private AntecedentDTO mapAntecedent(Antecedent a) {
+        return AntecedentDTO.builder()
+                .id(a.getId())
+                .typeAntecedent(a.getTypeAntecedent())
+                .description(a.getDescription())
+                .dateDiagnostic(a.getDateDiagnostic())
+                .severite(a.getSeverite())
+                .actif(a.getActif())
+                .source(a.getSource())
+                .build();
+    }
+
+    private OrdonnanceDTO mapOrdonnance(Ordonnance o) {
+        List<OrdonnanceDTO.LigneOrdonnanceDTO> lignes = o.getLignes().stream()
+                .map(l -> OrdonnanceDTO.LigneOrdonnanceDTO.builder()
+                        .id(l.getId())
+                        .medicament(l.getMedicament())
+                        .dosage(l.getDosage())
+                        .posologie(l.getPosologie())
+                        .dureeJours(l.getDureeJours())
+                        .quantite(l.getQuantite())
+                        .instructions(l.getInstructions())
+                        .build())
+                .collect(Collectors.toList());
+
+        return OrdonnanceDTO.builder()
+                .id(o.getId())
+                .dateOrdonnance(o.getDateOrdonnance())
+                .typeOrdonnance(o.getTypeOrdonnance() != null ? o.getTypeOrdonnance().name() : null)
+                .instructions(o.getInstructions())
+                .estRenouvele(o.getEstRenouvele())
+                .dateExpiration(o.getDateExpiration())
+                .medecinNomComplet(o.getMedecin() != null ? o.getMedecin().getNomComplet() : null)
+                .lignes(lignes)
+                .build();
+    }
+
+    private AnalyseDTO mapAnalyse(AnalyseLaboratoire a) {
+        return AnalyseDTO.builder()
+                .id(a.getId())
+                .dateAnalyse(a.getDateAnalyse())
+                .dateResultat(a.getDateResultat())
+                .typeAnalyse(a.getTypeAnalyse())
+                .resultats(a.getResultats())
+                .valeurReference(a.getValeurReference())
+                .statut(a.getStatut() != null ? a.getStatut().name() : null)
+                .laboratoire(a.getLaboratoire())
+                .prescripteur(a.getPrescripteur())
+                .build();
+    }
+
+    private RadiologieDTO mapRadiologie(Radiologie r) {
+        return RadiologieDTO.builder()
+                .id(r.getId())
+                .dateExamen(r.getDateExamen())
+                .typeExamen(r.getTypeExamen() != null ? r.getTypeExamen().name() : null)
+                .description(r.getDescription())
+                .conclusion(r.getConclusion())
+                .prescripteur(r.getPrescripteur())
+                .radiologue(r.getRadiologue())
+                .build();
     }
 }

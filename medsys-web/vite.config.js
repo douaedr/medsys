@@ -5,8 +5,9 @@ export default defineConfig({
   server: {
     port: 5173,
     proxy: {
-      '/api': { target: 'http://localhost:8082', changeOrigin: true },
-      '/api/v1/patients': { target: 'http://localhost:8081', changeOrigin: true }
+      '/api/v1/patients': { target: 'http://localhost:8081', changeOrigin: true },
+      '/api/v1/patient': { target: 'http://localhost:8081', changeOrigin: true },
+      '/api': { target: 'http://localhost:8082', changeOrigin: true }
     }
   }
 })
