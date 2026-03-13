@@ -49,6 +49,11 @@ public class DocumentService {
             throw new PatientNotFoundException("Dossier médical non trouvé");
         }
 
+        // Validation taille fichier (5 MB max)
+        if (file.getSize() > 5 * 1024 * 1024) {
+            throw new IllegalArgumentException("Fichier trop volumineux. Taille maximale : 5 MB.");
+        }
+
         // Validation type de fichier (PDF, images uniquement)
         String contentType = file.getContentType();
         if (contentType == null || (!contentType.startsWith("image/") && !contentType.equals("application/pdf"))) {
@@ -56,13 +61,22 @@ public class DocumentService {
         }
 
         // Créer le répertoire patient si nécessaire
-        Path patientDir = Paths.get(uploadDir, String.valueOf(patientId));
+        Path uploadRoot = Paths.get(uploadDir).toAbsolutePath().normalize();
+        Path patientDir = uploadRoot.resolve(String.valueOf(patientId)).normalize();
+        // Vérification path traversal
+        if (!patientDir.startsWith(uploadRoot)) {
+            throw new IllegalArgumentException("Chemin de destination non autorisé.");
+        }
         Files.createDirectories(patientDir);
 
-        // Générer un nom de fichier unique
+        // Générer un nom de fichier unique (UUID uniquement, sans nom original)
         String extension = getExtension(file.getOriginalFilename());
         String nomFichierStocke = UUID.randomUUID().toString() + extension;
-        Path cheminComplet = patientDir.resolve(nomFichierStocke);
+        Path cheminComplet = patientDir.resolve(nomFichierStocke).normalize();
+        // Double vérification path traversal sur le fichier final
+        if (!cheminComplet.startsWith(patientDir)) {
+            throw new IllegalArgumentException("Chemin de fichier non autorisé.");
+        }
 
         // Sauvegarder le fichier
         Files.copy(file.getInputStream(), cheminComplet, StandardCopyOption.REPLACE_EXISTING);
@@ -149,6 +163,11 @@ public class DocumentService {
 
     private String getExtension(String filename) {
         if (filename == null || !filename.contains(".")) return "";
-        return filename.substring(filename.lastIndexOf("."));
+        String ext = filename.substring(filename.lastIndexOf(".")).toLowerCase();
+        // N'autoriser que les extensions connues sûres
+        if (ext.matches("\\.(pdf|jpg|jpeg|png|gif|bmp|webp)")) {
+            return ext;
+        }
+        return "";
     }
 }
