@@ -27,6 +27,8 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
 
     List<Patient> findBySexe(Sexe sexe);
 
+    Long countBySexe(Sexe sexe);
+
     @Query("SELECT p FROM Patient p WHERE " +
            "LOWER(p.nom) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
            "LOWER(p.prenom) LIKE LOWER(CONCAT('%', :search, '%')) OR " +

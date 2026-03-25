@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
@@ -150,8 +152,8 @@ public class PatientPortalController {
 
         if (fichier.isEmpty())
             return ResponseEntity.badRequest().body(Map.of("message", "Le fichier est vide"));
-        if (fichier.getSize() > 10 * 1024 * 1024)
-            return ResponseEntity.badRequest().body(Map.of("message", "Fichier trop volumineux (max 10 MB)"));
+        if (fichier.getSize() > 5 * 1024 * 1024)
+            return ResponseEntity.badRequest().body(Map.of("message", "Fichier trop volumineux (max 5 MB)"));
 
         try {
             Long patientId = extractPatientId(authHeader);
@@ -182,10 +184,13 @@ public class PatientPortalController {
             Resource resource = documentService.loadFileAsResource(doc.getCheminFichier());
             String contentType = doc.getContentType() != null ? doc.getContentType() : "application/octet-stream";
             String disposition = contentType.startsWith("image/") ? "inline" : "attachment";
+            String encodedFilename = URLEncoder.encode(
+                    doc.getNomFichierOriginal() != null ? doc.getNomFichierOriginal() : "document",
+                    StandardCharsets.UTF_8).replace("+", "%20");
             return ResponseEntity.ok()
                     .contentType(MediaType.parseMediaType(contentType))
                     .header(HttpHeaders.CONTENT_DISPOSITION,
-                            disposition + "; filename=\"" + doc.getNomFichierOriginal() + "\"")
+                            disposition + "; filename*=UTF-8''" + encodedFilename)
                     .body(resource);
         } catch (Exception e) {
             return ResponseEntity.notFound().build();

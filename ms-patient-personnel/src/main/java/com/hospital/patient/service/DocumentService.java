@@ -128,10 +128,14 @@ public class DocumentService {
     }
 
     public Resource loadFileAsResource(String cheminFichier) throws MalformedURLException {
-        Path filePath = Paths.get(cheminFichier);
+        Path uploadRoot = Paths.get(uploadDir).toAbsolutePath().normalize();
+        Path filePath = Paths.get(cheminFichier).normalize();
+        if (!filePath.startsWith(uploadRoot)) {
+            throw new PatientNotFoundException("Accès au fichier non autorisé");
+        }
         Resource resource = new UrlResource(filePath.toUri());
         if (!resource.exists()) {
-            throw new PatientNotFoundException("Fichier non trouvé: " + cheminFichier);
+            throw new PatientNotFoundException("Fichier non trouvé");
         }
         return resource;
     }

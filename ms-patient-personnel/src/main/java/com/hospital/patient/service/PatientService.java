@@ -187,8 +187,8 @@ public class PatientService {
         stats.put("total", patientRepository.count());
         stats.put("nouveauxCeMois", patientRepository.countPatientsCreatedAfter(
                 LocalDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0)));
-        stats.put("masculins", (long) patientRepository.findBySexe(Sexe.MASCULIN).size());
-        stats.put("feminins", (long) patientRepository.findBySexe(Sexe.FEMININ).size());
+        stats.put("masculins", patientRepository.countBySexe(Sexe.MASCULIN));
+        stats.put("feminins", patientRepository.countBySexe(Sexe.FEMININ));
         return stats;
     }
 
