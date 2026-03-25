@@ -12,9 +12,9 @@ spring:
       max-request-size: 12MB
 
   datasource:
-    url: jdbc:mysql://localhost:3307/ms_patient_db?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Africa/Casablanca
-    username: root
-    password:
+    url: ${DB_PATIENT_URL:jdbc:mysql://localhost:3307/ms_patient_db?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Africa/Casablanca}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -57,12 +57,14 @@ logging:
 
 
 jwt:
-  secret: medsys-hospital-jwt-secret-key-2026-very-long-and-secure-string
-  expiration: 86400000
+  secret: ${JWT_SECRET:medsys-hospital-jwt-secret-key-2026-very-long-and-secure-string-please-change-in-prod}
+  expiration: ${JWT_EXPIRATION:86400000}
 
 app:
   upload:
-    dir: uploads/patients
+    dir: ${UPLOAD_DIR:uploads/patients}
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173,http://localhost:3000}
 
 ms-rdv:
   url: ${MS_RDV_URL:}

@@ -6,9 +6,9 @@ spring:
     name: ms-auth
 
   datasource:
-    url: jdbc:mysql://localhost:3307/ms_auth_db?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Africa/Casablanca
-    username: root
-    password:
+    url: ${DB_AUTH_URL:jdbc:mysql://localhost:3307/ms_auth_db?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Africa/Casablanca}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -26,10 +26,10 @@ spring:
   # Configuration email (pour mot de passe oublié)
   # Remplacer par vos vraies infos Gmail/SMTP
   mail:
-    host: smtp.gmail.com
-    port: 587
-    username: medsys.hospital@gmail.com
-    password: votre-app-password
+    host: ${SMTP_HOST:smtp.gmail.com}
+    port: ${SMTP_PORT:587}
+    username: ${SMTP_USERNAME:medsys.hospital@gmail.com}
+    password: ${SMTP_PASSWORD:}
     properties:
       mail:
         smtp:
@@ -38,13 +38,20 @@ spring:
             enable: true
 
 jwt:
-  secret: medsys-hospital-jwt-secret-key-2026-very-long-and-secure-string
-  expiration: 86400000       # 24 heures
-  refresh-expiration: 604800000  # 7 jours
+  secret: ${JWT_SECRET:medsys-hospital-jwt-secret-key-2026-very-long-and-secure-string-please-change-in-prod}
+  expiration: ${JWT_EXPIRATION:86400000}
+  refresh-expiration: ${JWT_REFRESH_EXPIRATION:604800000}
 
 # URL du ms-patient pour synchronisation
 ms-patient:
-  url: http://localhost:8081
+  url: ${MS_PATIENT_URL:http://localhost:8081}
+
+# Configuration application
+app:
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173,http://localhost:3000}
+  frontend:
+    url: ${FRONTEND_URL:http://localhost:5173}
 
 springdoc:
   api-docs:
