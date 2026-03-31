@@ -13,6 +13,8 @@ public interface UserAccountRepository extends JpaRepository<UserAccount, Long> 
     Optional<UserAccount> findByEmail(String email);
     Optional<UserAccount> findByCin(String cin);
     Optional<UserAccount> findByResetToken(String token);
+    Optional<UserAccount> findByRefreshToken(String refreshToken);
+    Optional<UserAccount> findByEmailVerificationToken(String token);
     boolean existsByEmail(String email);
     boolean existsByCin(String cin);
     List<UserAccount> findByRole(Role role);

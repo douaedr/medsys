@@ -1,8 +1,7 @@
 package com.hospital.patient.controller;
 
-import com.hospital.patient.dto.DossierMedicalDTO;
-import com.hospital.patient.dto.PatientRequestDTO;
-import com.hospital.patient.dto.PatientResponseDTO;
+import com.hospital.patient.dto.*;
+import com.hospital.patient.service.PatientDashboardService;
 import com.hospital.patient.service.PatientService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +21,7 @@ import java.util.Map;
 public class PatientController {
 
     private final PatientService patientService;
+    private final PatientDashboardService dashboardService;
 
     // ─── POST /api/v1/patients ───────────────────────────────────────────────
     @PostMapping
@@ -96,5 +96,32 @@ public class PatientController {
     @GetMapping("/{id}/dossier")
     public ResponseEntity<DossierMedicalDTO> getDossierMedical(@PathVariable Long id) {
         return ResponseEntity.ok(patientService.getDossierMedical(id));
+    }
+
+    // ─── GET /api/v1/patients/{id}/dashboard ─────────────────────────────────
+    @GetMapping("/{id}/dashboard")
+    public ResponseEntity<PatientDashboardDTO> getDashboard(@PathVariable Long id) {
+        return ResponseEntity.ok(dashboardService.getDashboard(id));
+    }
+
+    // ─── GET /api/v1/patients/{id}/appointments ───────────────────────────────
+    @GetMapping("/{id}/appointments")
+    public ResponseEntity<java.util.List<AppointmentRecordDTO>> getAppointments(@PathVariable Long id) {
+        return ResponseEntity.ok(dashboardService.getAppointmentHistory(id));
+    }
+
+    // ─── POST /api/v1/patients/{id}/appointments/{appointmentId}/rebook ──────
+    @PostMapping("/{id}/appointments/{appointmentId}/rebook")
+    public ResponseEntity<AppointmentRebookDTO> rebookAppointment(
+            @PathVariable Long id,
+            @PathVariable Long appointmentId) {
+        return ResponseEntity.status(HttpStatus.ACCEPTED)
+                .body(dashboardService.rebookAppointment(id, appointmentId));
+    }
+
+    // ─── GET /api/v1/patients/{id}/appointments/next-available ───────────────
+    @GetMapping("/{id}/appointments/next-available")
+    public ResponseEntity<NextAvailableSlotDTO> getNextAvailableSlot(@PathVariable Long id) {
+        return ResponseEntity.ok(dashboardService.suggestNextSlot(id));
     }
 }

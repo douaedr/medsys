@@ -1,14 +1,32 @@
 package com.hospital.auth.dto;
+
 import com.hospital.auth.enums.Role;
 import jakarta.validation.constraints.*;
 import lombok.Data;
+
 @Data
 public class CreatePersonnelRequest {
-    @NotBlank @Email private String email;
-    @NotBlank private String password;
-    @NotBlank private String nom;
-    @NotBlank private String prenom;
+
+    @NotBlank(message = "L'adresse email est obligatoire")
+    @Email(message = "Format d'adresse email invalide")
+    private String email;
+
+    @NotBlank(message = "Le mot de passe est obligatoire")
+    @Size(min = 8, message = "Le mot de passe doit comporter au moins 8 caractères")
+    private String password;
+
+    @NotBlank(message = "Le nom est obligatoire")
+    @Size(max = 100, message = "Le nom ne peut dépasser 100 caractères")
+    private String nom;
+
+    @NotBlank(message = "Le prénom est obligatoire")
+    @Size(max = 100, message = "Le prénom ne peut dépasser 100 caractères")
+    private String prenom;
+
     private String cin;
+
+    @NotNull(message = "Le rôle est obligatoire")
     private Role role;
+
     private Long personnelId;
 }

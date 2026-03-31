@@ -42,6 +42,26 @@ public class EmailService {
         }
     }
 
+    public void sendVerificationEmail(String to, String nom, String token) {
+        try {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom(fromEmail);
+            message.setTo(to);
+            message.setSubject("MedSys — Verifiez votre adresse email");
+            message.setText(
+                "Bonjour " + nom + ",\n\n" +
+                "Merci de vous etre inscrit sur MedSys. Veuillez verifier votre email :\n\n" +
+                frontendUrl + "/verify-email?token=" + token + "\n\n" +
+                "Ce lien est valable 24 heures.\n\n" +
+                "Cordialement,\nL'equipe MedSys"
+            );
+            mailSender.send(message);
+            log.info("Email de verification envoye a {}", to);
+        } catch (Exception e) {
+            log.error("Erreur envoi email de verification a {} : {}", to, e.getMessage());
+        }
+    }
+
     public void sendAccountCreatedEmail(String to, String nom, String tempPassword) {
         try {
             SimpleMailMessage message = new SimpleMailMessage();

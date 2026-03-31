@@ -48,11 +48,13 @@ public class SecurityConfig {
                     "/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**",
                     "/api/v1/auth/login",
                     "/api/v1/auth/register",
+                    "/api/v1/auth/refresh-token",
+                    "/api/v1/auth/verify-email",
                     "/api/v1/auth/forgot-password",
                     "/api/v1/auth/reset-password",
                     "/api/v1/auth/verify"
                 ).permitAll()
-                .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
+                .requestMatchers("/api/v1/admin/**").hasAnyRole("ADMIN")
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)

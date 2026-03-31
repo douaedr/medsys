@@ -32,13 +32,12 @@ public class UserAccount {
     @Column(nullable = false)
     private Role role;
 
-    // Pour PATIENT : référence vers ms-patient (patientId)
+    // Reference to ms-patient (for PATIENT role)
     private Long patientId;
 
-    // Pour MEDECIN/PERSONNEL : référence vers ms-personnel
+    // Reference to ms-personnel (for MEDECIN/PERSONNEL/DOCTOR/SECRETARY roles)
     private Long personnelId;
 
-    // Infos basiques affichées partout
     @Column(nullable = false)
     private String nom;
 
@@ -47,18 +46,59 @@ public class UserAccount {
 
     private String cin;
 
+    @Builder.Default
     private boolean enabled = true;
 
-    // Pour mot de passe oublié
+    // ── Password reset ────────────────────────────────────────────────────────
     @JsonIgnore
     private String resetToken;
     @JsonIgnore
     private LocalDateTime resetTokenExpiry;
 
+    // ── Email verification ────────────────────────────────────────────────────
+    @Builder.Default
+    @Column(nullable = false)
+    private boolean emailVerified = false;
+
+    @JsonIgnore
+    private String emailVerificationToken;
+
+    // ── Refresh token ─────────────────────────────────────────────────────────
+    @JsonIgnore
+    private String refreshToken;
+    @JsonIgnore
+    private LocalDateTime refreshTokenExpiry;
+
+    // ── Brute-force protection ────────────────────────────────────────────────
+    @Builder.Default
+    @Column(nullable = false)
+    private int failedLoginAttempts = 0;
+
+    private LocalDateTime accountLockedUntil;
+
+    // ── Audit ─────────────────────────────────────────────────────────────────
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    // ── Helpers ───────────────────────────────────────────────────────────────
+    public boolean isAccountLocked() {
+        return accountLockedUntil != null && accountLockedUntil.isAfter(LocalDateTime.now());
+    }
+
+    public void incrementFailedAttempts() {
+        this.failedLoginAttempts++;
+    }
+
+    public void resetFailedAttempts() {
+        this.failedLoginAttempts = 0;
+        this.accountLockedUntil = null;
+    }
+
+    public void lockAccount(int lockMinutes) {
+        this.accountLockedUntil = LocalDateTime.now().plusMinutes(lockMinutes);
+    }
 }
