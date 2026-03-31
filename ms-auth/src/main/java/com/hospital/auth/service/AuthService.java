@@ -55,18 +55,22 @@ public class AuthService {
 
         if (!user.isEnabled()) {
             audit("LOGIN_FAILURE", req.getEmail(), ipAddress, "Account disabled");
-            throw new AuthException("Compte désactivé. Contactez l'administrateur.");
+            throw new AuthException("Votre compte est désactivé. Contactez l'administrateur.",
+                    org.springframework.http.HttpStatus.FORBIDDEN);
         }
 
         if (user.isAccountLocked()) {
             audit("LOGIN_FAILURE", req.getEmail(), ipAddress, "Account temporarily locked");
-            throw new AuthException("Compte temporairement verrouillé. Réessayez dans "
-                    + LOCK_DURATION_MINUTES + " minutes.");
+            throw new AuthException("Compte temporairement verrouillé après trop de tentatives. "
+                    + "Réessayez dans " + LOCK_DURATION_MINUTES + " minutes.",
+                    org.springframework.http.HttpStatus.FORBIDDEN);
         }
 
         if (!user.isEmailVerified()) {
             audit("LOGIN_FAILURE", req.getEmail(), ipAddress, "Email not verified");
-            throw new AuthException("Veuillez vérifier votre email avant de vous connecter.");
+            throw new AuthException("Veuillez vérifier votre adresse email avant de vous connecter. "
+                    + "Consultez votre boite mail.",
+                    org.springframework.http.HttpStatus.FORBIDDEN);
         }
 
         if (!passwordEncoder.matches(req.getPassword(), user.getPassword())) {

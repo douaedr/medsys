@@ -36,4 +36,30 @@ public class NotificationPublisher {
             log.warn("[RabbitMQ] Failed to publish PATIENT_NOTIFICATION: {}", e.getMessage());
         }
     }
+
+    public void publishRebookRequest(Long patientId, Long originalAppointmentId,
+                                      Long doctorId, String doctorName,
+                                      String specialty, String notes) {
+        RebookEvent event = RebookEvent.builder()
+                .eventType("APPOINTMENT_REBOOK_REQUESTED")
+                .patientId(patientId)
+                .originalAppointmentId(originalAppointmentId)
+                .doctorId(doctorId)
+                .doctorName(doctorName)
+                .specialty(specialty)
+                .notes(notes)
+                .timestamp(LocalDateTime.now())
+                .build();
+
+        try {
+            rabbitTemplate.convertAndSend(
+                    RabbitMQConfig.PATIENT_EXCHANGE,
+                    RabbitMQConfig.ROUTING_APPOINTMENT_REBOOK,
+                    event);
+            log.info("[RabbitMQ] Published APPOINTMENT_REBOOK_REQUESTED patientId={} originalId={}",
+                    patientId, originalAppointmentId);
+        } catch (Exception e) {
+            log.warn("[RabbitMQ] Failed to publish APPOINTMENT_REBOOK_REQUESTED: {}", e.getMessage());
+        }
+    }
 }

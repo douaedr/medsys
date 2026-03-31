@@ -109,4 +109,19 @@ public class PatientController {
     public ResponseEntity<java.util.List<AppointmentRecordDTO>> getAppointments(@PathVariable Long id) {
         return ResponseEntity.ok(dashboardService.getAppointmentHistory(id));
     }
+
+    // ─── POST /api/v1/patients/{id}/appointments/{appointmentId}/rebook ──────
+    @PostMapping("/{id}/appointments/{appointmentId}/rebook")
+    public ResponseEntity<AppointmentRebookDTO> rebookAppointment(
+            @PathVariable Long id,
+            @PathVariable Long appointmentId) {
+        return ResponseEntity.status(HttpStatus.ACCEPTED)
+                .body(dashboardService.rebookAppointment(id, appointmentId));
+    }
+
+    // ─── GET /api/v1/patients/{id}/appointments/next-available ───────────────
+    @GetMapping("/{id}/appointments/next-available")
+    public ResponseEntity<NextAvailableSlotDTO> getNextAvailableSlot(@PathVariable Long id) {
+        return ResponseEntity.ok(dashboardService.suggestNextSlot(id));
+    }
 }

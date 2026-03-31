@@ -24,7 +24,8 @@ public class RabbitMQConfig {
     public static final String ROUTING_APPOINTMENT_CANCELLED = "appointment.cancelled";
 
     // ── Routing keys (outbound) ───────────────────────────────────────────────
-    public static final String ROUTING_PATIENT_NOTIFICATION = "patient.notification";
+    public static final String ROUTING_PATIENT_NOTIFICATION  = "patient.notification";
+    public static final String ROUTING_APPOINTMENT_REBOOK    = "appointment.rebook";
 
     // ── Exchanges ─────────────────────────────────────────────────────────────
     @Bean
