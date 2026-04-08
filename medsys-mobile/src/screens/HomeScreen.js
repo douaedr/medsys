@@ -1,15 +1,30 @@
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native'
+import { useState, useEffect } from 'react'
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { useAuth } from '../context/AuthContext'
+import { patientApi } from '../api/api'
 import { colors, radius, shadow } from '../theme'
 
 export default function HomeScreen() {
   const { user } = useAuth()
+  const [patient, setPatient] = useState(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    // Charger le profil complet depuis ms-patient-personnel
+    patientApi.me()
+      .then(res => setPatient(res.data))
+      .catch(() => setPatient(null))
+      .finally(() => setLoading(false))
+  }, [])
+
+  // Les données du profil patient (ms-patient) enrichissent le contexte auth
+  const displayData = patient || user
 
   const cards = [
-    { icon: '📋', title: 'Mon dossier', sub: 'Informations médicales', color: colors.primaryLight, tab: 'Dossier' },
-    { icon: '📅', title: 'Rendez-vous', sub: 'Prochains RDV', color: colors.successLight, tab: 'RDV' },
-    { icon: '🧪', title: 'Analyses', sub: 'Résultats & suivi', color: colors.warningLight, tab: 'Analyses' },
+    { icon: '📋', title: 'Mon dossier', sub: 'Informations médicales', color: colors.primaryLight },
+    { icon: '📅', title: 'Rendez-vous', sub: 'Prochains RDV', color: colors.successLight },
+    { icon: '🧪', title: 'Analyses', sub: 'Résultats & suivi', color: colors.warningLight },
   ]
 
   return (
@@ -17,15 +32,19 @@ export default function HomeScreen() {
       {/* Banner */}
       <LinearGradient colors={['#1e3a8a', '#2563eb', '#0891b2']} style={styles.banner}>
         <View style={styles.bannerAvatar}>
-          <Text style={{ fontSize: 22, fontWeight: '800', color: 'white' }}>
-            {user?.prenom?.[0]}{user?.nom?.[0]}
-          </Text>
+          {loading ? (
+            <ActivityIndicator color="white" />
+          ) : (
+            <Text style={{ fontSize: 22, fontWeight: '800', color: 'white' }}>
+              {displayData?.prenom?.[0]}{displayData?.nom?.[0]}
+            </Text>
+          )}
         </View>
-        <Text style={styles.bannerGreeting}>Bonjour, {user?.prenom} 👋</Text>
+        <Text style={styles.bannerGreeting}>Bonjour, {displayData?.prenom} 👋</Text>
         <Text style={styles.bannerSub}>Votre espace santé personnel</Text>
         <View style={styles.cinBadge}>
           <Text style={{ color: 'rgba(255,255,255,0.9)', fontSize: 12, fontWeight: '600' }}>
-            🪪 ID: {user?.patientId || '—'}
+            🪪 ID: {patient?.id || user?.patientId || '—'}
           </Text>
         </View>
       </LinearGradient>
@@ -48,16 +67,21 @@ export default function HomeScreen() {
         {/* Info card */}
         <Text style={[styles.sectionTitle, { marginTop: 8 }]}>Mes informations</Text>
         <View style={[styles.infoCard, shadow.sm]}>
-          {[
-            ['Nom complet', `${user?.prenom} ${user?.nom}`],
-            ['Email', user?.email],
-            ['Rôle', user?.role],
-          ].map(([k,v]) => (
-            <View key={k} style={styles.infoRow}>
-              <Text style={styles.infoLabel}>{k}</Text>
-              <Text style={styles.infoValue}>{v}</Text>
-            </View>
-          ))}
+          {loading ? (
+            <ActivityIndicator style={{ padding: 20 }} color={colors.primary} />
+          ) : (
+            [
+              ['Nom complet', `${displayData?.prenom || ''} ${displayData?.nom || ''}`.trim()],
+              ['Email', displayData?.email],
+              ['Téléphone', patient?.telephone || '—'],
+              ['Rôle', user?.role],
+            ].map(([k, v]) => (
+              <View key={k} style={styles.infoRow}>
+                <Text style={styles.infoLabel}>{k}</Text>
+                <Text style={styles.infoValue}>{v}</Text>
+              </View>
+            ))
+          )}
         </View>
       </View>
     </ScrollView>

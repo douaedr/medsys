@@ -73,5 +73,8 @@ app:
   cors:
     allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173,http://localhost:3000}
 
+ms-auth:
+  url: ${MS_AUTH_URL:http://localhost:8082}
+
 ms-rdv:
   url: ${MS_RDV_URL:}

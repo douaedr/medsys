@@ -1,14 +1,29 @@
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-// ⚠️ IMPORTANT : Remplacez par votre IP locale (ipconfig dans cmd)
-const AUTH_BASE = 'http://192.168.1.100:8082/api/v1'
-const PATIENT_BASE = 'http://192.168.1.100:8081/api/v1'
+// ─────────────────────────────────────────────────────────────────────────────
+// ⚠️  CONFIGURATION IP — À MODIFIER AVANT DE LANCER L'APPLICATION
+// ─────────────────────────────────────────────────────────────────────────────
+//
+//  Comment trouver votre IP locale :
+//    Windows  → Ouvrir cmd, taper : ipconfig
+//               Chercher "Adresse IPv4" (ex: 192.168.1.42)
+//    Linux    → Ouvrir terminal, taper : ip addr show
+//               ou : hostname -I
+//    Mac      → Ouvrir terminal, taper : ifconfig en0
+//
+//  L'IP doit être celle de la machine qui fait tourner ms-auth et ms-patient.
+//  NE PAS utiliser "localhost" ni "127.0.0.1" depuis un téléphone physique.
+// ─────────────────────────────────────────────────────────────────────────────
+const LOCAL_IP = '192.168.1.X' // ← CHANGER ICI par votre IP locale (ex: '192.168.1.42')
+
+const AUTH_BASE = `http://${LOCAL_IP}:8082/api/v1`
+const PATIENT_BASE = `http://${LOCAL_IP}:8081/api/v1`
 
 const authAxios = axios.create({ baseURL: AUTH_BASE })
 const patientAxios = axios.create({ baseURL: PATIENT_BASE })
 
-// Intercepteur auth
+// Intercepteur : ajoute le token JWT à chaque requête
 const addAuthInterceptor = (instance) => {
   instance.interceptors.request.use(async (config) => {
     const token = await AsyncStorage.getItem('medsys_token')
