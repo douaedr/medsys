@@ -33,32 +33,39 @@ public class RdvProxyService {
 
     /**
      * Récupère les rendez-vous d'un patient.
-     * Si ms-rdv.url n'est pas configuré, utilise les enregistrements locaux (sync RabbitMQ).
+     * Si ms-rdv.url est configuré, appelle le bridge interne MedicalAppointments.
+     * Sinon, utilise les enregistrements locaux (sync RabbitMQ).
      */
-    public List<RendezVousDTO> getRdvPatient(Long patientId) {
+    public List<RendezVousDTO> getRdvPatient(Long patientId, String patientEmail) {
         if (msRdvUrl == null || msRdvUrl.isBlank()) {
             log.debug("ms-rdv.url non configuré, retour des données locales pour patient {}", patientId);
-            return appointmentRepo.findByPatientIdOrderByAppointmentDateDesc(patientId)
-                    .stream()
-                    .map(this::toRendezVousDTO)
-                    .collect(Collectors.toList());
+            return localRecords(patientId);
         }
-
         try {
             String url = UriComponentsBuilder.fromHttpUrl(msRdvUrl)
-                    .path("/api/v1/rdv/patient/{patientId}")
-                    .buildAndExpand(patientId)
+                    .path("/api/internal/rdv/patient/{email}")
+                    .buildAndExpand(patientEmail)
                     .toUriString();
             ResponseEntity<List<RendezVousDTO>> response = restTemplate.exchange(
                 url, HttpMethod.GET, null, new ParameterizedTypeReference<>() {});
-            return response.getBody() != null ? response.getBody() : List.of();
+            List<RendezVousDTO> remote = response.getBody() != null ? response.getBody() : List.of();
+            if (!remote.isEmpty()) return remote;
+            // Si aucun RDV distant, compléter avec les données locales
+            return localRecords(patientId);
         } catch (Exception e) {
             log.warn("ms-rdv injoignable ({}), fallback local pour patient {}: {}", msRdvUrl, patientId, e.getMessage());
-            return appointmentRepo.findByPatientIdOrderByAppointmentDateDesc(patientId)
-                    .stream()
-                    .map(this::toRendezVousDTO)
-                    .collect(Collectors.toList());
+            return localRecords(patientId);
         }
+    }
+
+    /** Surcharge sans email — utilise uniquement les données locales */
+    public List<RendezVousDTO> getRdvPatient(Long patientId) {
+        return getRdvPatient(patientId, null);
+    }
+
+    private List<RendezVousDTO> localRecords(Long patientId) {
+        return appointmentRepo.findByPatientIdOrderByAppointmentDateDesc(patientId)
+                .stream().map(this::toRendezVousDTO).collect(Collectors.toList());
     }
 
     /**
@@ -87,25 +94,30 @@ public class RdvProxyService {
 
     /**
      * Annule un rendez-vous.
-     * Si ms-rdv n'est pas disponible, met à jour le statut local.
+     * Si ms-rdv est configuré, appelle le bridge MedicalAppointments + met à jour local.
      */
-    public boolean annulerRdv(Long rdvId, Long patientId) {
+    public boolean annulerRdv(Long rdvId, Long patientId, String patientEmail) {
         if (msRdvUrl == null || msRdvUrl.isBlank()) {
             return annulerLocal(rdvId, patientId);
         }
         try {
             String url = UriComponentsBuilder.fromHttpUrl(msRdvUrl)
-                    .path("/api/v1/rdv/{rdvId}/annuler")
-                    .queryParam("patientId", patientId)
+                    .path("/api/internal/rdv/{rdvId}/annuler")
+                    .queryParam("email", patientEmail != null ? patientEmail : "")
                     .buildAndExpand(rdvId)
                     .toUriString();
             restTemplate.put(url, null);
             annulerLocal(rdvId, patientId);
             return true;
         } catch (Exception e) {
-            log.warn("Impossible d'annuler RDV {} via ms-rdv, annulation locale: {}", rdvId, e.getMessage());
+            log.warn("Impossible d'annuler RDV {} via ms-rdv bridge, annulation locale: {}", rdvId, e.getMessage());
             return annulerLocal(rdvId, patientId);
         }
+    }
+
+    /** Surcharge sans email — annulation locale uniquement */
+    public boolean annulerRdv(Long rdvId, Long patientId) {
+        return annulerRdv(rdvId, patientId, null);
     }
 
     private boolean annulerLocal(Long rdvId, Long patientId) {
