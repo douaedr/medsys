@@ -16,14 +16,19 @@
 -- ============================================================
 -- 1. ms_auth_db  (créé par ms-auth au démarrage)
 --    Les comptes sont créés par DataInitializer.
---    Ce script ne touche pas les mots de passe.
+--    Ce script corrige l'ENUM si nécessaire et vérifie les comptes.
 -- ============================================================
 
 USE ms_auth_db;
 
+-- Ajouter DOCTOR et SECRETARY à l'ENUM si la table existe déjà avec l'ancien schéma
+-- (sans erreur si les valeurs existent déjà — MySQL ignore les ALTERs identiques)
+ALTER TABLE user_accounts
+  MODIFY COLUMN role ENUM('PATIENT','MEDECIN','ADMIN','PERSONNEL','DIRECTEUR','DOCTOR','SECRETARY') NOT NULL;
+
 -- Vérification des comptes (lecture seule — DataInitializer s'en charge)
 SELECT id, email, role, enabled,
-       DATE_FORMAT(createdAt, '%d/%m/%Y') AS cree_le
+       DATE_FORMAT(created_at, '%d/%m/%Y') AS cree_le
 FROM user_accounts
 ORDER BY role, email;
 
