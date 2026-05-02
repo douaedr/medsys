@@ -7,20 +7,17 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-/**
- * Returned after a rebook request is accepted and forwarded via RabbitMQ.
- */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class AppointmentRebookDTO {
-    private Long originalAppointmentId;
+    private String originalAppointmentId;
     private Long doctorId;
     private String doctorName;
     private String specialty;
     private String notes;
-    private String status;          // REBOOK_REQUESTED
+    private String status;
     private LocalDateTime requestedAt;
     private String message;
 }

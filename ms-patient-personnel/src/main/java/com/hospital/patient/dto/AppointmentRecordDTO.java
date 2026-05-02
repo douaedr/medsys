@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class AppointmentRecordDTO {
     private Long id;
-    private Long externalAppointmentId;
+    private String externalAppointmentId;
     private Long doctorId;
     private String doctorName;
     private String specialty;

@@ -4,7 +4,10 @@ import LandingPage from './pages/LandingPage'
 import PersonnelLoginPage from './pages/PersonnelLoginPage'
 import PatientPortalPage from './pages/PatientPortalPage'
 import ResetPasswordPage from './pages/ResetPasswordPage'
-import { PatientDashboard, PersonnelDashboard, AdminDashboard, DirecteurDashboard, SecretaireDashboard } from './pages/Dashboards'
+import PatientDashboard from './pages/patient/PatientDashboard'
+import PersonnelDashboard from './pages/personnel/PersonnelDashboard'
+import AdminDashboard from './pages/admin/AdminDashboard'
+import DirecteurDashboard from './pages/directeur/DirecteurDashboard'
 
 function ProtectedRoute({ children, allowedRoles }) {
   const { user, isAuthenticated } = useAuth()
@@ -22,29 +25,17 @@ function AppRoutes() {
       <Route path="/reset-password" element={<ResetPasswordPage />} />
 
       <Route path="/patient/dashboard" element={
-        <ProtectedRoute allowedRoles={['PATIENT']}>
-          <PatientDashboard />
-        </ProtectedRoute>
+        <ProtectedRoute allowedRoles={['PATIENT']}><PatientDashboard /></ProtectedRoute>
       } />
+      {/* 🔧 FIX: Ajout du rôle SECRETARY pour qu'elle puisse accéder au dashboard personnel */}
       <Route path="/personnel/dashboard" element={
-        <ProtectedRoute allowedRoles={['MEDECIN', 'DOCTOR', 'PERSONNEL']}>
-          <PersonnelDashboard />
-        </ProtectedRoute>
-      } />
-      <Route path="/secretaire/dashboard" element={
-        <ProtectedRoute allowedRoles={['SECRETARY']}>
-          <SecretaireDashboard />
-        </ProtectedRoute>
+        <ProtectedRoute allowedRoles={['MEDECIN', 'PERSONNEL', 'SECRETARY']}><PersonnelDashboard /></ProtectedRoute>
       } />
       <Route path="/admin" element={
-        <ProtectedRoute allowedRoles={['ADMIN']}>
-          <AdminDashboard />
-        </ProtectedRoute>
+        <ProtectedRoute allowedRoles={['ADMIN']}><AdminDashboard /></ProtectedRoute>
       } />
       <Route path="/directeur" element={
-        <ProtectedRoute allowedRoles={['DIRECTEUR', 'ADMIN']}>
-          <DirecteurDashboard />
-        </ProtectedRoute>
+        <ProtectedRoute allowedRoles={['DIRECTEUR', 'ADMIN']}><DirecteurDashboard /></ProtectedRoute>
       } />
 
       <Route path="*" element={<Navigate to="/" />} />

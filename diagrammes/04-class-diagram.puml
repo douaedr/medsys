@@ -1,0 +1,169 @@
+@startuml class-diagram
+!theme plain
+skinparam backgroundColor #FAFBFC
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 11
+skinparam classAttributeIconSize 0
+
+title MedSys — Diagramme de classes (entités principales)
+
+' ─── Authentification ───
+package "ms-auth" #FFE082 {
+  class UserAccount {
+    -id: Long
+    -email: String
+    -password: String
+    -role: Role
+    -enabled: boolean
+    -emailVerified: boolean
+    -patientId: Long
+    -personnelId: Long
+  }
+
+  enum Role {
+    ADMIN
+    DIRECTEUR
+    MEDECIN
+    PERSONNEL
+    SECRETARY
+    INFIRMIER
+    BRANCARDIER
+    PATIENT
+  }
+
+  class AuditLog {
+    -id: Long
+    -action: String
+    -email: String
+    -timestamp: LocalDateTime
+    -details: String
+  }
+
+  UserAccount --> Role
+}
+
+' ─── Patient + dossier ───
+package "ms-patient-personnel" #C8E6C9 {
+
+  class Patient {
+    -id: Long
+    -nom: String
+    -prenom: String
+    -cin: String
+    -dateNaissance: LocalDate
+    -sexe: Sexe
+    -telephone: String
+    -email: String
+    -adresse: String
+    -ville: String
+    -groupeSanguin: GroupeSanguin
+    -mutuelle: String
+    -numeroCNSS: String
+  }
+
+  class DossierMedical {
+    -id: Long
+    -dateOuverture: LocalDateTime
+    -patient: Patient
+  }
+
+  class Antecedent {
+    -id: Long
+    -typeAntecedent: TypeAntecedent
+    -description: String
+    -severite: Severite
+    -dateDecouverte: LocalDate
+  }
+
+  class Consultation {
+    -id: Long
+    -dateConsultation: LocalDateTime
+    -motif: String
+    -diagnostic: String
+    -medecin: Medecin
+  }
+
+  class Ordonnance {
+    -id: Long
+    -dateOrdonnance: LocalDate
+    -consultation: Consultation
+    -lignes: List<LigneOrdonnance>
+  }
+
+  class LigneOrdonnance {
+    -id: Long
+    -medicament: String
+    -posologie: String
+    -duree: String
+  }
+
+  class Medecin {
+    -id: Long
+    -nom: String
+    -prenom: String
+    -matricule: String
+    -specialite: Specialite
+    -service: ServiceMedical
+  }
+
+  class DocumentPatient {
+    -id: Long
+    -typeDocument: TypeDocument
+    -nomFichierOriginal: String
+    -cheminFichier: String
+    -dateUpload: LocalDateTime
+  }
+
+  class MessagePatient {
+    -id: Long
+    -contenu: String
+    -dateEnvoi: LocalDateTime
+    -lu: boolean
+    -sens: SensMessage
+  }
+
+  Patient "1" --> "1" DossierMedical
+  DossierMedical "1" --> "*" Antecedent
+  DossierMedical "1" --> "*" Consultation
+  DossierMedical "1" --> "*" DocumentPatient
+  Consultation "1" --> "0..1" Ordonnance
+  Ordonnance "1" --> "*" LigneOrdonnance
+  Consultation --> Medecin
+  Patient "1" --> "*" MessagePatient
+}
+
+' ─── Rendez-vous ───
+package "appointment-service" #BBDEFB {
+  class RendezVous {
+    -id: Long
+    -patientId: Long
+    -doctorId: Long
+    -date: LocalDateTime
+    -duree: int
+    -motif: String
+    -statut: StatutRDV
+  }
+
+  class Slot {
+    -id: Long
+    -doctorId: Long
+    -date: LocalDateTime
+    -duree: int
+    -reserved: boolean
+  }
+
+  enum StatutRDV {
+    EN_ATTENTE
+    CONFIRME
+    ANNULE
+    TERMINE
+  }
+
+  RendezVous --> StatutRDV
+}
+
+' ─── Lien inter-services (par ID) ───
+UserAccount ..> Patient : patientId
+Patient ..> RendezVous : patientId\n(via RdvProxyService)
+
+@enduml

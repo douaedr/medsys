@@ -1,0 +1,223 @@
+### ════════════════════════════════════════════════════════════════
+### Tests appointment-service (Spring Boot)
+### Port : 8082
+### Variables : ouvre View > Tool Windows > Services > HTTP Client
+### ════════════════════════════════════════════════════════════════
+
+@host = http://localhost:8082
+@token = REMPLACE_PAR_LE_TOKEN_RECU_AU_LOGIN
+
+### ════════════════════════════════════════════════════════════════
+### 1. AUTHENTIFICATION
+### ════════════════════════════════════════════════════════════════
+
+### 1.1 — Inscrire un patient
+POST {{host}}/api/auth/register
+Content-Type: application/json
+
+{
+  "fullName": "Douae Test",
+  "email": "douae.test@example.com",
+  "password": "password123",
+  "phone": "0612345678"
+}
+
+### 1.2 — Login (récupère le token)
+POST {{host}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "douae.test@example.com",
+  "password": "password123"
+}
+
+### 1.3 — Créer un staff (Doctor) — nécessite être Secretary
+POST {{host}}/api/auth/staff
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "fullName": "Dr Ahmed Bennani",
+  "email": "dr.bennani@hospital.com",
+  "password": "doctor123",
+  "phone": "0700000001",
+  "role": "Doctor"
+}
+
+### ════════════════════════════════════════════════════════════════
+### 2. SERVICES (spécialités hospitalières)
+### ════════════════════════════════════════════════════════════════
+
+### 2.1 — Lister les services (public)
+GET {{host}}/api/services
+
+### 2.2 — Créer un service (Secretary)
+POST {{host}}/api/services
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Cardiologie",
+  "description": "Service de cardiologie",
+  "icon": "heart"
+}
+
+### 2.3 — Lister les médecins d'un service
+GET {{host}}/api/services/1/doctors
+
+### 2.4 — Affecter des services à un médecin (Secretary)
+POST {{host}}/api/services/assign
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "doctorId": 2,
+  "serviceIds": [1, 2]
+}
+
+### ════════════════════════════════════════════════════════════════
+### 3. CRÉNEAUX (Slots)
+### ════════════════════════════════════════════════════════════════
+
+### 3.1 — Créer un créneau unique (Doctor)
+POST {{host}}/api/slots
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "startTime": "2026-05-04T09:00:00",
+  "endTime": "2026-05-04T09:30:00"
+}
+
+### 3.2 — Créer une semaine de créneaux en masse (Doctor)
+POST {{host}}/api/slots/bulk
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "weekStartDate": "2026-05-04",
+  "slotStartTime": "09:00:00",
+  "slotEndTime": "17:00:00",
+  "slotDurationMinutes": 30,
+  "workDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"]
+}
+
+### 3.3 — Voir les créneaux d'un médecin pour une semaine (public)
+GET {{host}}/api/slots/doctor/2/week?weekStart=2026-05-04
+
+### 3.4 — Vérifier si la semaine est complète
+GET {{host}}/api/slots/doctor/2/week-full?weekStart=2026-05-04
+
+### 3.5 — Bloquer un créneau (Doctor)
+PATCH {{host}}/api/slots/1/block
+Authorization: Bearer {{token}}
+
+### 3.6 — Débloquer un créneau (Doctor)
+PATCH {{host}}/api/slots/1/unblock
+Authorization: Bearer {{token}}
+
+### 3.7 — Créneaux hospitaliers (DoctorId=NULL, ex. Radiologie)
+GET {{host}}/api/slots/hospital/3/week?weekStart=2026-05-04
+
+### ════════════════════════════════════════════════════════════════
+### 4. RENDEZ-VOUS (Appointments)
+### ════════════════════════════════════════════════════════════════
+
+### 4.1 — Réserver en tant que patient connecté
+POST {{host}}/api/appointments
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "timeSlotId": 1,
+  "reason": "Consultation de routine"
+}
+
+### 4.2 — Réserver en anonyme (récupère un anonymousToken !)
+POST {{host}}/api/appointments
+Content-Type: application/json
+
+{
+  "timeSlotId": 2,
+  "reason": "Première consultation",
+  "patientName": "Patient Anonyme",
+  "patientEmail": "anonyme@example.com",
+  "patientPhone": "0699999999"
+}
+
+### 4.3 — Voir mes rendez-vous
+GET {{host}}/api/appointments/me
+Authorization: Bearer {{token}}
+
+### 4.4 — Détail d'un rendez-vous
+GET {{host}}/api/appointments/1
+Authorization: Bearer {{token}}
+
+### 4.5 — Replanifier un rendez-vous
+PUT {{host}}/api/appointments
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "appointmentId": 1,
+  "newTimeSlotId": 5,
+  "reason": "Changement d'horaire"
+}
+
+### 4.6 — Annuler en tant que patient connecté
+DELETE {{host}}/api/appointments
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "appointmentId": 1,
+  "cancelReason": "Empêchement"
+}
+
+### 4.7 — Annuler en anonyme (avec token reçu lors de la réservation)
+DELETE {{host}}/api/appointments
+Content-Type: application/json
+
+{
+  "appointmentId": 2,
+  "cancelReason": "Empêchement",
+  "anonymousToken": "REMPLACE_PAR_LE_TOKEN_RECU"
+}
+
+### ════════════════════════════════════════════════════════════════
+### 5. LISTE D'ATTENTE
+### ════════════════════════════════════════════════════════════════
+
+### 5.1 — S'inscrire sur la liste d'attente d'un médecin
+POST {{host}}/api/waiting-list
+Content-Type: application/json
+
+{
+  "doctorId": 2,
+  "weekStartDate": "2026-05-04",
+  "patientName": "Marie Dupont",
+  "email": "marie@example.com",
+  "phone": "0611111111"
+}
+
+### 5.2 — Lister les inscrits chez un médecin pour une semaine
+GET {{host}}/api/waiting-list/doctor/2?weekStart=2026-05-04
+
+### 5.3 — Se désinscrire
+DELETE {{host}}/api/waiting-list/1?email=marie@example.com
+
+### ════════════════════════════════════════════════════════════════
+### 6. INTERNAL BRIDGE (pour ms-patient-personnel et chatbot)
+### ════════════════════════════════════════════════════════════════
+
+### 6.1 — Health check
+GET {{host}}/api/internal/health
+
+### 6.2 — Rendez-vous d'un patient par email
+GET {{host}}/api/internal/patient/douae.test@example.com/appointments
+
+### 6.3 — Créneaux disponibles d'un médecin sur une période
+GET {{host}}/api/internal/doctor/2/available-slots?startDate=2026-05-04&endDate=2026-05-10
+
+### 6.4 — Détail d'un RDV par id+email
+GET {{host}}/api/internal/appointment/1?email=douae.test@example.com

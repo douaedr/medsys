@@ -87,6 +87,16 @@ public class AuthController {
         return ResponseEntity.ok(Map.of("message", "Mot de passe modifié avec succès."));
     }
 
+    // 🔧 V4: POST /api/v1/auth/change-email  (requires auth)
+    @PostMapping("/change-email")
+    public ResponseEntity<Map<String, String>> changeEmail(
+            @Valid @RequestBody ChangeEmailRequest req,
+            Authentication authentication) {
+        authService.changeEmail(authentication.getName(), req);
+        return ResponseEntity.ok(Map.of(
+                "message", "Email modifié avec succès. Reconnectez-vous avec le nouvel email."));
+    }
+
     // GET /api/v1/auth/verify?token=...  (JWT token validation for other services)
     @GetMapping("/verify")
     public ResponseEntity<Map<String, Object>> verify(@RequestParam String token) {

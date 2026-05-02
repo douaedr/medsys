@@ -28,6 +28,7 @@ public class Ordonnance {
     @Column(columnDefinition = "TEXT")
     private String instructions;
 
+    @Builder.Default
     private Boolean estRenouvele = false;
     private LocalDate dateExpiration;
 

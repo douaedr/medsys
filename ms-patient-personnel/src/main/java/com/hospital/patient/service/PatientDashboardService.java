@@ -32,7 +32,6 @@ public class PatientDashboardService {
     private final NotificationPublisher notificationPublisher;
     private final PatientMapper patientMapper;
 
-    // ── Dashboard ─────────────────────────────────────────────────────────────
     public PatientDashboardDTO getDashboard(Long patientId) {
         var patient = patientRepo.findById(patientId)
                 .orElseThrow(() -> new PatientNotFoundException("Patient introuvable: " + patientId));
@@ -68,7 +67,6 @@ public class PatientDashboardService {
                 .build();
     }
 
-    // ── Full appointment history ───────────────────────────────────────────────
     public List<AppointmentRecordDTO> getAppointmentHistory(Long patientId) {
         if (!patientRepo.existsById(patientId)) {
             throw new PatientNotFoundException("Patient introuvable: " + patientId);
@@ -77,13 +75,6 @@ public class PatientDashboardService {
                 .stream().map(this::toDTO).collect(Collectors.toList());
     }
 
-    // ── Rebook a previous appointment ─────────────────────────────────────────
-    /**
-     * Locates the original appointment record and publishes an
-     * APPOINTMENT_REBOOK_REQUESTED event to RabbitMQ.
-     * The .NET appointment service will create the new appointment and
-     * send back an APPOINTMENT_CREATED event.
-     */
     public AppointmentRebookDTO rebookAppointment(Long patientId, Long appointmentId) {
         if (!patientRepo.existsById(patientId)) {
             throw new PatientNotFoundException("Patient introuvable: " + patientId);
@@ -94,7 +85,7 @@ public class PatientDashboardService {
                         "Rendez-vous introuvable: " + appointmentId));
 
         if (!original.getPatientId().equals(patientId)) {
-            throw new IllegalStateException("Ce rendez-vous n'appartient pas à ce patient.");
+            throw new IllegalStateException("Ce rendez-vous n'appartient pas a ce patient.");
         }
 
         notificationPublisher.publishRebookRequest(
@@ -116,21 +107,11 @@ public class PatientDashboardService {
                 .notes(original.getNotes())
                 .status("REBOOK_REQUESTED")
                 .requestedAt(LocalDateTime.now())
-                .message("Votre demande de re-réservation avec " + original.getDoctorName()
-                        + " a été transmise. Vous recevrez une confirmation sous peu.")
+                .message("Votre demande de re-reservation avec " + original.getDoctorName()
+                        + " a ete transmise. Vous recevrez une confirmation sous peu.")
                 .build();
     }
 
-    // ── Suggest next available slot ───────────────────────────────────────────
-    /**
-     * Pure local computation — no synchronous call to the appointment service.
-     *
-     * Strategy (in priority order):
-     * 1. If the patient has past COMPLETED appointments, compute the average
-     *    interval between them and project the next date from the most recent one.
-     * 2. Otherwise, suggest the patient's first favorite doctor with no upcoming appointment.
-     * 3. If no data is available, return a generic suggestion.
-     */
     public NextAvailableSlotDTO suggestNextSlot(Long patientId) {
         if (!patientRepo.existsById(patientId)) {
             throw new PatientNotFoundException("Patient introuvable: " + patientId);
@@ -138,12 +119,10 @@ public class PatientDashboardService {
 
         LocalDateTime now = LocalDateTime.now();
 
-        // Strategy 1 — interval-based projection from completed appointments
         List<AppointmentRecord> completed = appointmentRepo
                 .findByPatientIdAndStatusOrderByAppointmentDateDesc(patientId, "COMPLETED");
 
         if (completed.size() >= 2) {
-            // Sort ascending to compute intervals
             List<AppointmentRecord> sorted = completed.stream()
                     .sorted(Comparator.comparing(AppointmentRecord::getAppointmentDate))
                     .collect(Collectors.toList());
@@ -159,7 +138,6 @@ public class PatientDashboardService {
             AppointmentRecord latest = sorted.get(sorted.size() - 1);
             LocalDateTime suggestedDate = latest.getAppointmentDate().plusDays(avgInterval);
 
-            // Push into the future if the computed date is already past
             if (suggestedDate.isBefore(now)) {
                 suggestedDate = now.plusDays(avgInterval);
             }
@@ -170,13 +148,12 @@ public class PatientDashboardService {
                     .specialty(latest.getSpecialty())
                     .suggestedDate(suggestedDate)
                     .suggestionBasis("LAST_APPOINTMENT_INTERVAL")
-                    .message("Basé sur votre historique, votre prochain rendez-vous avec "
-                            + latest.getDoctorName() + " est suggéré pour le "
+                    .message("Base sur votre historique, votre prochain rendez-vous avec "
+                            + latest.getDoctorName() + " est suggere pour le "
                             + suggestedDate.toLocalDate() + ".")
                     .build();
         }
 
-        // Strategy 2 — suggest first favorite doctor who has no upcoming appointment
         List<Long> upcomingDoctorIds = appointmentRepo
                 .findByPatientIdAndAppointmentDateAfterOrderByAppointmentDateAsc(patientId, now)
                 .stream().map(AppointmentRecord::getDoctorId).collect(Collectors.toList());
@@ -188,29 +165,27 @@ public class PatientDashboardService {
 
         if (favWithoutUpcoming.isPresent()) {
             FavoriteDoctor fav = favWithoutUpcoming.get();
-            LocalDateTime suggestedDate = now.plusDays(7); // default: one week out
+            LocalDateTime suggestedDate = now.plusDays(7);
             return NextAvailableSlotDTO.builder()
                     .suggestedDoctorId(fav.getDoctorId())
                     .suggestedDoctorName(fav.getDoctorName())
                     .specialty(fav.getSpecialty())
                     .suggestedDate(suggestedDate)
                     .suggestionBasis("FAVORITE_DOCTOR")
-                    .message("Vous n'avez pas de rendez-vous prévu avec " + fav.getDoctorName()
-                            + " (favori). Un créneau est suggéré à partir du "
+                    .message("Vous n'avez pas de rendez-vous prevu avec " + fav.getDoctorName()
+                            + " (favori). Un creneau est suggere a partir du "
                             + suggestedDate.toLocalDate() + ".")
                     .build();
         }
 
-        // Strategy 3 — no data
         return NextAvailableSlotDTO.builder()
                 .suggestedDate(now.plusDays(7))
                 .suggestionBasis("NO_DATA")
-                .message("Aucune donnée disponible pour générer une suggestion personnalisée. "
-                        + "Consultez la liste des médecins disponibles.")
+                .message("Aucune donnee disponible pour generer une suggestion personnalisee. "
+                        + "Consultez la liste des medecins disponibles.")
                 .build();
     }
 
-    // ── Private helpers ───────────────────────────────────────────────────────
     private AppointmentRecordDTO toDTO(AppointmentRecord r) {
         return AppointmentRecordDTO.builder()
                 .id(r.getId())

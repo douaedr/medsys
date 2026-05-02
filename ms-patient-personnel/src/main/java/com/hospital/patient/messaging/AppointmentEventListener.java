@@ -24,10 +24,8 @@ public class AppointmentEventListener {
             log.warn("[RabbitMQ] Received null or invalid appointment event");
             return;
         }
-
         log.info("[RabbitMQ] Received event: type={} appointmentId={} patientId={}",
                 event.getEventType(), event.getAppointmentId(), event.getPatientId());
-
         switch (event.getEventType()) {
             case "APPOINTMENT_CREATED"   -> handleCreated(event);
             case "APPOINTMENT_CANCELLED" -> handleCancelled(event);
@@ -36,13 +34,12 @@ public class AppointmentEventListener {
     }
 
     private void handleCreated(AppointmentEvent event) {
-        // Upsert the local appointment record
+        String extId = String.valueOf(event.getAppointmentId());
         AppointmentRecord record = appointmentRepo
-                .findByExternalAppointmentId(event.getAppointmentId())
+                .findByExternalAppointmentId(extId)
                 .orElse(AppointmentRecord.builder()
-                        .externalAppointmentId(event.getAppointmentId())
+                        .externalAppointmentId(extId)
                         .build());
-
         record.setPatientId(event.getPatientId());
         record.setDoctorId(event.getDoctorId());
         record.setDoctorName(event.getDoctorName());
@@ -51,10 +48,8 @@ public class AppointmentEventListener {
         record.setStatus("SCHEDULED");
         record.setNotes(event.getNotes());
         record.setUpdatedAt(LocalDateTime.now());
-
         appointmentRepo.save(record);
 
-        // Trigger patient notification
         notificationPublisher.publishPatientNotification(
                 event.getPatientId(),
                 "Rendez-vous confirme",
@@ -65,12 +60,12 @@ public class AppointmentEventListener {
     }
 
     private void handleCancelled(AppointmentEvent event) {
-        appointmentRepo.findByExternalAppointmentId(event.getAppointmentId())
+        String extId = String.valueOf(event.getAppointmentId());
+        appointmentRepo.findByExternalAppointmentId(extId)
                 .ifPresent(record -> {
                     record.setStatus("CANCELLED");
                     record.setUpdatedAt(LocalDateTime.now());
                     appointmentRepo.save(record);
-
                     notificationPublisher.publishPatientNotification(
                             event.getPatientId(),
                             "Rendez-vous annule",

@@ -1,0 +1,65 @@
+@startuml sequence-rag
+!theme plain
+skinparam backgroundColor #FAFBFC
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 11
+skinparam sequenceMessageAlign center
+
+title MedSys — Séquence du Chatbot RAG (Retrieval-Augmented Generation)
+
+actor "Patient" as P
+participant "Frontend\n(React)" as FE
+participant "chatbot-service\n:8083" as BOT
+participant "ContextBuilder\nService" as CTX
+participant "ms-patient\n:8081" as PAT
+participant "appointment\n:8085" as APPT
+participant "Google Gemini\nAPI" as GEM
+
+P -> FE : Pose question\n("Quel est mon\ngroupe sanguin ?")
+activate FE
+
+FE -> BOT : POST /api/v1/chatbot/ask\n{question, patientId}
+activate BOT
+
+BOT -> BOT : Détecter salutations ?
+note right
+  Si "bonjour", "salut" → 
+  réponse rapide sans Gemini
+end note
+
+BOT -> CTX : buildContextForPatient(patientId)
+activate CTX
+
+CTX -> PAT : GET /api/v1/patients/{id}/dossier
+activate PAT
+PAT --> CTX : DossierMedical\n(antécédents, consultations,\nordonnances, groupe sanguin...)
+deactivate PAT
+
+CTX -> APPT : GET /api/v1/rdv/patient/{id}
+activate APPT
+APPT --> CTX : Liste des RDV
+deactivate APPT
+
+CTX --> BOT : Contexte structuré (texte)
+deactivate CTX
+
+BOT -> BOT : Construire prompt enrichi\n(système + contexte + question)
+
+BOT -> GEM : POST generateContent\n+ retry si erreur réseau
+activate GEM
+GEM --> BOT : Réponse générée\nbasée sur le vrai dossier
+deactivate GEM
+
+BOT --> FE : { reponse, timestamp, patientId }
+deactivate BOT
+
+FE --> P : Affiche la réponse
+deactivate FE
+
+note over BOT, GEM
+  **Avantage RAG** : Gemini répond avec
+  les VRAIES données du patient,
+  pas des inventions.
+end note
+
+@enduml

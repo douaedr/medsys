@@ -25,7 +25,6 @@ public class NotificationPublisher {
                 .appointmentId(appointmentId)
                 .timestamp(LocalDateTime.now())
                 .build();
-
         try {
             rabbitTemplate.convertAndSend(
                     RabbitMQConfig.PATIENT_EXCHANGE,
@@ -37,7 +36,7 @@ public class NotificationPublisher {
         }
     }
 
-    public void publishRebookRequest(Long patientId, Long originalAppointmentId,
+    public void publishRebookRequest(Long patientId, String originalAppointmentId,
                                       Long doctorId, String doctorName,
                                       String specialty, String notes) {
         RebookEvent event = RebookEvent.builder()
@@ -50,7 +49,6 @@ public class NotificationPublisher {
                 .notes(notes)
                 .timestamp(LocalDateTime.now())
                 .build();
-
         try {
             rabbitTemplate.convertAndSend(
                     RabbitMQConfig.PATIENT_EXCHANGE,

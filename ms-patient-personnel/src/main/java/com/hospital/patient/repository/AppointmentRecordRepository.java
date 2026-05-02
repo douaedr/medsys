@@ -16,6 +16,6 @@ public interface AppointmentRecordRepository extends JpaRepository<AppointmentRe
             Long patientId, LocalDateTime from);
     List<AppointmentRecord> findByPatientIdAndAppointmentDateBeforeOrderByAppointmentDateDesc(
             Long patientId, LocalDateTime before);
-    Optional<AppointmentRecord> findByExternalAppointmentId(Long externalId);
+    Optional<AppointmentRecord> findByExternalAppointmentId(String externalId);
     long countByPatientIdAndStatus(Long patientId, String status);
 }

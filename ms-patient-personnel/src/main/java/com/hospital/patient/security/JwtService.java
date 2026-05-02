@@ -31,7 +31,6 @@ public class JwtService {
         claims.put("patientId", patientId);
         claims.put("cin", cin);
         claims.put("role", "PATIENT");
-
         return Jwts.builder()
                 .claims(claims)
                 .subject(cin)
@@ -59,6 +58,10 @@ public class JwtService {
 
     public Long extractUserId(String token) {
         return extractClaims(token).get("userId", Long.class);
+    }
+
+    public Long extractPersonnelId(String token) {
+        return extractClaims(token).get("personnelId", Long.class);
     }
 
     public Long extractMedecinAssigneId(String token) {

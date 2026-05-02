@@ -1,0 +1,82 @@
+@startuml use-cases
+!theme plain
+skinparam backgroundColor #FAFBFC
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 11
+
+title MedSys — Diagramme de cas d'utilisation
+
+left to right direction
+
+actor "Patient" as P
+actor "Médecin" as M
+actor "Secrétaire" as S
+actor "Admin" as A
+actor "Directeur" as D
+
+rectangle "MedSys" {
+  ' Patient
+  usecase "S'inscrire / Se connecter" as UC1
+  usecase "Consulter mon dossier" as UC2
+  usecase "Voir mes RDV" as UC3
+  usecase "Annuler un RDV" as UC4
+  usecase "Communiquer avec\nun médecin" as UC5
+  usecase "Uploader des documents" as UC6
+  usecase "Modifier mon profil" as UC7
+  usecase "Poser une question\nau chatbot IA" as UC8
+  usecase "Recevoir notifications\ntemps réel" as UC9
+
+  ' Médecin
+  usecase "Gérer les patients" as UC10
+  usecase "Créer des consultations" as UC11
+  usecase "Rédiger des ordonnances" as UC12
+  usecase "Voir les RDV" as UC13
+
+  ' Secrétaire
+  usecase "Gérer les RDV" as UC14
+  usecase "Bloquer des créneaux" as UC15
+
+  ' Admin
+  usecase "Créer des comptes\npersonnel" as UC16
+  usecase "Activer/désactiver\nutilisateurs" as UC17
+
+  ' Directeur
+  usecase "Voir statistiques\nhospitalières" as UC18
+  usecase "Générer rapports" as UC19
+}
+
+' ─── Patient ───
+P --> UC1
+P --> UC2
+P --> UC3
+P --> UC4
+P --> UC5
+P --> UC6
+P --> UC7
+P --> UC8
+P --> UC9
+
+' ─── Médecin ───
+M --> UC1
+M --> UC10
+M --> UC11
+M --> UC12
+M --> UC13
+
+' ─── Secrétaire ───
+S --> UC1
+S --> UC10
+S --> UC14
+S --> UC15
+
+' ─── Admin ───
+A --> UC1
+A --> UC16
+A --> UC17
+
+' ─── Directeur ───
+D --> UC1
+D --> UC18
+D --> UC19
+
+@enduml

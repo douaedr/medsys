@@ -28,8 +28,8 @@ public class AppointmentRecord {
     private Long id;
 
     // External ID from the appointments microservice
-    @Column(nullable = false, unique = true)
-    private Long externalAppointmentId;
+    @Column(nullable = true, unique = true)
+    private String externalAppointmentId;
 
     @Column(nullable = false)
     private Long patientId;

@@ -1,0 +1,14 @@
+# Template de configuration pour chatbot-service
+# Copiez ce fichier en application.properties et remplissez vos vraies valeurs.
+# Le fichier application.properties est dans .gitignore et ne sera pas commit.
+
+server.port=8083
+
+# ═══ Gemini API ═══
+# Obtenez votre clé sur https://aistudio.google.com/app/apikey
+gemini.api.key=YOUR_GEMINI_API_KEY_HERE
+gemini.api.url=https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent
+
+# ═══ Communication inter-services ═══
+services.patient.url=http://localhost:8081
+services.appointment.url=http://localhost:8085

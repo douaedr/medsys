@@ -2510,23 +2510,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\dell\\.nuget\\packages\\": {},
+    "C:\\Users\\douae\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\dell\\source\\repos\\PersonnelMS - Copy (2)\\PersonnelMS\\PersonnelMS.csproj",
+      "projectUniqueName": "C:\\Users\\douae\\Desktop\\PFA\\medsys-fixed\\ms-personnel\\PersonnelMS - Backend_API_et_MongoDB\\PersonnelMS - Copy (2)\\PersonnelMS\\PersonnelMS.csproj",
       "projectName": "PersonnelMS",
-      "projectPath": "C:\\Users\\dell\\source\\repos\\PersonnelMS - Copy (2)\\PersonnelMS\\PersonnelMS.csproj",
-      "packagesPath": "C:\\Users\\dell\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\dell\\source\\repos\\PersonnelMS - Copy (2)\\PersonnelMS\\obj\\",
+      "projectPath": "C:\\Users\\douae\\Desktop\\PFA\\medsys-fixed\\ms-personnel\\PersonnelMS - Backend_API_et_MongoDB\\PersonnelMS - Copy (2)\\PersonnelMS\\PersonnelMS.csproj",
+      "packagesPath": "C:\\Users\\douae\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\douae\\Desktop\\PFA\\medsys-fixed\\ms-personnel\\PersonnelMS - Backend_API_et_MongoDB\\PersonnelMS - Copy (2)\\PersonnelMS\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\dell\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\douae\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -2535,6 +2535,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -2616,7 +2617,7 @@
       "code": "NU1603",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "PersonnelMS depends on MongoDB.Driver (>= 2.25.3) but MongoDB.Driver 2.25.3 was not found. MongoDB.Driver 2.26.0 was resolved instead.",
+      "message": "PersonnelMS dépend de MongoDB.Driver (>= 2.25.3) mais MongoDB.Driver 2.25.3 est introuvable. MongoDB.Driver 2.26.0 a été résolu à la place.",
       "libraryId": "MongoDB.Driver",
       "targetGraphs": [
         "net9.0"

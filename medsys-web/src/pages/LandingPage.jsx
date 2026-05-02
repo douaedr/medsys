@@ -1,239 +1,164 @@
 import { useNavigate } from 'react-router-dom'
-import { useState } from 'react'
+import {
+  Activity, Shield, Users, Calendar, Stethoscope,
+  ArrowRight, CheckCircle2, Hospital, FileText, MessageSquare
+} from 'lucide-react'
 
 const FEATURES = [
-  { icon: '🔒', label: 'Sécurisé', desc: 'Authentification JWT double couche' },
-  { icon: '📱', label: 'Multi-plateforme', desc: 'Web & application mobile' },
-  { icon: '⚡', label: 'Temps réel', desc: 'Données médicales synchronisées' },
-  { icon: '🏗️', label: 'Microservices', desc: 'Architecture distribuée Spring Boot' },
+  { icon: Shield, title: 'Sécurité maximale', desc: 'Authentification JWT et chiffrement des données médicales' },
+  { icon: Users, title: 'Gestion multi-rôles', desc: 'Patients, médecins, administrateurs et directeurs' },
+  { icon: Calendar, title: 'Rendez-vous intelligents', desc: 'Planification en temps réel avec rappels automatiques' },
+  { icon: FileText, title: 'Dossier médical numérique', desc: 'Historique complet et accessible' },
+  { icon: MessageSquare, title: 'Messagerie intégrée', desc: 'Communication directe patient-médecin' },
+  { icon: Activity, title: 'Architecture microservices', desc: 'Performance et scalabilité garanties' },
 ]
 
 const STATS = [
-  { value: '2', label: 'Microservices', icon: '⚙️' },
-  { value: '4', label: 'Rôles utilisateurs', icon: '👥' },
-  { value: '100%', label: 'Sécurisé JWT', icon: '🔐' },
-  { value: 'REST', label: 'API Standard', icon: '🌐' },
+  { value: '6+', label: 'Microservices' },
+  { value: '4', label: 'Rôles utilisateurs' },
+  { value: '100%', label: 'Sécurisé' },
+  { value: '24/7', label: 'Disponibilité' },
 ]
 
 export default function LandingPage() {
   const navigate = useNavigate()
-  const [hoveredCard, setHoveredCard] = useState(null)
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      background: 'linear-gradient(160deg, #0f172a 0%, #1e3a8a 45%, #0c4a6e 75%, #0f172a 100%)',
-      display: 'flex', flexDirection: 'column', alignItems: 'center',
-      padding: '0 20px', position: 'relative', overflow: 'hidden'
-    }} className="fade-in">
-
-      {/* Background decorative elements */}
-      <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>
-        <div style={{
-          position: 'absolute', top: -100, right: -100,
-          width: 500, height: 500, borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(37,99,235,0.18) 0%, transparent 70%)'
-        }}/>
-        <div style={{
-          position: 'absolute', bottom: -150, left: -100,
-          width: 600, height: 600, borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(8,145,178,0.12) 0%, transparent 70%)'
-        }}/>
-        {/* Grid pattern */}
-        <div style={{
-          position: 'absolute', inset: 0,
-          backgroundImage: `linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-                            linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)`,
-          backgroundSize: '60px 60px'
-        }}/>
-      </div>
-
+    <div className="min-h-screen bg-white">
       {/* Header */}
-      <div style={{ width: '100%', maxWidth: 1100, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px 0', position: 'relative', zIndex: 1 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <div style={{
-            width: 38, height: 38, borderRadius: 10,
-            background: 'linear-gradient(135deg, #2563eb, #0891b2)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18,
-            boxShadow: '0 4px 12px rgba(37,99,235,0.4)'
-          }}>🏥</div>
-          <span style={{ fontFamily: 'Syne, sans-serif', fontSize: 18, fontWeight: 800, color: 'white' }}>MedSys</span>
-        </div>
-        <div style={{
-          padding: '6px 14px', background: 'rgba(255,255,255,0.08)',
-          borderRadius: 20, border: '1px solid rgba(255,255,255,0.15)',
-          color: 'rgba(255,255,255,0.7)', fontSize: 12, fontWeight: 600
-        }}>
-          v1.0 — Système Hospitalier
-        </div>
-      </div>
-
-      {/* Hero */}
-      <div style={{ textAlign: 'center', marginTop: 60, marginBottom: 64, position: 'relative', zIndex: 1 }}>
-        <div style={{
-          display: 'inline-flex', alignItems: 'center', gap: 8,
-          padding: '6px 16px', background: 'rgba(37,99,235,0.2)',
-          border: '1px solid rgba(37,99,235,0.4)', borderRadius: 20,
-          marginBottom: 24
-        }}>
-          <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#60a5fa', display: 'inline-block', animation: 'pulse 2s infinite' }}/>
-          <span style={{ color: '#93c5fd', fontSize: 12, fontWeight: 600 }}>Système de gestion hospitalière numérique</span>
-        </div>
-
-        <h1 style={{
-          fontFamily: 'Syne, sans-serif', fontSize: 'clamp(36px, 6vw, 68px)', fontWeight: 800,
-          color: 'white', lineHeight: 1.1, marginBottom: 20,
-          textShadow: '0 2px 20px rgba(0,0,0,0.3)'
-        }}>
-          Gestion hospitalière<br/>
-          <span style={{ background: 'linear-gradient(135deg, #60a5fa, #34d399)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-            intelligente & sécurisée
-          </span>
-        </h1>
-
-        <p style={{
-          color: 'rgba(255,255,255,0.6)', fontSize: 16, maxWidth: 560,
-          margin: '0 auto 40px', lineHeight: 1.7
-        }}>
-          Plateforme complète de gestion des dossiers médicaux, rendez-vous et communication patient-médecin avec architecture microservices.
-        </p>
-
-        {/* Role cards */}
-        <div style={{ display: 'flex', gap: 20, justifyContent: 'center', flexWrap: 'wrap' }}>
-
-          <RoleCard
-            id="personnel"
-            icon="👨‍⚕️"
-            title="Personnel médical"
-            desc="Médecins, infirmiers et administrateurs — accédez à la gestion complète"
-            cta="Se connecter"
-            accent={{ border: 'rgba(96,165,250,0.4)', hover: 'rgba(37,99,235,0.25)', ctaBg: 'rgba(37,99,235,0.3)', ctaColor: '#93c5fd', glow: 'rgba(37,99,235,0.15)' }}
-            onClick={() => navigate('/login/personnel')}
-            hovered={hoveredCard === 'personnel'}
-            onHover={setHoveredCard}
-          />
-
-          <RoleCard
-            id="patient"
-            icon="🧑‍💼"
-            title="Espace patient"
-            desc="Consultez votre dossier, vos rendez-vous et résultats d'analyses"
-            cta="Accéder"
-            accent={{ border: 'rgba(52,211,153,0.4)', hover: 'rgba(5,150,105,0.2)', ctaBg: 'rgba(5,150,105,0.3)', ctaColor: '#6ee7b7', glow: 'rgba(5,150,105,0.12)' }}
-            onClick={() => navigate('/patient')}
-            hovered={hoveredCard === 'patient'}
-            onHover={setHoveredCard}
-          />
-
-        </div>
-      </div>
-
-      {/* Stats */}
-      <div style={{
-        display: 'flex', gap: 20, justifyContent: 'center', flexWrap: 'wrap',
-        marginBottom: 56, position: 'relative', zIndex: 1
-      }}>
-        {STATS.map((s, i) => (
-          <div key={i} style={{
-            padding: '14px 24px', background: 'rgba(255,255,255,0.06)',
-            border: '1px solid rgba(255,255,255,0.1)', borderRadius: 14,
-            textAlign: 'center', minWidth: 120, backdropFilter: 'blur(10px)'
-          }}>
-            <div style={{ fontSize: 18, marginBottom: 4 }}>{s.icon}</div>
-            <div style={{ fontFamily: 'Syne, sans-serif', fontSize: 20, fontWeight: 800, color: 'white' }}>{s.value}</div>
-            <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.5)', fontWeight: 500, marginTop: 2 }}>{s.label}</div>
-          </div>
-        ))}
-      </div>
-
-      {/* Features */}
-      <div style={{
-        width: '100%', maxWidth: 900, marginBottom: 60,
-        display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', gap: 12,
-        position: 'relative', zIndex: 1
-      }}>
-        {FEATURES.map((f, i) => (
-          <div key={i} style={{
-            padding: '16px 18px', background: 'rgba(255,255,255,0.04)',
-            border: '1px solid rgba(255,255,255,0.08)', borderRadius: 12,
-            display: 'flex', alignItems: 'center', gap: 12,
-            transition: 'all 0.25s'
-          }}
-          onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)'; }}
-          onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'; }}
-          >
-            <div style={{
-              width: 38, height: 38, borderRadius: 10,
-              background: 'rgba(255,255,255,0.08)', display: 'flex',
-              alignItems: 'center', justifyContent: 'center', fontSize: 18, flexShrink: 0
-            }}>{f.icon}</div>
+      <header className="border-b border-slate-100">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center shadow-sm">
+              <Activity className="w-5 h-5 text-white" strokeWidth={2.5} />
+            </div>
             <div>
-              <div style={{ fontWeight: 700, fontSize: 13, color: 'white' }}>{f.label}</div>
-              <div style={{ fontSize: 11.5, color: 'rgba(255,255,255,0.5)', marginTop: 2 }}>{f.desc}</div>
+              <div className="font-bold text-slate-900 text-lg tracking-tight">MedSys</div>
+              <div className="text-[10px] text-slate-500 uppercase tracking-wider font-semibold">
+                Hospital Management
+              </div>
             </div>
           </div>
-        ))}
-      </div>
+          <div className="flex items-center gap-3">
+            <button onClick={() => navigate('/login/personnel')} className="btn-ghost">
+              Personnel
+            </button>
+            <button onClick={() => navigate('/patient')} className="btn-primary">
+              Espace patient <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Hero */}
+      <section className="max-w-7xl mx-auto px-6 py-20">
+        <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary-50 border border-primary-100 rounded-full mb-6">
+              <span className="w-1.5 h-1.5 rounded-full bg-primary-500 animate-pulse"></span>
+              <span className="text-xs font-semibold text-primary-700 uppercase tracking-wide">
+                Système hospitalier nouvelle génération
+              </span>
+            </div>
+            <h1 className="text-5xl font-bold text-slate-900 tracking-tight leading-tight mb-5">
+              La gestion hospitalière,<br />
+              <span className="text-primary-600">réinventée.</span>
+            </h1>
+            <p className="text-lg text-slate-600 mb-8 leading-relaxed">
+              Une plateforme intégrée pour gérer patients, rendez-vous, dossiers médicaux
+              et personnel, avec une architecture moderne et sécurisée.
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <button onClick={() => navigate('/patient')} className="btn-primary btn-lg">
+                Commencer en tant que patient
+                <ArrowRight className="w-4 h-4" />
+              </button>
+              <button onClick={() => navigate('/login/personnel')} className="btn-outline btn-lg">
+                Accès personnel soignant
+              </button>
+            </div>
+
+            {/* Stats */}
+            <div className="grid grid-cols-4 gap-6 mt-12 pt-8 border-t border-slate-100">
+              {STATS.map((s) => (
+                <div key={s.label}>
+                  <div className="text-2xl font-bold text-slate-900">{s.value}</div>
+                  <div className="text-xs text-slate-500 uppercase tracking-wide font-semibold mt-1">
+                    {s.label}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Visual */}
+          <div className="relative">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary-100 via-accent-100 to-transparent rounded-3xl blur-3xl opacity-60"></div>
+            <div className="relative grid grid-cols-2 gap-4">
+              <div className="card p-6 space-y-3">
+                <Hospital className="w-8 h-8 text-primary-600" />
+                <div>
+                  <div className="font-bold text-slate-900">Hôpital connecté</div>
+                  <div className="text-sm text-slate-500 mt-1">Tous les services synchronisés</div>
+                </div>
+              </div>
+              <div className="card p-6 space-y-3 mt-8">
+                <Stethoscope className="w-8 h-8 text-accent-500" />
+                <div>
+                  <div className="font-bold text-slate-900">Soins coordonnés</div>
+                  <div className="text-sm text-slate-500 mt-1">Communication fluide</div>
+                </div>
+              </div>
+              <div className="card p-6 space-y-3">
+                <Shield className="w-8 h-8 text-emerald-600" />
+                <div>
+                  <div className="font-bold text-slate-900">100% sécurisé</div>
+                  <div className="text-sm text-slate-500 mt-1">Conformité RGPD</div>
+                </div>
+              </div>
+              <div className="card p-6 space-y-3 mt-8">
+                <CheckCircle2 className="w-8 h-8 text-primary-600" />
+                <div>
+                  <div className="font-bold text-slate-900">Temps réel</div>
+                  <div className="text-sm text-slate-500 mt-1">Données toujours à jour</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Features */}
+      <section className="bg-slate-50 py-20 border-t border-slate-100">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-14 max-w-2xl mx-auto">
+            <h2 className="text-3xl font-bold text-slate-900 tracking-tight mb-4">
+              Tout ce dont votre établissement a besoin
+            </h2>
+            <p className="text-slate-600 text-lg">
+              Une suite complète d'outils pour moderniser la gestion hospitalière
+            </p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-5">
+            {FEATURES.map((f) => (
+              <div key={f.title} className="card-hover p-6">
+                <div className="w-11 h-11 rounded-xl bg-primary-50 flex items-center justify-center mb-4">
+                  <f.icon className="w-5 h-5 text-primary-600" strokeWidth={2} />
+                </div>
+                <h3 className="font-bold text-slate-900 mb-2">{f.title}</h3>
+                <p className="text-sm text-slate-600 leading-relaxed">{f.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* Footer */}
-      <div style={{ color: 'rgba(255,255,255,0.2)', fontSize: 12, marginBottom: 32, position: 'relative', zIndex: 1, textAlign: 'center' }}>
-        MedSys — Architecture microservices Spring Boot · React · JWT · MySQL
-      </div>
-
-      <style>{`
-        @keyframes pulse {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.4; }
-        }
-      `}</style>
-    </div>
-  )
-}
-
-function RoleCard({ id, icon, title, desc, cta, accent, onClick, hovered, onHover }) {
-  return (
-    <div
-      onClick={onClick}
-      onMouseEnter={() => onHover(id)}
-      onMouseLeave={() => onHover(null)}
-      style={{
-        background: hovered ? accent.hover : 'rgba(255,255,255,0.06)',
-        backdropFilter: 'blur(16px)',
-        border: `1.5px solid ${hovered ? accent.border : 'rgba(255,255,255,0.12)'}`,
-        borderRadius: 24, padding: '36px 36px 28px', cursor: 'pointer',
-        width: 280, textAlign: 'center',
-        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-        transform: hovered ? 'translateY(-6px)' : 'translateY(0)',
-        boxShadow: hovered ? `0 20px 60px ${accent.glow}, 0 4px 20px rgba(0,0,0,0.3)` : '0 4px 20px rgba(0,0,0,0.2)',
-      }}
-    >
-      <div style={{
-        width: 72, height: 72, borderRadius: 20,
-        background: hovered ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.08)',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        fontSize: 34, margin: '0 auto 18px',
-        border: '1px solid rgba(255,255,255,0.1)',
-        transition: 'all 0.3s',
-        boxShadow: hovered ? '0 8px 24px rgba(0,0,0,0.2)' : 'none'
-      }}>
-        {icon}
-      </div>
-      <h2 style={{
-        fontFamily: 'Syne, sans-serif', fontSize: 19, fontWeight: 800,
-        color: 'white', marginBottom: 10, lineHeight: 1.2
-      }}>{title}</h2>
-      <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: 13, lineHeight: 1.65, marginBottom: 22 }}>
-        {desc}
-      </p>
-      <div style={{
-        padding: '9px 20px', background: accent.ctaBg,
-        borderRadius: 22, color: accent.ctaColor, fontSize: 13, fontWeight: 700,
-        border: `1px solid ${accent.border}`, letterSpacing: '0.02em',
-        transition: 'all 0.25s',
-        boxShadow: hovered ? '0 4px 12px rgba(0,0,0,0.2)' : 'none'
-      }}>
-        {cta} →
-      </div>
+      <footer className="py-8 border-t border-slate-100">
+        <div className="max-w-7xl mx-auto px-6 text-center text-sm text-slate-500">
+          © 2026 MedSys. Projet de fin d'année — Architecture microservices.
+        </div>
+      </footer>
     </div>
   )
 }

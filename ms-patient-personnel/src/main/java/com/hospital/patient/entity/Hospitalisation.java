@@ -38,5 +38,6 @@ public class Hospitalisation {
     @Column(columnDefinition = "TEXT")
     private String compteRendu;
 
+    @Builder.Default
     private Boolean actif = true;
 }

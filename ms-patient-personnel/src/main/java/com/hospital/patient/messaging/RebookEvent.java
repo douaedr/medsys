@@ -8,11 +8,6 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-/**
- * Published when a patient requests to rebook a previous appointment.
- * The appointment microservice (.NET) consumes this event and creates
- * the new appointment.
- */
 @Data
 @Builder
 @NoArgsConstructor
@@ -20,13 +15,13 @@ import java.time.LocalDateTime;
 public class RebookEvent {
 
     @JsonProperty("eventType")
-    private String eventType;   // APPOINTMENT_REBOOK_REQUESTED
+    private String eventType;
 
     @JsonProperty("patientId")
     private Long patientId;
 
     @JsonProperty("originalAppointmentId")
-    private Long originalAppointmentId;
+    private String originalAppointmentId;
 
     @JsonProperty("doctorId")
     private Long doctorId;

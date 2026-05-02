@@ -28,17 +28,17 @@ class RdvProxyServiceTest {
     @BeforeEach
     void setUp() {
         service = new RdvProxyService(appointmentRepo);
-        // msRdvUrl left blank → forces local fallback
+        // msRdvUrl left blank â†’ forces local fallback
         ReflectionTestUtils.setField(service, "msRdvUrl", "");
     }
 
     private AppointmentRecord makeRecord(Long id, Long patientId, String status) {
         return AppointmentRecord.builder()
-                .id(id).externalAppointmentId(id * 100)
+                .id(id).externalAppointmentId(String.valueOf(id * 100))
                 .patientId(patientId).doctorId(1L)
                 .doctorName("Dr. Dupont").specialty("Cardio")
                 .appointmentDate(LocalDateTime.now().plusDays(3))
-                .status(status).notes("Contrôle annuel")
+                .status(status).notes("ContrÃ´le annuel")
                 .build();
     }
 
@@ -106,3 +106,4 @@ class RdvProxyServiceTest {
         assertThat(result).isFalse();
     }
 }
+

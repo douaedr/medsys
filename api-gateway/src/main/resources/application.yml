@@ -77,7 +77,7 @@ spring:
             - name: LoggingFilter
 
 jwt:
-  secret: medsys-hospital-jwt-secret-key-2026-very-long-and-secure-production-key-minimum-256-bits
+  secret: ${JWT_SECRET:medsys-hospital-jwt-secret-key-2026-very-long-and-secure-string-please-change-in-prod}
 
 management:
   endpoints:

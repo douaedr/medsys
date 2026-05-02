@@ -30,6 +30,7 @@ public class Antecedent {
     @Enumerated(EnumType.STRING)
     private NiveauSeverite severite;
 
+    @Builder.Default
     private Boolean actif = true;
     private String source;
 }

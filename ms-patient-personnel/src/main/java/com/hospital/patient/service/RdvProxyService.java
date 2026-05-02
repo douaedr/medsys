@@ -1,5 +1,6 @@
 package com.hospital.patient.service;
 
+import com.hospital.patient.dto.CreerRdvRequest;
 import com.hospital.patient.dto.RendezVousDTO;
 import com.hospital.patient.entity.AppointmentRecord;
 import com.hospital.patient.repository.AppointmentRecordRepository;
@@ -15,6 +16,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -31,11 +33,9 @@ public class RdvProxyService {
     private static final DateTimeFormatter DATE_FMT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final DateTimeFormatter TIME_FMT = DateTimeFormatter.ofPattern("HH:mm");
 
-    /**
-     * Récupère les rendez-vous d'un patient.
-     * Si ms-rdv.url est configuré, appelle le bridge interne MedicalAppointments.
-     * Sinon, utilise les enregistrements locaux (sync RabbitMQ).
-     */
+    // ─────────────────────────────────────────────────────────────────────────
+    //  LECTURE
+    // ─────────────────────────────────────────────────────────────────────────
     public List<RendezVousDTO> getRdvPatient(Long patientId, String patientEmail) {
         if (msRdvUrl == null || msRdvUrl.isBlank()) {
             log.debug("ms-rdv.url non configuré, retour des données locales pour patient {}", patientId);
@@ -50,7 +50,6 @@ public class RdvProxyService {
                 url, HttpMethod.GET, null, new ParameterizedTypeReference<>() {});
             List<RendezVousDTO> remote = response.getBody() != null ? response.getBody() : List.of();
             if (!remote.isEmpty()) return remote;
-            // Si aucun RDV distant, compléter avec les données locales
             return localRecords(patientId);
         } catch (Exception e) {
             log.warn("ms-rdv injoignable ({}), fallback local pour patient {}: {}", msRdvUrl, patientId, e.getMessage());
@@ -58,25 +57,14 @@ public class RdvProxyService {
         }
     }
 
-    /** Surcharge sans email — utilise uniquement les données locales */
     public List<RendezVousDTO> getRdvPatient(Long patientId) {
         return getRdvPatient(patientId, null);
     }
 
-    private List<RendezVousDTO> localRecords(Long patientId) {
-        return appointmentRepo.findByPatientIdOrderByAppointmentDateDesc(patientId)
-                .stream().map(this::toRendezVousDTO).collect(Collectors.toList());
-    }
-
-    /**
-     * Récupère tous les rendez-vous depuis le ms-rdv (vue directeur).
-     */
     public List<RendezVousDTO> getAllRdv() {
         if (msRdvUrl == null || msRdvUrl.isBlank()) {
-            return appointmentRepo.findAll()
-                    .stream()
-                    .map(this::toRendezVousDTO)
-                    .collect(Collectors.toList());
+            return appointmentRepo.findAll().stream()
+                    .map(this::toRendezVousDTO).collect(Collectors.toList());
         }
         try {
             String url = msRdvUrl + "/api/v1/rdv";
@@ -85,17 +73,88 @@ public class RdvProxyService {
             return response.getBody() != null ? response.getBody() : List.of();
         } catch (Exception e) {
             log.warn("Impossible de joindre ms-rdv (getAllRdv): {}", e.getMessage());
-            return appointmentRepo.findAll()
-                    .stream()
-                    .map(this::toRendezVousDTO)
-                    .collect(Collectors.toList());
+            return appointmentRepo.findAll().stream()
+                    .map(this::toRendezVousDTO).collect(Collectors.toList());
         }
     }
 
-    /**
-     * Annule un rendez-vous.
-     * Si ms-rdv est configuré, appelle le bridge MedicalAppointments + met à jour local.
-     */
+    // ─────────────────────────────────────────────────────────────────────────
+    //  CRÉATION D'UN RDV DEPUIS LE PATIENT
+    // ─────────────────────────────────────────────────────────────────────────
+    public RendezVousDTO creerRdv(Long patientId, String patientEmail, CreerRdvRequest req) {
+
+        // Si appointment-service est configuré, on délègue
+        if (msRdvUrl != null && !msRdvUrl.isBlank()) {
+            try {
+                String url = msRdvUrl + "/api/internal/rdv/patient/creer";
+
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_JSON);
+
+                Map<String, Object> body = Map.of(
+                        "patientId",   patientId,
+                        "patientEmail", patientEmail != null ? patientEmail : "",
+                        "medecinId",   req.getMedecinId(),
+                        "dateHeure",   req.getDateHeure(),
+                        "motif",       req.getMotif() != null ? req.getMotif() : ""
+                );
+
+                HttpEntity<Map<String, Object>> entity = new HttpEntity<>(body, headers);
+                ResponseEntity<RendezVousDTO> response = restTemplate.postForEntity(url, entity, RendezVousDTO.class);
+
+                if (response.getBody() != null) {
+                    log.info("RDV créé via appointment-service pour patient {}", patientId);
+                    return response.getBody();
+                }
+            } catch (Exception e) {
+                log.warn("Impossible de créer RDV via appointment-service, fallback local: {}", e.getMessage());
+            }
+        }
+
+        // Fallback : créer en local (AppointmentRecord)
+        return creerRdvLocal(patientId, req);
+    }
+
+    private RendezVousDTO creerRdvLocal(Long patientId, CreerRdvRequest req) {
+        LocalDateTime dateHeure;
+        try {
+            dateHeure = LocalDateTime.parse(req.getDateHeure(),
+                    DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
+        } catch (Exception e) {
+            try {
+                dateHeure = LocalDateTime.parse(req.getDateHeure());
+            } catch (Exception e2) {
+                throw new IllegalArgumentException("Format de date invalide. Attendu : yyyy-MM-ddTHH:mm:ss");
+            }
+        }
+
+        if (dateHeure.isBefore(LocalDateTime.now())) {
+            throw new IllegalArgumentException("Impossible de prendre un rendez-vous dans le passé.");
+        }
+
+        AppointmentRecord record = new AppointmentRecord();
+        record.setPatientId(patientId);
+        record.setAppointmentDate(dateHeure);
+        record.setNotes(req.getMotif());
+        record.setStatus("SCHEDULED");
+        record.setRecordedAt(LocalDateTime.now());
+        record.setUpdatedAt(LocalDateTime.now());
+
+        // Récupérer infos médecin si disponible
+        if (req.getMedecinId() != null) {
+            record.setDoctorName("Dr. " + req.getMedecinId());
+        }
+
+        record.setExternalAppointmentId("LOCAL-" + System.currentTimeMillis());
+
+        AppointmentRecord saved = appointmentRepo.save(record);
+        log.info("RDV créé localement pour patient {} à {}", patientId, dateHeure);
+        return toRendezVousDTO(saved);
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    //  ANNULATION
+    // ─────────────────────────────────────────────────────────────────────────
     public boolean annulerRdv(Long rdvId, Long patientId, String patientEmail) {
         if (msRdvUrl == null || msRdvUrl.isBlank()) {
             return annulerLocal(rdvId, patientId);
@@ -115,7 +174,6 @@ public class RdvProxyService {
         }
     }
 
-    /** Surcharge sans email — annulation locale uniquement */
     public boolean annulerRdv(Long rdvId, Long patientId) {
         return annulerRdv(rdvId, patientId, null);
     }
@@ -131,6 +189,14 @@ public class RdvProxyService {
                     return true;
                 })
                 .orElse(false);
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    //  HELPERS
+    // ─────────────────────────────────────────────────────────────────────────
+    private List<RendezVousDTO> localRecords(Long patientId) {
+        return appointmentRepo.findByPatientIdOrderByAppointmentDateDesc(patientId)
+                .stream().map(this::toRendezVousDTO).collect(Collectors.toList());
     }
 
     private RendezVousDTO toRendezVousDTO(AppointmentRecord r) {

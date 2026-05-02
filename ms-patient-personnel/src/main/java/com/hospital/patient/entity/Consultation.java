@@ -3,6 +3,7 @@ package com.hospital.patient.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -36,6 +37,8 @@ public class Consultation {
     private Integer tensionSystolique;
     private Integer tensionDiastolique;
     private Double temperature;
+
+    private Long patientId;
 
     @ManyToOne
     @JoinColumn(name = "medecin_id")

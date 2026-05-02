@@ -6,19 +6,39 @@ export default defineConfig({
   server: {
     port: 5173,
     proxy: {
-      // Routes d'authentification et d'administration → ms-auth (8082)
+      // ── Chatbot → port 8083 ────────────────────────────────────
+      '/api/v1/chatbot': {
+        target: 'http://localhost:8083',
+        changeOrigin: true,
+        secure: false,
+      },
+      // ── Auth endpoints → port 8082 (ms-auth) ──────────────────
       '/api/v1/auth': {
         target: 'http://localhost:8082',
         changeOrigin: true,
+        secure: false,
       },
       '/api/v1/admin': {
         target: 'http://localhost:8082',
         changeOrigin: true,
+        secure: false,
       },
-      // Toutes les autres routes /api/v1 → ms-patient-personnel (8081)
+      // ── Tout le reste /api/v1/* → port 8081 (ms-patient-personnel)
       '/api/v1': {
         target: 'http://localhost:8081',
         changeOrigin: true,
+        secure: false,
+      },
+      // ── WebSocket notifications → port 8081 ───────────────────
+      '/ws': {
+        target: 'http://localhost:8081',
+        changeOrigin: true,
+        ws: true,
+      },
+      '/ws-native': {
+        target: 'http://localhost:8081',
+        changeOrigin: true,
+        ws: true,
       },
     },
   },

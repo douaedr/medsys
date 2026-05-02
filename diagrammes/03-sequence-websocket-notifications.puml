@@ -1,0 +1,53 @@
+@startuml sequence-websocket
+!theme plain
+skinparam backgroundColor #FAFBFC
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 11
+
+title MedSys — Notifications temps réel (WebSocket + RabbitMQ)
+
+actor "Médecin" as M
+actor "Patient" as P
+participant "Frontend\nMédecin" as FM
+participant "Frontend\nPatient" as FP
+participant "appointment\nservice" as APPT
+queue "RabbitMQ\nappointment.exchange" as RMQ_A
+participant "ms-patient" as PS
+queue "RabbitMQ\npatient.exchange" as RMQ_P
+participant "WebSocket\nListener" as WSL
+
+M -> FM : Crée un RDV pour\nle patient
+activate FM
+FM -> APPT : POST /rdv
+activate APPT
+APPT -> APPT : Sauvegarde en BDD
+APPT ->> RMQ_A : Publish AppointmentEvent\n(eventType: CREATED)
+APPT --> FM : 201 Created
+deactivate APPT
+deactivate FM
+
+RMQ_A ->> PS : Consume AppointmentEvent
+activate PS
+PS -> PS : AppointmentEventListener
+PS ->> RMQ_P : Publish NotificationEvent\n(patientId, subject, message)
+deactivate PS
+
+RMQ_P ->> WSL : Consume NotificationEvent
+activate WSL
+WSL -> WSL : SimpMessagingTemplate
+WSL ->> FP : Push WebSocket\n/topic/notifications/{patientId}
+deactivate WSL
+
+note right of FP
+  Le frontend patient était abonné via :
+  client.subscribe("/topic/notifications/" + patientId)
+end note
+
+FP -> FP : useNotifications hook\nMet à jour le badge
+FP -> P : 🔔 Cloche avec badge\n+ Notification navigateur
+activate P
+P --> FP : Click sur la cloche
+FP -> P : Affiche la notification
+deactivate P
+
+@enduml

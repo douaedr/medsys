@@ -16,6 +16,7 @@ import java.util.Optional;
 
 @Repository
 public interface PatientRepository extends JpaRepository<Patient, Long> {
+    java.util.Optional<com.hospital.patient.entity.Patient> findByEmail(String email);
 
     Optional<Patient> findByCin(String cin);
 

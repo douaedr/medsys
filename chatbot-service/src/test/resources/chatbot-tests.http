@@ -1,0 +1,69 @@
+### ============================================
+### Tests pour le chatbot-service
+### Utilise le client HTTP integre d'IntelliJ
+### ============================================
+
+### 1. Health check (verifier que le service tourne)
+GET http://localhost:8083/api/chatbot/health
+
+### 2. Question simple (sans patient existant - test isole de Gemini)
+POST http://localhost:8083/api/chatbot/ask
+Content-Type: application/json
+
+{
+  "patientId": 1,
+  "question": "Bonjour, comment se deroule une consultation chez le medecin ?"
+}
+
+### 3. Question sur les rendez-vous
+POST http://localhost:8083/api/chatbot/ask
+Content-Type: application/json
+
+{
+  "patientId": 1,
+  "question": "Quand est mon prochain rendez-vous ?"
+}
+
+### 4. Question sur le dossier medical
+POST http://localhost:8083/api/chatbot/ask
+Content-Type: application/json
+
+{
+  "patientId": 1,
+  "question": "Quels sont mes antecedents medicaux ?"
+}
+
+### 5. Question generale (pas de donnees patient necessaires)
+POST http://localhost:8083/api/chatbot/ask
+Content-Type: application/json
+
+{
+  "patientId": 1,
+  "question": "Comment dois-je me preparer pour une prise de sang ?"
+}
+
+### 6. Test de validation (patientId manquant - doit retourner 400)
+POST http://localhost:8083/api/chatbot/ask
+Content-Type: application/json
+
+{
+  "question": "Test sans patientId"
+}
+
+### 7. Test de validation (question vide - doit retourner 400)
+POST http://localhost:8083/api/chatbot/ask
+Content-Type: application/json
+
+{
+  "patientId": 1,
+  "question": ""
+}
+
+### 8. Test RAG - Groupe sanguin
+POST http://localhost:8083/api/chatbot/ask
+Content-Type: application/json
+
+{
+  "patientId": 1,
+  "question": "Quel est mon groupe sanguin ?"
+}

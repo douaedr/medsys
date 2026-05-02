@@ -1,0 +1,77 @@
+@startuml architecture-microservices
+!theme plain
+skinparam backgroundColor #FAFBFC
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 12
+
+title MedSys — Architecture Microservices
+
+' ─── Frontends ───
+package "Couche Présentation" #E3F2FD {
+  [Frontend Web\n(React + Vite + Tailwind)\nport 5173] as WEB
+  [Frontend Mobile\n(React Native)\n(en cours)] as MOBILE
+}
+
+' ─── Microservices ───
+package "Couche Microservices" #FFF3E0 {
+  [ms-auth\n:8082\n(Authentification JWT)] as AUTH
+  [ms-patient-personnel\n:8081\n(Gestion patients + dossiers)] as PATIENT
+  [appointment-service\n:8085\n(Gestion RDV)] as APPT
+  [chatbot-service\n:8083\n(IA Gemini + RAG)] as BOT
+}
+
+' ─── Persistance ───
+database "MySQL\n:3307" as DB {
+  frame "ms_auth_db"
+  frame "ms_patient_db"
+  frame "ms_appointment_db"
+}
+
+' ─── Bus de messages ───
+queue "RabbitMQ\n:5672\n(events asynchrones)" as MQ
+
+' ─── APIs externes ───
+cloud "Google Gemini API\n(IA générative)" as GEMINI
+
+' ─── Communications HTTP/REST ───
+WEB -down-> AUTH : Login / Register
+WEB -down-> PATIENT : Dossier, profil, msg
+WEB -down-> APPT : RDV (proxy via PATIENT)
+WEB -down-> BOT : Questions chatbot
+WEB <-down- PATIENT : WebSocket /ws\n(notifications temps réel)
+
+MOBILE -down-> AUTH
+MOBILE -down-> PATIENT
+
+' ─── Inter-services ───
+PATIENT --> APPT : REST (RdvProxyService)
+BOT --> PATIENT : Récupère dossier (RAG)
+BOT --> APPT : Récupère RDV (RAG)
+BOT --> GEMINI : Génère réponses
+
+' ─── BDD ───
+AUTH --> DB
+PATIENT --> DB
+APPT --> DB
+
+' ─── Events asynchrones ───
+APPT ..> MQ : Publish AppointmentEvent
+MQ ..> PATIENT : Consume → push WebSocket
+AUTH ..> MQ : Publish UserEvents (audit)
+
+note right of BOT
+  **Pattern RAG** :
+  1. Récupère contexte patient
+  2. Construit prompt enrichi
+  3. Appelle Gemini
+  4. Retourne réponse personnalisée
+end note
+
+note bottom of MQ
+  Exchanges :
+  - appointment.exchange
+  - patient.exchange
+  - audit.exchange
+end note
+
+@enduml
