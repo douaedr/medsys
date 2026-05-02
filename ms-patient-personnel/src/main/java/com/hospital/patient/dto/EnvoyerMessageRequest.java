@@ -1,18 +1,16 @@
 package com.hospital.patient.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import com.hospital.patient.entity.MessagePersonnel;
 import lombok.*;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class EnvoyerMessageRequest {
-
-    @NotBlank(message = "Le contenu du message est obligatoire")
-    @Size(max = 1000, message = "Le message ne peut pas dépasser 1000 caractères")
+    private Long destinataireId;
     private String contenu;
-
+    private MessagePersonnel.Priorite priorite;
     private Long medecinId;
     private String medecinNom;
 }

@@ -8,6 +8,8 @@ import PatientDashboard from './pages/patient/PatientDashboard'
 import PersonnelDashboard from './pages/personnel/PersonnelDashboard'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import DirecteurDashboard from './pages/directeur/DirecteurDashboard'
+// FEAT 1 — Chef de service
+import ChefServiceDashboard from './pages/chef/ChefServiceDashboard'
 
 function ProtectedRoute({ children, allowedRoles }) {
   const { user, isAuthenticated } = useAuth()
@@ -27,7 +29,7 @@ function AppRoutes() {
       <Route path="/patient/dashboard" element={
         <ProtectedRoute allowedRoles={['PATIENT']}><PatientDashboard /></ProtectedRoute>
       } />
-      {/* 🔧 FIX: Ajout du rôle SECRETARY pour qu'elle puisse accéder au dashboard personnel */}
+      {/* 🔧 SECRETARY + PERSONNEL (FEAT 7) accèdent au dashboard personnel */}
       <Route path="/personnel/dashboard" element={
         <ProtectedRoute allowedRoles={['MEDECIN', 'PERSONNEL', 'SECRETARY']}><PersonnelDashboard /></ProtectedRoute>
       } />
@@ -36,6 +38,11 @@ function AppRoutes() {
       } />
       <Route path="/directeur" element={
         <ProtectedRoute allowedRoles={['DIRECTEUR', 'ADMIN']}><DirecteurDashboard /></ProtectedRoute>
+      } />
+
+      {/* ═══ FEAT 1 — Chef de service ═══ */}
+      <Route path="/dashboard/chef" element={
+        <ProtectedRoute allowedRoles={['CHEF_SERVICE']}><ChefServiceDashboard /></ProtectedRoute>
       } />
 
       <Route path="*" element={<Navigate to="/" />} />

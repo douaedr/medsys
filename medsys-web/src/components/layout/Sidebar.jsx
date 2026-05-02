@@ -1,12 +1,15 @@
+import { useEffect, useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
+import { personnelMessagesApi } from '../../api/api'
 import {
   LayoutDashboard, Users, Calendar, FileText, MessageSquare,
   Settings, LogOut, Stethoscope, UserCog, BarChart3, Activity, User,
-  FolderOpen
+  FolderOpen, Clock, ClipboardList, Network, Briefcase
 } from 'lucide-react'
 import { cn } from '../../lib/utils'
 
+// FEAT 2 + 3 + 6 + 7 — menus enrichis pour tous les rôles
 const MENUS = {
   PATIENT: [
     { to: '/patient/dashboard', icon: LayoutDashboard, label: 'Tableau de bord' },
@@ -21,16 +24,35 @@ const MENUS = {
     { to: '/personnel/dashboard?tab=patients', icon: Users, label: 'Patients' },
     { to: '/personnel/dashboard?tab=consultations', icon: Stethoscope, label: 'Consultations' },
     { to: '/personnel/dashboard?tab=rdv', icon: Calendar, label: 'Rendez-vous' },
+    // FEAT 3 + 6
+    { to: '/personnel/dashboard?tab=planning', icon: Clock, label: 'Mon planning' },
+    // FEAT 2
+    { to: '/personnel/dashboard?tab=messages', icon: MessageSquare, label: 'Messagerie' },
   ],
   PERSONNEL: [
     { to: '/personnel/dashboard', icon: LayoutDashboard, label: 'Tableau de bord' },
+    // FEAT 7
+    { to: '/personnel/dashboard?tab=taches', icon: ClipboardList, label: 'Mes tâches' },
     { to: '/personnel/dashboard?tab=patients', icon: Users, label: 'Patients' },
     { to: '/personnel/dashboard?tab=rdv', icon: Calendar, label: 'Rendez-vous' },
+    // FEAT 2
+    { to: '/personnel/dashboard?tab=messages', icon: MessageSquare, label: 'Messagerie' },
   ],
   SECRETARY: [
     { to: '/personnel/dashboard', icon: LayoutDashboard, label: 'Tableau de bord' },
     { to: '/personnel/dashboard?tab=patients', icon: Users, label: 'Patients' },
     { to: '/personnel/dashboard?tab=rdv', icon: Calendar, label: 'Rendez-vous' },
+    // FEAT 2
+    { to: '/personnel/dashboard?tab=messages', icon: MessageSquare, label: 'Messagerie' },
+  ],
+  // FEAT 1 — Chef de service
+  CHEF_SERVICE: [
+    { to: '/dashboard/chef', icon: LayoutDashboard, label: 'Tableau de bord' },
+    { to: '/dashboard/chef?tab=medecins', icon: Stethoscope, label: 'Médecins' },
+    { to: '/dashboard/chef?tab=creneaux', icon: Clock, label: 'Créneaux & planning' },
+    { to: '/dashboard/chef?tab=stats', icon: BarChart3, label: 'Statistiques' },
+    { to: '/dashboard/chef?tab=organigramme', icon: Network, label: 'Organigramme' },
+    { to: '/dashboard/chef?tab=messages', icon: MessageSquare, label: 'Messagerie' },
   ],
   ADMIN: [
     { to: '/admin', icon: LayoutDashboard, label: 'Tableau de bord' },
@@ -44,6 +66,10 @@ const MENUS = {
     { to: '/directeur?tab=patients', icon: Users, label: 'Patients' },
     { to: '/directeur?tab=medecins', icon: Stethoscope, label: 'Médecins' },
     { to: '/directeur?tab=rapports', icon: FileText, label: 'Rapports' },
+    // FEAT 5
+    { to: '/directeur?tab=organigramme', icon: Network, label: 'Organigramme' },
+    // FEAT 2
+    { to: '/directeur?tab=messages', icon: MessageSquare, label: 'Messagerie' },
   ],
 }
 
@@ -51,6 +77,21 @@ export default function Sidebar() {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
   const menu = MENUS[user?.role] || []
+
+  // FEAT 2 — badge messages non lus (polling toutes les 30s)
+  const [unread, setUnread] = useState(0)
+  useEffect(() => {
+    if (!user || user.role === 'PATIENT') return
+    const fetchUnread = async () => {
+      try {
+        const res = await personnelMessagesApi.countNonLus()
+        setUnread(res.data?.count || 0)
+      } catch { /* silently fail */ }
+    }
+    fetchUnread()
+    const t = setInterval(fetchUnread, 30000)
+    return () => clearInterval(t)
+  }, [user])
 
   const handleLogout = () => {
     logout()
@@ -74,24 +115,32 @@ export default function Sidebar() {
       </div>
 
       <nav className="flex-1 p-3 overflow-y-auto">
-        {menu.map((item) => (
-          <NavLink
-            key={item.to}
-            to={item.to}
-            end={!item.to.includes('?')}
-            className={({ isActive }) =>
-              cn(
-                'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium mb-1 transition-all',
-                isActive
-                  ? 'bg-primary-50 text-primary-700'
-                  : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
-              )
-            }
-          >
-            <item.icon className="w-4.5 h-4.5" strokeWidth={2} />
-            <span>{item.label}</span>
-          </NavLink>
-        ))}
+        {menu.map((item) => {
+          const isMessages = item.label === 'Messagerie' && user?.role !== 'PATIENT'
+          return (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              end={!item.to.includes('?')}
+              className={({ isActive }) =>
+                cn(
+                  'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium mb-1 transition-all',
+                  isActive
+                    ? 'bg-primary-50 text-primary-700'
+                    : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                )
+              }
+            >
+              <item.icon className="w-4.5 h-4.5" strokeWidth={2} />
+              <span className="flex-1">{item.label}</span>
+              {isMessages && unread > 0 && (
+                <span className="ml-auto inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full text-[10px] font-bold bg-red-500 text-white">
+                  {unread > 99 ? '99+' : unread}
+                </span>
+              )}
+            </NavLink>
+          )
+        })}
       </nav>
 
       <div className="p-3 border-t border-slate-200">

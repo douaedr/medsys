@@ -71,6 +71,19 @@ export const medecinApi = {
   getConsultations: () => PATIENT_API.get('/medecin/me/consultations'),
   createConsultation: (data) => PATIENT_API.post('/medecin/me/consultations', data),
   getMyPatients: () => PATIENT_API.get('/medecin/me/patients'),
+
+  // ═══ FEAT 3 — Créneaux bloqués (réutilise endpoints secrétaire) ═══
+  getSlots: () => PATIENT_API.get('/secretaire/slots'),
+  getSlotsSemaine: (dateDebut) =>
+    PATIENT_API.get('/secretaire/slots/semaine', { params: dateDebut ? { dateDebut } : {} }),
+  bloquerSlot: (data) => PATIENT_API.post('/secretaire/slots/bloquer', data),
+  supprimerSlot: (id) => PATIENT_API.delete(`/secretaire/slots/${id}`),
+
+  // ═══ FEAT 6 — Planning hebdomadaire ═══
+  getPlanning: () => PATIENT_API.get('/medecin/me/planning'),
+
+  // ═══ FEAT 7 — Tâches (messages urgents) ═══
+  getTaches: () => PATIENT_API.get('/medecin/me/taches'),
 }
 
 export const directeurApi = {
@@ -80,6 +93,25 @@ export const directeurApi = {
   exportPdf: (id) => PATIENT_API.get(`/directeur/patients/${id}/dossier/pdf`, { responseType: 'blob' }),
   medecins: () => PATIENT_API.get('/directeur/medecins'),
   rdv: (params) => PATIENT_API.get('/directeur/rdv', { params }),
+
+  // ═══ FEAT 4 — Rapports PDF ═══
+  rapportMensuel: (mois, annee) =>
+    PATIENT_API.get('/directeur/rapports/mensuel', {
+      params: { mois, annee },
+      responseType: 'blob',
+    }),
+  rapportAnnuel: (annee) =>
+    PATIENT_API.get('/directeur/rapports/annuel', {
+      params: { annee },
+      responseType: 'blob',
+    }),
+  rapportMedecins: () =>
+    PATIENT_API.get('/directeur/rapports/medecins', { responseType: 'blob' }),
+  rapportPatients: () =>
+    PATIENT_API.get('/directeur/rapports/patients', { responseType: 'blob' }),
+
+  // ═══ FEAT 5 — Organigramme ═══
+  organigramme: () => PATIENT_API.get('/organigramme'),
 }
 
 export const adminApi = {
@@ -106,4 +138,40 @@ export const secretaireApi = {
 export const chatbotApi = {
   ask: (question, patientId) =>
     CHATBOT_API.post('/ask', { question, patientId }),
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// FEAT 1 — Chef de service
+// ═══════════════════════════════════════════════════════════════════
+export const chefApi = {
+  getService:        () => PATIENT_API.get('/chef/service'),
+  getMedecins:       () => PATIENT_API.get('/chef/medecins'),
+  getStats:          () => PATIENT_API.get('/chef/stats'),
+  getCreneaux:       () => PATIENT_API.get('/chef/creneaux'),
+  creerCreneau:      (data) => PATIENT_API.post('/chef/creneaux', data),
+  supprimerCreneau:  (id) => PATIENT_API.delete(`/chef/creneaux/${id}`),
+  // FEAT 6 — Planning du service
+  getPlanningService: () => PATIENT_API.get('/chef/planning/service'),
+  getPlanningMedecin: (medecinId) =>
+    PATIENT_API.get('/chef/planning', { params: { medecinId } }),
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// FEAT 2 — Messagerie inter-personnel
+// ═══════════════════════════════════════════════════════════════════
+export const personnelMessagesApi = {
+  recus:        () => PATIENT_API.get('/personnel/messages/recus'),
+  envoyes:      () => PATIENT_API.get('/personnel/messages/envoyes'),
+  envoyer:      (data) => PATIENT_API.post('/personnel/messages', data),
+  marquerLu:    (id) => PATIENT_API.put(`/personnel/messages/${id}/lu`),
+  countNonLus:  () => PATIENT_API.get('/personnel/messages/non-lus/count'),
+  collegues:    () => PATIENT_API.get('/personnel/collegues'),
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// FEAT 7 — Personnel portal (infirmier, brancardier, aide-soignant)
+// ═══════════════════════════════════════════════════════════════════
+export const personnelApi = {
+  getTaches:        () => PATIENT_API.get('/personnel/me/taches'),
+  getPatientsJour:  () => PATIENT_API.get('/personnel/me/patients-jour'),
 }

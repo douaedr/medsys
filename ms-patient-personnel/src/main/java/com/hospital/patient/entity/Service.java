@@ -24,4 +24,11 @@ public class Service {
     private String description;
     private String localisation;
     private Integer capaciteLits;
+
+    /**
+     * FEAT 1 — ID du médecin (medecins_ref.id) qui est chef de ce service.
+     * Nullable : un service peut ne pas avoir de chef.
+     */
+    @Column(name = "chef_id")
+    private Long chefId;
 }

@@ -49,10 +49,36 @@ public class SecurityConfig {
                         ).permitAll()
                         .requestMatchers("/api/v1/patients/**").permitAll()
                         .requestMatchers("/api/v1/medecins/**").permitAll()
+
+                        // ───────── FEAT 1 — Chef de service ─────────
+                        .requestMatchers("/api/v1/chef/**").hasRole("CHEF_SERVICE")
+
+                        // ───────── FEAT 5 — Organigramme ─────────
+                        .requestMatchers("/api/v1/organigramme/**")
+                            .hasAnyRole("DIRECTEUR", "ADMIN", "CHEF_SERVICE")
+
+                        // ───────── FEAT 4 — Rapports directeur ─────────
+                        // (déjà couvert par /api/v1/directeur/** ci-dessous)
+
+                        // ───────── FEAT 7 — Endpoints du PERSONNEL (infirmier/brancardier/aide-soignant) ─────────
+                        .requestMatchers("/api/v1/personnel/me/**").hasAnyRole("PERSONNEL", "MEDECIN", "CHEF_SERVICE")
+
+                        // ───────── FEAT 2 — Messagerie inter-personnel (tous rôles personnel) ─────────
+                        .requestMatchers("/api/v1/personnel/messages/**", "/api/v1/personnel/collegues")
+                            .hasAnyRole("MEDECIN", "PERSONNEL", "SECRETARY", "CHEF_SERVICE", "DIRECTEUR", "ADMIN")
+
+                        // ───────── Médecin / Chef ─────────
                         .requestMatchers("/api/v1/medecin/**").hasAnyRole("MEDECIN", "CHEF_SERVICE")
+
+                        // ───────── Patient ─────────
                         .requestMatchers("/api/v1/patient/**").hasRole("PATIENT")
+
+                        // ───────── Directeur ─────────
                         .requestMatchers("/api/v1/directeur/**").hasAnyRole("DIRECTEUR", "ADMIN")
-                        .requestMatchers("/api/v1/secretaire/**").hasAnyRole("SECRETARY", "MEDECIN", "ADMIN")
+
+                        // ───────── Secrétaire ─────────
+                        .requestMatchers("/api/v1/secretaire/**").hasAnyRole("SECRETARY", "MEDECIN", "ADMIN", "CHEF_SERVICE")
+
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
