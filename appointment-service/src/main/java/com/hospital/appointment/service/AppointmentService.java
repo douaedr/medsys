@@ -34,9 +34,9 @@ public class AppointmentService {
     private final WaitingListEntryRepository waitingListEntryRepository;
     private final NotificationService notificationService;
 
-    public AppointmentResponseDto book(BookAppointmentDto dto) {
-        TimeSlot slot = timeSlotRepository.findById(dto.timeSlotId())
-                .orElseThrow(() -> new NotFoundException("Créneau introuvable"));
+    public AppointmentResponseDto book(BookAppointmentDto dto) 
+	{TimeSlot slot = timeSlotRepository.findByIdWithLock(dto.timeSlotId())
+        .orElseThrow(() -> new NotFoundException("Créneau introuvable"));
 
         if (slot.getStatus() != SlotStatus.Available) {
             throw new BusinessException("Ce créneau n'est plus disponible.");

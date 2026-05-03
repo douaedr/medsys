@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.Lock;
+import jakarta.persistence.LockModeType;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -121,4 +123,8 @@ public interface TimeSlotRepository extends JpaRepository<TimeSlot, Integer> {
             @Param("doctorId") Integer doctorId,
             @Param("start") LocalDateTime start,
             @Param("end") LocalDateTime end);
+// Verrou pessimiste — empêche deux réservations simultanées du même slot
+@Lock(LockModeType.PESSIMISTIC_WRITE)
+@Query("SELECT t FROM TimeSlot t WHERE t.id = :id")
+Optional<TimeSlot> findByIdWithLock(@Param("id") Integer id);
 }
