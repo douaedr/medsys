@@ -51,6 +51,9 @@ public class User {
     @Column(nullable = false)
     @Builder.Default
     private Integer cancelCount = 0;
+	/** ID du médecin auquel cette secrétaire est assignée (null si non secrétaire). */
+	@Column(name = "assignedDoctorId")
+	private Integer assignedDoctorId;
 
     @Column(nullable = false)
     @Builder.Default

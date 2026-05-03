@@ -34,9 +34,11 @@ public class AppointmentService {
     private final WaitingListEntryRepository waitingListEntryRepository;
     private final NotificationService notificationService;
 
-    public AppointmentResponseDto book(BookAppointmentDto dto) 
-	{TimeSlot slot = timeSlotRepository.findByIdWithLock(dto.timeSlotId())
-        .orElseThrow(() -> new NotFoundException("Créneau introuvable"));
+    public AppointmentResponseDto book(BookAppointmentDto dto) {
+
+        // Verrou pessimiste — empêche le double booking simultané
+        TimeSlot slot = timeSlotRepository.findByIdWithLock(dto.timeSlotId())
+                .orElseThrow(() -> new NotFoundException("Créneau introuvable"));
 
         if (slot.getStatus() != SlotStatus.Available) {
             throw new BusinessException("Ce créneau n'est plus disponible.");
@@ -52,20 +54,38 @@ public class AppointmentService {
 
         if (current != null) {
             bookedById = current.getId();
+
             if (current.getRole() == UserRole.Patient) {
+                // Patient connecté — réserve pour lui-même
                 patient = current;
+
             } else {
+                // Doctor ou Secretary — réserve pour un patient tiers
                 if (dto.patientEmail() == null || dto.patientName() == null) {
                     throw new BusinessException("Email et nom du patient sont requis.");
                 }
-                patient = findOrCreateAnonymousPatient(dto.patientName(), dto.patientEmail(), dto.patientPhone());
+
+                // Secrétaire : vérifier qu'elle est assignée au médecin du créneau
+                if (current.getRole() == UserRole.Secretary) {
+                    if (slot.getDoctorId() != null
+                            && !slot.getDoctorId().equals(current.getAssignedDoctorId())) {
+                        throw new UnauthorizedException(
+                                "Vous n'êtes pas assignée au médecin de ce créneau.");
+                    }
+                }
+
+                patient = findOrCreateAnonymousPatient(
+                        dto.patientName(), dto.patientEmail(), dto.patientPhone());
             }
+
         } else {
+            // Utilisateur anonyme
             anonymousToken = UUID.randomUUID().toString();
             if (dto.patientEmail() == null || dto.patientName() == null) {
                 throw new BusinessException("Email et nom sont requis pour réserver sans compte.");
             }
-            patient = findOrCreateAnonymousPatient(dto.patientName(), dto.patientEmail(), dto.patientPhone());
+            patient = findOrCreateAnonymousPatient(
+                    dto.patientName(), dto.patientEmail(), dto.patientPhone());
             bookedById = patient.getId();
         }
 
@@ -121,7 +141,8 @@ public class AppointmentService {
         AppointmentStatus cancelStatus = AppointmentStatus.CancelledByPatient;
 
         if (current != null) {
-            if (current.getRole() == UserRole.Patient && !current.getId().equals(appt.getPatientId())) {
+            if (current.getRole() == UserRole.Patient
+                    && !current.getId().equals(appt.getPatientId())) {
                 throw new UnauthorizedException("Vous ne pouvez pas annuler ce rendez-vous.");
             }
             if (current.getRole() == UserRole.Doctor) {
@@ -130,7 +151,8 @@ public class AppointmentService {
                 cancelStatus = AppointmentStatus.CancelledBySecretary;
             }
         } else {
-            if (dto.anonymousToken() == null || !dto.anonymousToken().equals(appt.getAnonymousToken())) {
+            if (dto.anonymousToken() == null
+                    || !dto.anonymousToken().equals(appt.getAnonymousToken())) {
                 throw new UnauthorizedException("Token invalide.");
             }
         }
@@ -174,13 +196,14 @@ public class AppointmentService {
         User current = SecurityUtils.getCurrentUser();
         if (current == null) throw new UnauthorizedException("Non authentifié");
 
-        if (current.getRole() == UserRole.Patient && !current.getId().equals(appt.getPatientId())) {
+        if (current.getRole() == UserRole.Patient
+                && !current.getId().equals(appt.getPatientId())) {
             throw new UnauthorizedException("Accès refusé.");
         }
 
         TimeSlot oldSlot = timeSlotRepository.findById(appt.getTimeSlotId())
                 .orElseThrow(() -> new NotFoundException("Ancien créneau introuvable"));
-        TimeSlot newSlot = timeSlotRepository.findById(dto.newTimeSlotId())
+        TimeSlot newSlot = timeSlotRepository.findByIdWithLock(dto.newTimeSlotId())
                 .orElseThrow(() -> new NotFoundException("Nouveau créneau introuvable"));
 
         if (newSlot.getStatus() != SlotStatus.Available) {
@@ -205,7 +228,8 @@ public class AppointmentService {
                 .userId(current.getId())
                 .entityType("Appointment")
                 .entityId(appt.getId())
-                .detail("RDV %d: créneau %d -> %d".formatted(appt.getId(), oldSlot.getId(), newSlot.getId()))
+                .detail("RDV %d: créneau %d -> %d".formatted(
+                        appt.getId(), oldSlot.getId(), newSlot.getId()))
                 .build());
 
         return toDto(appt, newSlot, appt.getPatient(), null);
@@ -218,9 +242,11 @@ public class AppointmentService {
 
         List<Appointment> appointments;
         switch (current.getRole()) {
-            case Patient -> appointments = appointmentRepository.findByPatientIdWithRelations(current.getId());
+            case Patient -> appointments =
+                    appointmentRepository.findByPatientIdWithRelations(current.getId());
             case Doctor -> appointments = appointmentRepository.findAll().stream()
-                    .filter(a -> a.getTimeSlot() != null && a.getTimeSlot().getDoctorId() != null
+                    .filter(a -> a.getTimeSlot() != null
+                            && a.getTimeSlot().getDoctorId() != null
                             && a.getTimeSlot().getDoctorId().equals(current.getId()))
                     .collect(Collectors.toList());
             default -> appointments = appointmentRepository.findAll();
@@ -263,12 +289,14 @@ public class AppointmentService {
     private void checkPenalty(User patient) {
         if (patient.getPenaltyUntil() != null
                 && patient.getPenaltyUntil().isAfter(LocalDateTime.now())) {
-            throw new BusinessException("Votre compte est bloqué jusqu'au " + patient.getPenaltyUntil());
+            throw new BusinessException(
+                    "Votre compte est bloqué jusqu'au " + patient.getPenaltyUntil());
         }
     }
 
     private void applyPenalty(User patient) {
-        patient.setCancelCount(patient.getCancelCount() == null ? 1 : patient.getCancelCount() + 1);
+        patient.setCancelCount(
+                patient.getCancelCount() == null ? 1 : patient.getCancelCount() + 1);
         if (patient.getCancelCount() >= 3) {
             patient.setPenaltyUntil(LocalDateTime.now().plusDays(7));
             patient.setCancelCount(0);
