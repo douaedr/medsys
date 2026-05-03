@@ -36,6 +36,7 @@ export default function PersonnelLoginPage() {
       // 🔧 FIX: SECRETARY ajouté dans la liste des rôles redirigés vers /personnel/dashboard
       if (data.role === 'ADMIN') navigate('/admin')
       else if (data.role === 'DIRECTEUR') navigate('/directeur')
+      else if (data.role === 'CHEF_SERVICE') navigate('/dashboard/chef')
       else if (['MEDECIN', 'PERSONNEL', 'SECRETARY'].includes(data.role)) navigate('/personnel/dashboard')
       else navigate('/')
     } catch (err) {

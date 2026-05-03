@@ -6,6 +6,7 @@ import StatCard from '../../components/shared/StatCard'
 import LoadingState from '../../components/shared/LoadingState'
 import EmptyState from '../../components/shared/EmptyState'
 import PlanningHebdo from '../../components/planning/PlanningHebdo'
+import MonEmploiDuTemps from './MonEmploiDuTemps'
 import MessagesPanel from '../../components/messages/MessagesPanel'
 import { useTab } from '../../lib/useTab'
 import {
@@ -538,6 +539,7 @@ export default function PersonnelDashboard() {
       )}
 
       {/* ═══ FEAT 6 — Mon planning + FEAT 3 — Créneaux bloqués ═══ */}
+      {tab === 'emploi' && <MonEmploiDuTemps />}
       {tab === 'planning' && isMedecin && (
         <div className="space-y-6">
           {/* Planning hebdomadaire (lecture seule) */}

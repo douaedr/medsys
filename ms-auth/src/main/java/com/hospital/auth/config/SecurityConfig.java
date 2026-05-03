@@ -72,6 +72,7 @@ public class SecurityConfig {
                     "/api/v1/auth/reset-password",
                     "/api/v1/auth/verify"
                 ).permitAll()
+                .requestMatchers("/api/internal/**").permitAll()
                 .requestMatchers("/api/v1/admin/**").hasAnyRole("ADMIN")
                 .anyRequest().authenticated()
             )

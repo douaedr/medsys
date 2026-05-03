@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { directeurApi } from '../../api/api'
+import StatsGraphiques from './StatsGraphiques'
 import RapportsPanel from './RapportsPanel'
 import OrganigrammeView from '../../components/messages/OrganigrammeView'
 import MessagesPanel from '../../components/messages/MessagesPanel'
@@ -143,35 +144,8 @@ export default function DirecteurDashboard() {
         </div>
       </>)}
 
-      {/* ═══ STATS ═══ */}
-      {tab === 'stats' && (
-        <div className="space-y-6">
-          <div className="grid md:grid-cols-4 gap-4">
-            <StatCard icon={Users} label="Patients total" value={stats?.totalPatients ?? 0} color="primary" />
-            <StatCard icon={Calendar} label="RDV total" value={stats?.totalRdv ?? 0} color="accent" />
-            <StatCard icon={TrendingUp} label="RDV aujourd'hui" value={stats?.rdvAujourdhui ?? 0} color="success" />
-            <StatCard icon={Stethoscope} label="Médecins actifs" value={stats?.totalMedecins ?? 0} color="warning" />
-          </div>
-          <div className="card p-6">
-            <h3 className="font-bold text-slate-900 mb-4">Derniers rendez-vous</h3>
-            {rdv.length === 0 ? <p className="text-sm text-slate-500 text-center py-6">Aucun rendez-vous</p> : (
-              <div className="space-y-2">
-                {rdv.slice(0, 10).map((r, i) => (
-                  <div key={i} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
-                    <div>
-                      <div className="text-sm font-semibold">{r.medecinNom || r.doctorName || 'Médecin'}</div>
-                      <div className="text-xs text-slate-500">{formatDateTime(r.date)} {r.heure ? `à ${r.heure}` : ''}</div>
-                    </div>
-                    <span className={`text-xs font-semibold px-2 py-1 rounded-full ${r.statut === 'ANNULE' ? 'bg-red-100 text-red-700' : r.statut === 'TERMINE' ? 'bg-slate-100 text-slate-600' : 'bg-emerald-100 text-emerald-700'}`}>
-                      {r.statut || 'EN_ATTENTE'}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-      )}
+{/* ═══ STATS ═══ */}
+      {tab === 'stats' && <StatsGraphiques />}
 
       {/* ═══ PATIENTS ═══ */}
       {tab === 'patients' && (
