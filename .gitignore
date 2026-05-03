@@ -21,3 +21,5 @@ chatbot-service/src/main/resources/application.properties
 .DS_Store
 Thumbs.db
 ms-personnel/PersonnelMS_FRONTEND_react/PersonnelMSFE/personnelms-app/node_modules/
+
+application-local.properties
