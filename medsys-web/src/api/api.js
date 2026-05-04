@@ -55,7 +55,7 @@ export const patientApi = {
   }),
   getDocuments: () => PATIENT_API.get('/patient/me/documents'),
   deleteDocument: (id) => PATIENT_API.delete(`/patient/me/documents/${id}`),
-  getDocumentFileUrl: (id) => `/api/v1/patient/me/documents/${id}/fichier`,
+  getDocumentFileUrl: (id) => null,
 
   getMessages: () => PATIENT_API.get('/patient/me/messages'),
   envoyerMessage: (data) => PATIENT_API.post('/patient/me/messages', data),
@@ -72,17 +72,17 @@ export const medecinApi = {
   createConsultation: (data) => PATIENT_API.post('/medecin/me/consultations', data),
   getMyPatients: () => PATIENT_API.get('/medecin/me/patients'),
 
-  // ═══ FEAT 3 — Créneaux bloqués (réutilise endpoints secrétaire) ═══
+  // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â FEAT 3 Ã¢â‚¬â€ CrÃƒÂ©neaux bloquÃƒÂ©s (rÃƒÂ©utilise endpoints secrÃƒÂ©taire) Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
   getSlots: () => PATIENT_API.get('/secretaire/slots'),
   getSlotsSemaine: (dateDebut) =>
     PATIENT_API.get('/secretaire/slots/semaine', { params: dateDebut ? { dateDebut } : {} }),
   bloquerSlot: (data) => PATIENT_API.post('/secretaire/slots/bloquer', data),
   supprimerSlot: (id) => PATIENT_API.delete(`/secretaire/slots/${id}`),
 
-  // ═══ FEAT 6 — Planning hebdomadaire ═══
+  // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â FEAT 6 Ã¢â‚¬â€ Planning hebdomadaire Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
   getPlanning: () => PATIENT_API.get('/medecin/me/planning'),
 
-  // ═══ FEAT 7 — Tâches (messages urgents) ═══
+  // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â FEAT 7 Ã¢â‚¬â€ TÃƒÂ¢ches (messages urgents) Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
   getTaches: () => PATIENT_API.get('/medecin/me/taches'),
 }
 
@@ -94,7 +94,7 @@ export const directeurApi = {
   medecins: () => PATIENT_API.get('/directeur/medecins'),
   rdv: (params) => PATIENT_API.get('/directeur/rdv', { params }),
 
-  // ═══ FEAT 4 — Rapports PDF ═══
+  // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â FEAT 4 Ã¢â‚¬â€ Rapports PDF Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
   rapportMensuel: (mois, annee) =>
     PATIENT_API.get('/directeur/rapports/mensuel', {
       params: { mois, annee },
@@ -110,7 +110,7 @@ export const directeurApi = {
   rapportPatients: () =>
     PATIENT_API.get('/directeur/rapports/patients', { responseType: 'blob' }),
 
-  // ═══ FEAT 5 — Organigramme ═══
+  // Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â FEAT 5 Ã¢â‚¬â€ Organigramme Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
   organigramme: () => PATIENT_API.get('/organigramme'),
 }
 
@@ -126,6 +126,7 @@ export const adminApi = {
 
 export const secretaireApi = {
   getInfo: () => PATIENT_API.get('/secretaire/info'),
+  creerRdvSecretaire: (data) => PATIENT_API.post('/appointments/secretaire', data),
   getSlotsForDoctor: () => PATIENT_API.get('/secretaire/slots'),
   getSlotsSemaine: (dateDebut) =>
     PATIENT_API.get('/secretaire/slots/semaine', { params: dateDebut ? { dateDebut } : {} }),
@@ -140,9 +141,9 @@ export const chatbotApi = {
     CHATBOT_API.post('/ask', { question, patientId }),
 }
 
-// ═══════════════════════════════════════════════════════════════════
-// FEAT 1 — Chef de service
-// ═══════════════════════════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
+// FEAT 1 Ã¢â‚¬â€ Chef de service
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 export const chefApi = {
   getService:        () => PATIENT_API.get('/chef/service'),
   getMedecins:       () => PATIENT_API.get('/chef/medecins'),
@@ -150,15 +151,15 @@ export const chefApi = {
   getCreneaux:       () => PATIENT_API.get('/chef/creneaux'),
   creerCreneau:      (data) => PATIENT_API.post('/chef/creneaux', data),
   supprimerCreneau:  (id) => PATIENT_API.delete(`/chef/creneaux/${id}`),
-  // FEAT 6 — Planning du service
+  // FEAT 6 Ã¢â‚¬â€ Planning du service
   getPlanningService: () => PATIENT_API.get('/chef/planning/service'),
   getPlanningMedecin: (medecinId) =>
     PATIENT_API.get('/chef/planning', { params: { medecinId } }),
 }
 
-// ═══════════════════════════════════════════════════════════════════
-// FEAT 2 — Messagerie inter-personnel
-// ═══════════════════════════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
+// FEAT 2 Ã¢â‚¬â€ Messagerie inter-personnel
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 export const personnelMessagesApi = {
   recus:        () => PATIENT_API.get('/personnel/messages/recus'),
   envoyes:      () => PATIENT_API.get('/personnel/messages/envoyes'),
@@ -168,10 +169,11 @@ export const personnelMessagesApi = {
   collegues:    () => PATIENT_API.get('/personnel/collegues'),
 }
 
-// ═══════════════════════════════════════════════════════════════════
-// FEAT 7 — Personnel portal (infirmier, brancardier, aide-soignant)
-// ═══════════════════════════════════════════════════════════════════
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
+// FEAT 7 Ã¢â‚¬â€ Personnel portal (infirmier, brancardier, aide-soignant)
+// Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
 export const personnelApi = {
   getTaches:        () => PATIENT_API.get('/personnel/me/taches'),
   getPatientsJour:  () => PATIENT_API.get('/personnel/me/patients-jour'),
 }
+

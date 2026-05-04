@@ -7,6 +7,7 @@ import LoadingState from '../../components/shared/LoadingState'
 import EmptyState from '../../components/shared/EmptyState'
 import ChatBot from '../../components/shared/ChatBot'
 import NouveauRdv from './NouveauRdv'
+import ListeAttente from './ListeAttente'
 import { useTab } from '../../lib/useTab'
 import {
   FileText, Calendar, MessageSquare, Bell, Download, Upload,
@@ -142,6 +143,7 @@ export default function PatientDashboard() {
     dashboard: `Bonjour ${user?.prenom || ''} 👋`, dossier: 'Mon dossier médical',
     rdv: 'Mes rendez-vous', messages: 'Messagerie',
     documents: 'Mes documents', profil: 'Mon profil',
+    attente: "Liste d'attente",
   }
   const subtitles = {
     dashboard: "Voici un aperçu de votre santé aujourd'hui",
@@ -430,7 +432,7 @@ export default function PatientDashboard() {
                       </div>
                     </div>
                     <div className="flex items-center gap-1 flex-shrink-0">
-                      <a href={patientApi.getDocumentFileUrl(doc.id)} target="_blank" rel="noopener noreferrer"
+                      <a href="#" onClick={async (e) => { e.preventDefault(); const token = sessionStorage.getItem('medsys_token'); const r = await fetch(`/api/v1/patient/me/documents/${doc.id}/fichier`, {headers:{Authorization:`Bearer ${token}`}}); const blob = await r.blob(); window.open(URL.createObjectURL(blob)); }}
                         className="btn-ghost btn-sm" title="Voir"><Eye className="w-4 h-4" /></a>
                       <button onClick={() => handleDeleteDoc(doc.id)} className="btn-ghost btn-sm text-red-600 hover:bg-red-50" title="Supprimer">
                         <Trash2 className="w-4 h-4" />
@@ -444,6 +446,7 @@ export default function PatientDashboard() {
         )}
 
         {/* ═══ BUG 2 FIX: PROFIL TAB ═══ */}
+        {tab === 'attente' && <ListeAttente />}
         {tab === 'profil' && (
           <div className="card p-6">
             <div className="flex items-center justify-between mb-6">

@@ -52,4 +52,13 @@ public class AppointmentsController {
     public ResponseEntity<AppointmentResponseDto> getById(@PathVariable Integer id) {
         return ResponseEntity.ok(appointmentService.getById(id));
     }
+
+    // POST /api/appointments/secretaire -- reserve par la secretaire
+    @PostMapping("/secretaire")
+    public ResponseEntity<AppointmentResponseDto> createRdvSecretaire(
+            @Valid @RequestBody com.hospital.appointment.dto.SecretaireRdvRequest request) {
+
+        AppointmentResponseDto response = appointmentService.createRdvSecretaire(request);
+        return ResponseEntity.status(org.springframework.http.HttpStatus.CREATED).body(response);
+    }
 }

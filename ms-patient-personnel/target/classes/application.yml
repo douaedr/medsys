@@ -50,7 +50,7 @@ springdoc:
 management:
   health:
     rabbit:
-      enabled: true   # 🔧 V4: RabbitMQ requis pour notifications WebSocket
+      enabled: true   # ðŸ”§ V4: RabbitMQ requis pour notifications WebSocket
   endpoints:
     web:
       exposure:
@@ -79,6 +79,7 @@ app:
 ms-auth:
   url: ${MS_AUTH_URL:http://localhost:8082}
 
-# 🔧 FIX: ms-rdv.url était vide, on pointe maintenant vers appointment-service sur port 8085
+# ðŸ”§ FIX: ms-rdv.url Ã©tait vide, on pointe maintenant vers appointment-service sur port 8085
 ms-rdv:
   url: ${MS_RDV_URL:http://localhost:8085}
+

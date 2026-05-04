@@ -7,7 +7,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = "com.hospital.patient.repository")
-@EntityScan(basePackages = "com.hospital.patient.entity")
+@EntityScan(basePackages = {
+    "com.hospital.patient.entity",
+    "com.hospital.patient.model"
+})
 public class MsPatientPersonnelApplication {
 
     public static void main(String[] args) {

@@ -7,6 +7,7 @@ import com.hospital.patient.entity.Patient;
 import com.hospital.patient.enums.TypeDocument;
 import com.hospital.patient.exception.PatientNotFoundException;
 import com.hospital.patient.repository.DocumentPatientRepository;
+import com.hospital.patient.repository.DossierMedicalRepository;
 import com.hospital.patient.repository.PatientRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,17 +37,22 @@ public class DocumentService {
     private String uploadDir;
 
     private final DocumentPatientRepository documentRepository;
+    private final DossierMedicalRepository dossierMedicalRepository;
     private final PatientRepository patientRepository;
 
     @Transactional
     public DocumentPatientDTO uploadDocument(Long patientId, MultipartFile file,
                                               String typeDoc, String description) throws IOException {
         Patient patient = patientRepository.findById(patientId)
-                .orElseThrow(() -> new PatientNotFoundException("Patient non trouvé"));
+                .orElseThrow(() -> new PatientNotFoundException("Patient non trouvÃƒÂ©"));
 
         DossierMedical dossier = patient.getDossierMedical();
         if (dossier == null) {
-            throw new PatientNotFoundException("Dossier médical non trouvé");
+            dossier = new DossierMedical();
+            dossier.setNumeroDossier("DOS-" + patientId + "-" + System.currentTimeMillis());
+            dossier = dossierMedicalRepository.save(dossier);
+            patient.setDossierMedical(dossier);
+            patientRepository.save(patient);
         }
 
         // Validation taille fichier (5 MB max)
@@ -57,25 +63,25 @@ public class DocumentService {
         // Validation type de fichier (PDF, images uniquement)
         String contentType = file.getContentType();
         if (contentType == null || (!contentType.startsWith("image/") && !contentType.equals("application/pdf"))) {
-            throw new IllegalArgumentException("Type de fichier non autorisé. Seuls les PDF et images sont acceptés.");
+            throw new IllegalArgumentException("Type de fichier non autorisÃƒÂ©. Seuls les PDF et images sont acceptÃƒÂ©s.");
         }
 
-        // Créer le répertoire patient si nécessaire
+        // CrÃƒÂ©er le rÃƒÂ©pertoire patient si nÃƒÂ©cessaire
         Path uploadRoot = Paths.get(uploadDir).toAbsolutePath().normalize();
         Path patientDir = uploadRoot.resolve(String.valueOf(patientId)).normalize();
-        // Vérification path traversal
+        // VÃƒÂ©rification path traversal
         if (!patientDir.startsWith(uploadRoot)) {
-            throw new IllegalArgumentException("Chemin de destination non autorisé.");
+            throw new IllegalArgumentException("Chemin de destination non autorisÃƒÂ©.");
         }
         Files.createDirectories(patientDir);
 
-        // Générer un nom de fichier unique (UUID uniquement, sans nom original)
+        // GÃƒÂ©nÃƒÂ©rer un nom de fichier unique (UUID uniquement, sans nom original)
         String extension = getExtension(file.getOriginalFilename());
         String nomFichierStocke = UUID.randomUUID().toString() + extension;
         Path cheminComplet = patientDir.resolve(nomFichierStocke).normalize();
-        // Double vérification path traversal sur le fichier final
+        // Double vÃƒÂ©rification path traversal sur le fichier final
         if (!cheminComplet.startsWith(patientDir)) {
-            throw new IllegalArgumentException("Chemin de fichier non autorisé.");
+            throw new IllegalArgumentException("Chemin de fichier non autorisÃƒÂ©.");
         }
 
         // Sauvegarder le fichier
@@ -100,7 +106,7 @@ public class DocumentService {
                 .build();
 
         document = documentRepository.save(document);
-        log.info("Document uploadé: {} pour patient {}", nomFichierStocke, patientId);
+        log.info("Document uploadÃƒÂ©: {} pour patient {}", nomFichierStocke, patientId);
 
         return toDTO(document);
     }
@@ -108,7 +114,7 @@ public class DocumentService {
     @Transactional(readOnly = true)
     public List<DocumentPatientDTO> getDocuments(Long patientId) {
         Patient patient = patientRepository.findById(patientId)
-                .orElseThrow(() -> new PatientNotFoundException("Patient non trouvé"));
+                .orElseThrow(() -> new PatientNotFoundException("Patient non trouvÃƒÂ©"));
 
         if (patient.getDossierMedical() == null) {
             return List.of();
@@ -123,19 +129,25 @@ public class DocumentService {
 
     @Transactional(readOnly = true)
     public DocumentPatient getDocumentForPatient(Long documentId, Long patientId) {
-        return documentRepository.findByIdAndDossierMedicalPatientId(documentId, patientId)
-                .orElseThrow(() -> new PatientNotFoundException("Document non trouvé"));
+        DocumentPatient doc = documentRepository.findById(documentId)
+        .orElseThrow(() -> new PatientNotFoundException("Document non trouvé"));
+Patient patient = patientRepository.findById(patientId)
+        .orElseThrow(() -> new PatientNotFoundException("Patient non trouvé"));
+if (!doc.getDossierMedical().getId().equals(patient.getDossierMedical().getId())) {
+    throw new PatientNotFoundException("Document non trouvé");
+}
+return doc;
     }
 
     public Resource loadFileAsResource(String cheminFichier) throws MalformedURLException {
         Path uploadRoot = Paths.get(uploadDir).toAbsolutePath().normalize();
         Path filePath = Paths.get(cheminFichier).normalize();
         if (!filePath.startsWith(uploadRoot)) {
-            throw new PatientNotFoundException("Accès au fichier non autorisé");
+            throw new PatientNotFoundException("AccÃƒÂ¨s au fichier non autorisÃƒÂ©");
         }
         Resource resource = new UrlResource(filePath.toUri());
         if (!resource.exists()) {
-            throw new PatientNotFoundException("Fichier non trouvé");
+            throw new PatientNotFoundException("Fichier non trouvÃƒÂ©");
         }
         return resource;
     }
@@ -143,14 +155,14 @@ public class DocumentService {
     @Transactional
     public void deleteDocument(Long documentId, Long patientId) throws IOException {
         DocumentPatient document = documentRepository.findByIdAndDossierMedicalPatientId(documentId, patientId)
-                .orElseThrow(() -> new PatientNotFoundException("Document non trouvé"));
+                .orElseThrow(() -> new PatientNotFoundException("Document non trouvÃƒÂ©"));
 
         // Supprimer le fichier physique
         Path filePath = Paths.get(document.getCheminFichier());
         Files.deleteIfExists(filePath);
 
         documentRepository.delete(document);
-        log.info("Document supprimé: {} pour patient {}", documentId, patientId);
+        log.info("Document supprimÃƒÂ©: {} pour patient {}", documentId, patientId);
     }
 
     private DocumentPatientDTO toDTO(DocumentPatient doc) {
@@ -168,10 +180,12 @@ public class DocumentService {
     private String getExtension(String filename) {
         if (filename == null || !filename.contains(".")) return "";
         String ext = filename.substring(filename.lastIndexOf(".")).toLowerCase();
-        // N'autoriser que les extensions connues sûres
+        // N'autoriser que les extensions connues sÃƒÂ»res
         if (ext.matches("\\.(pdf|jpg|jpeg|png|gif|bmp|webp)")) {
             return ext;
         }
         return "";
     }
 }
+
+

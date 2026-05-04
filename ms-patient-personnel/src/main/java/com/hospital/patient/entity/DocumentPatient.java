@@ -1,19 +1,12 @@
 package com.hospital.patient.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.hospital.patient.enums.TypeDocument;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "documents_patient")
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class DocumentPatient {
 
     @Id
@@ -21,13 +14,12 @@ public class DocumentPatient {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "dossier_id", nullable = false)
-    @JsonIgnoreProperties("documents")
+    @JoinColumn(name = "dossier_medical_id", nullable = false)
     private DossierMedical dossierMedical;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private TypeDocument typeDocument;
+    private com.hospital.patient.enums.TypeDocument typeDocument;
 
     @Column(nullable = false)
     private String nomFichierOriginal;
@@ -38,14 +30,12 @@ public class DocumentPatient {
     @Column(nullable = false)
     private String cheminFichier;
 
-    @Column(length = 500)
     private String description;
 
     private Long tailleFichier;
 
     private String contentType;
 
-    @CreationTimestamp
-    @Column(updatable = false)
-    private LocalDateTime dateUpload;
+    @Builder.Default
+    private LocalDateTime dateUpload = LocalDateTime.now();
 }

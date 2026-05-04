@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 
 const JOURS = ['LUNDI', 'MARDI', 'MERCREDI', 'JEUDI', 'VENDREDI', 'SAMEDI', 'DIMANCHE']
 const JOURS_LABELS = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim']
@@ -11,11 +11,29 @@ const TYPE_COLORS = {
   BLOQUE:       'bg-gray-100 border-gray-400 text-gray-600',
 }
 
+const heureToIndex = (heure) => {
+  if (!heure) return 0
+  const [h, m] = heure.substring(0, 5).split(':').map(Number)
+  return (h - 8) * 2 + Math.floor(m / 30)
+}
+
+const calcSpan = (heureDebut, heureFin) => {
+  const debut = heureToIndex(heureDebut)
+  const fin = heureToIndex(heureFin)
+  return Math.max(1, fin - debut)
+}
+
 export default function PlanningHebdo({ creneaux = [], readOnly = false, onDelete }) {
   const [hoveredId, setHoveredId] = useState(null)
 
-  const getCreneauxPourJour = (jour) =>
-    creneaux.filter(c => c.jour === jour)
+  // Nombre de demi-heures : 8h→18h = 20 slots
+  const SLOTS = Array.from({ length: 20 }, (_, i) => {
+    const h = 8 + Math.floor(i / 2)
+    const m = i % 2 === 0 ? '00' : '30'
+    return `${h.toString().padStart(2, '0')}:${m}`
+  })
+
+  const getCreneauxPourJour = (jour) => creneaux.filter(c => c.jour === jour)
 
   return (
     <div className="w-full overflow-x-auto">
@@ -30,32 +48,63 @@ export default function PlanningHebdo({ creneaux = [], readOnly = false, onDelet
       </div>
 
       {/* Grille */}
-      <div className="grid grid-cols-8 gap-1 min-w-[700px]">
-        {/* Header */}
-        <div className="text-xs text-slate-400 font-semibold py-2 text-center">Heure</div>
-        {JOURS_LABELS.map((j, i) => (
-          <div key={i} className="text-xs font-semibold text-slate-700 text-center py-2 bg-slate-50 rounded-lg">
-            {j}
-          </div>
-        ))}
-
-        {/* Lignes horaires */}
-        {HEURES.map(heure => (
-          <>
-            <div key={`h-${heure}`} className="text-xs text-slate-400 text-center py-3 border-t border-slate-100 flex items-start justify-center pt-2">
-              {heure}
+      <div className="min-w-[700px]">
+        {/* Header jours */}
+        <div className="grid grid-cols-8 gap-1 mb-1">
+          <div className="text-xs text-slate-400 font-semibold py-2 text-center">Heure</div>
+          {JOURS_LABELS.map((j, i) => (
+            <div key={i} className="text-xs font-semibold text-slate-700 text-center py-2 bg-slate-50 rounded-lg">
+              {j}
             </div>
-            {JOURS.map((jour, ji) => {
-              const creneauxSlot = getCreneauxPourJour(jour).filter(c => {
-                const debut = c.heureDebut?.substring(0, 5)
-                return debut === heure
-              })
-              return (
-                <div key={`${jour}-${heure}`} className="border-t border-slate-100 min-h-[48px] relative p-0.5">
-                  {creneauxSlot.map(c => (
+          ))}
+        </div>
+
+        {/* Corps : colonne heure + 7 colonnes jours */}
+        <div className="grid grid-cols-8 gap-1">
+          {/* Colonne heures */}
+          <div className="grid" style={{ gridTemplateRows: `repeat(${SLOTS.length}, 24px)` }}>
+            {SLOTS.map((slot, i) => (
+              <div key={slot} className="text-xs text-slate-400 text-center flex items-center justify-center border-t border-slate-100" style={{ height: 24 }}>
+                {slot.endsWith(':00') ? slot : ''}
+              </div>
+            ))}
+          </div>
+
+          {/* Colonnes jours */}
+          {JOURS.map((jour) => {
+            const creneauxJour = getCreneauxPourJour(jour)
+            return (
+              <div
+                key={jour}
+                className="relative border-l border-slate-100"
+                style={{
+                  display: 'grid',
+                  gridTemplateRows: `repeat(${SLOTS.length}, 24px)`,
+                  minHeight: SLOTS.length * 24,
+                }}
+              >
+                {/* Lignes de fond */}
+                {SLOTS.map((slot, i) => (
+                  <div
+                    key={slot}
+                    className={`border-t ${i % 2 === 0 ? 'border-slate-200' : 'border-slate-100'}`}
+                    style={{ gridRow: i + 1, gridColumn: 1 }}
+                  />
+                ))}
+
+                {/* Créneaux */}
+                {creneauxJour.map(c => {
+                  const rowStart = heureToIndex(c.heureDebut) + 1
+                  const span = calcSpan(c.heureDebut, c.heureFin)
+                  return (
                     <div
                       key={c.id}
-                      className={`rounded border text-xs p-1 mb-0.5 cursor-default relative group ${TYPE_COLORS[c.type] || TYPE_COLORS.BLOQUE}`}
+                      className={`rounded border text-xs p-1 cursor-default relative group z-10 overflow-hidden ${TYPE_COLORS[c.type] || TYPE_COLORS.BLOQUE}`}
+                      style={{
+                        gridRow: `${rowStart} / span ${span}`,
+                        gridColumn: 1,
+                        margin: '1px 2px',
+                      }}
                       onMouseEnter={() => setHoveredId(c.id)}
                       onMouseLeave={() => setHoveredId(null)}
                     >
@@ -70,12 +119,12 @@ export default function PlanningHebdo({ creneaux = [], readOnly = false, onDelet
                         >×</button>
                       )}
                     </div>
-                  ))}
-                </div>
-              )
-            })}
-          </>
-        ))}
+                  )
+                })}
+              </div>
+            )
+          })}
+        </div>
       </div>
 
       {creneaux.length === 0 && (

@@ -132,20 +132,27 @@ public class PatientPortalController {
     }
 
     @GetMapping("/me/documents/{id}/fichier")
-    public ResponseEntity<Resource> getFichier(
-            @RequestHeader("Authorization") String authHeader,
-            @PathVariable Long id) throws IOException {
-        Long patientId = extractPatientId(authHeader);
-        DocumentPatient doc = null /* TODO: getDocumentEntity */;
-        Resource resource = null /* TODO: loadResource */;
-        String filename = URLEncoder.encode(doc.toString() /* TODO: getNomFichier */, StandardCharsets.UTF_8)
-                                    .replace("+", "%20");
-        return ResponseEntity.ok()
-                .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename*=UTF-8''" + filename)
-                .body(resource);
-    }
-
+public ResponseEntity<Resource> getFichier(
+        @RequestHeader("Authorization") String authHeader,
+        @PathVariable Long id) throws IOException {
+    Long patientId = extractPatientId(authHeader);
+    DocumentPatient doc = documentService.getDocumentForPatient(id, patientId);
+    Resource resource = documentService.loadFileAsResource(doc.getCheminFichier());
+    String filename = URLEncoder.encode(doc.getNomFichierOriginal(), StandardCharsets.UTF_8)
+                                .replace("+", "%20");
+    return ResponseEntity.ok()
+            .contentType(MediaType.parseMediaType(doc.getContentType()))
+            .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename*=UTF-8''" + filename)
+            .body(resource);
+}
+	@DeleteMapping("/me/documents/{id}")
+public ResponseEntity<Void> deleteDocument(
+        @RequestHeader("Authorization") String authHeader,
+        @PathVariable Long id) throws IOException {
+    Long patientId = extractPatientId(authHeader);
+    documentService.deleteDocument(id, patientId);
+    return ResponseEntity.noContent().build();
+}
     // ─── Messagerie ───────────────────────────────────────────────────────────
 
     @GetMapping("/me/messages")

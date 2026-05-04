@@ -1,4 +1,4 @@
-﻿package com.hospital.patient.controller;
+package com.hospital.patient.controller;
 
 import com.hospital.patient.dto.DocumentPatientDTO;
 import com.hospital.patient.entity.DocumentPatient;
@@ -10,59 +10,50 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/patients")
-@RequiredArgsConstructor
+@RequestMapping("/api/documents")
 @CrossOrigin(origins = "http://localhost:5173")
+@RequiredArgsConstructor
 public class DocumentPatientController {
 
     private final DocumentService documentService;
 
-    // POST /api/v1/patients/{id}/documents
-    @PostMapping("/{id}/documents")
-    public ResponseEntity<DocumentPatientDTO> upload(
-            @PathVariable Long id,
+    @PostMapping("/upload/{patientId}")
+    public ResponseEntity<DocumentPatientDTO> uploadDocument(
+            @PathVariable Long patientId,
             @RequestParam("file") MultipartFile file,
             @RequestParam(value = "type", defaultValue = "AUTRE") String type,
-            @RequestParam(value = "description", required = false) String description
-    ) throws IOException {
-        return ResponseEntity.ok(documentService.uploadDocument(id, file, type, description));
+            @RequestParam(value = "description", required = false) String description) throws IOException {
+        DocumentPatientDTO dto = documentService.uploadDocument(patientId, file, type, description);
+        return ResponseEntity.ok(dto);
     }
 
-    // GET /api/v1/patients/{id}/documents
-    @GetMapping("/{id}/documents")
-    public ResponseEntity<List<DocumentPatientDTO>> getDocuments(@PathVariable Long id) {
-        return ResponseEntity.ok(documentService.getDocuments(id));
+    @GetMapping("/patient/{patientId}")
+    public ResponseEntity<List<DocumentPatientDTO>> getDocuments(@PathVariable Long patientId) {
+        return ResponseEntity.ok(documentService.getDocuments(patientId));
     }
 
-    // GET /api/v1/patients/{id}/documents/{docId}/download
-    @GetMapping("/{id}/documents/{docId}/download")
-    public ResponseEntity<Resource> download(
-            @PathVariable Long id,
-            @PathVariable Long docId
-    ) throws MalformedURLException {
-        DocumentPatient doc = documentService.getDocumentForPatient(docId, id);
+    @GetMapping("/download/{documentId}/{patientId}")
+    public ResponseEntity<Resource> downloadFile(
+            @PathVariable Long documentId,
+            @PathVariable Long patientId) throws IOException {
+        DocumentPatient doc = documentService.getDocumentForPatient(documentId, patientId);
         Resource resource = documentService.loadFileAsResource(doc.getCheminFichier());
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION,
-                        "inline; filename=\"" + doc.getNomFichierOriginal() + "\"")
-                .contentType(MediaType.parseMediaType(
-                        doc.getContentType() != null ? doc.getContentType() : "application/octet-stream"))
+                        "attachment; filename=\"" + doc.getNomFichierOriginal() + "\"")
+                .contentType(MediaType.parseMediaType(doc.getContentType()))
                 .body(resource);
     }
 
-    // DELETE /api/v1/patients/{id}/documents/{docId}
-    @DeleteMapping("/{id}/documents/{docId}")
-    public ResponseEntity<Void> delete(
-            @PathVariable Long id,
-            @PathVariable Long docId
-    ) throws IOException {
-        documentService.deleteDocument(docId, id);
+    @DeleteMapping("/{documentId}/{patientId}")
+    public ResponseEntity<Void> deleteDocument(
+            @PathVariable Long documentId,
+            @PathVariable Long patientId) throws IOException {
+        documentService.deleteDocument(documentId, patientId);
         return ResponseEntity.noContent().build();
     }
 }

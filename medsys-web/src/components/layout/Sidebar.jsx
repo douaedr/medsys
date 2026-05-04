@@ -18,6 +18,7 @@ const MENUS = {
     { to: '/patient/dashboard?tab=messages', icon: MessageSquare, label: 'Messagerie' },
     { to: '/patient/dashboard?tab=documents', icon: FolderOpen, label: 'Mes documents' },
     { to: '/patient/dashboard?tab=profil', icon: User, label: 'Mon profil' },
+    { to: '/patient/dashboard?tab=attente', icon: Clock, label: "Liste d'attente" },
   ],
   MEDECIN: [
     { to: '/personnel/dashboard', icon: LayoutDashboard, label: 'Tableau de bord' },

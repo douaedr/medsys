@@ -342,4 +342,37 @@ public class AppointmentService {
                 a.getCancelReason()
         );
     }
+
+    @Transactional
+    public AppointmentResponseDto createRdvSecretaire(com.hospital.appointment.dto.SecretaireRdvRequest req) {
+
+        // Chercher le slot disponible pour ce medecin a cette date/heure
+        TimeSlot slot = timeSlotRepository.findAll().stream()
+                .filter(s -> s.getDoctorId() != null
+                        && s.getDoctorId().equals(req.getMedecinId().intValue())
+                        && s.getStartTime().equals(req.getDateHeure())
+                        && s.getStatus() == SlotStatus.Available)
+                .findFirst()
+                .orElseThrow(() -> new com.hospital.appointment.exception.BusinessException(
+                        "Aucun creneau disponible pour ce medecin a cette date/heure"));
+
+        // Chercher ou creer le patient
+        User patient = userRepository.findById(req.getPatientId().intValue())
+                .orElseThrow(() -> new com.hospital.appointment.exception.NotFoundException(
+                        "Patient introuvable"));
+
+        slot.setStatus(SlotStatus.Reserved);
+        slot.setUpdatedAt(LocalDateTime.now());
+        timeSlotRepository.save(slot);
+
+        Appointment appt = Appointment.builder()
+                .timeSlotId(slot.getId())
+                .patientId(patient.getId())
+                .bookedById(patient.getId())
+                .reason(req.getMotif())
+                .build();
+        appointmentRepository.save(appt);
+
+        return toDto(appt, slot, patient, null);
+    }
 }

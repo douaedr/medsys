@@ -1,19 +1,28 @@
 import { useEffect, useState } from 'react'
-import { medecinApi } from '../../api/api'
+import { useAuth } from '../../context/AuthContext'
 import PlanningHebdo from '../../components/planning/PlanningHebdo'
 import { Calendar, RefreshCw } from 'lucide-react'
 
 export default function MonEmploiDuTemps() {
+  const { user, token } = useAuth()
+  const personnelId = user?.personnelId || user?.id
   const [creneaux, setCreneaux] = useState([])
-  const [loading, setLoading]   = useState(true)
-  const [error, setError]       = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
   const load = async () => {
     setLoading(true)
     setError(null)
     try {
-      const res = await medecinApi.getPlanning()
-      setCreneaux(res.data || [])
+      const res = await fetch(`http://localhost:8081/api/chef/edt/personnel/${personnelId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'X-Chef-Id': String(personnelId)
+        }
+      })
+      const data = res.ok ? await res.json() : []
+      const mapped = Array.isArray(data) ? data.map(c => ({...c, jour: c.jourSemaine, type: c.activite})) : []
+      setCreneaux(mapped)
     } catch (e) {
       setError("Impossible de charger votre emploi du temps.")
     } finally {
