@@ -1,7 +1,24 @@
-import { useEffect, useState } from 'react'
+﻿import { useEffect, useState } from 'react'
 import { useAuth } from '../../context/AuthContext'
 import PlanningHebdo from '../../components/planning/PlanningHebdo'
 import { Calendar, RefreshCw } from 'lucide-react'
+
+// Normalise heureDebut/heureFin quelle que soit la forme renvoyée par le backend :
+// - tableau Java LocalTime : [9, 0] ou [9, 30, 0]
+// - string ISO : "09:00:00" ou "09:00"
+const normaliseHeure = (h) => {
+  if (!h && h !== 0) return null
+  if (Array.isArray(h)) {
+    const hh = String(h[0]).padStart(2, '0')
+    const mm = String(h[1] ?? 0).padStart(2, '0')
+    return `${hh}:${mm}:00`
+  }
+  if (typeof h === 'string') {
+    // déjà au bon format
+    return h.length === 5 ? h + ':00' : h
+  }
+  return null
+}
 
 export default function MonEmploiDuTemps() {
   const { user, token } = useAuth()
@@ -21,8 +38,14 @@ export default function MonEmploiDuTemps() {
         }
       })
       const data = res.ok ? await res.json() : []
-      const mapped = Array.isArray(data) ? data.map(c => ({...c, jour: c.jourSemaine, type: c.activite})) : []
-      setCreneaux(mapped)
+      const mapped = Array.isArray(data) ? data.map(c => ({
+        ...c,
+        jour:      c.jourSemaine,
+        type:      c.activite,
+        heureDebut: normaliseHeure(c.heureDebut),
+        heureFin:   normaliseHeure(c.heureFin),
+      })) : []
+      console.log("RAW DATA:", JSON.stringify(data.slice(0,2), null, 2)); setCreneaux(mapped)
     } catch (e) {
       setError("Impossible de charger votre emploi du temps.")
     } finally {
@@ -50,7 +73,6 @@ export default function MonEmploiDuTemps() {
           disabled={loading}
         >
           <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
-          Actualiser
         </button>
       </div>
 
@@ -80,3 +102,4 @@ export default function MonEmploiDuTemps() {
     </div>
   )
 }
+
