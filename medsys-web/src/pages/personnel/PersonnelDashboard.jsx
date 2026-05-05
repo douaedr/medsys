@@ -10,6 +10,7 @@ import MonEmploiDuTemps from './MonEmploiDuTemps'
 import ChefServiceDashboard from '../chef/ChefServiceDashboard'
 import GestionRDVSecretaire from './GestionRDVSecretaire'
 import EditionPatient from './EditionPatient'
+import DossierMedicalMedecin from './DossierMedicalMedecin'
 import MessagesPanel from '../../components/messages/MessagesPanel'
 import { useTab } from '../../lib/useTab'
 import {
@@ -234,6 +235,7 @@ export default function PersonnelDashboard() {
     rdv: 'Rendez-vous',
     planning: 'Mon planning',
     messages: 'Messagerie',
+    dossier: 'Dossier Medical',
     taches: 'Mes tÂ¢ches',
   }
   const subtitles = {
@@ -664,6 +666,7 @@ export default function PersonnelDashboard() {
       )}
 
       {/* a"¢Âa"¢Âa"¢Â FEAT 2 aâ‚¬" Messages a"¢Âa"¢Âa"¢Â */}
+      {tab === 'dossier' && isMedecin && <DossierMedicalMedecin />}
       {tab === 'messages' && <MessagesPanel />}
 
       {/* a"¢Âa"¢Âa"¢Â FEAT 7 aâ‚¬" TÂ¢ches (PERSONNEL ou MEDECIN) a"¢Âa"¢Âa"¢Â */}

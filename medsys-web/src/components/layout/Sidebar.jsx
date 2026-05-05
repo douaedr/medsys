@@ -26,6 +26,7 @@ const MENUS = {
     { to: '/personnel/dashboard?tab=consultations', icon: Stethoscope, label: 'Consultations' },
     { to: '/personnel/dashboard?tab=rdv', icon: Calendar, label: 'Rendez-vous' },
     // FEAT 3 + 6
+    { to: '/personnel/dashboard?tab=dossier', icon: FileText, label: 'Dossiers medicaux' },
     { to: '/personnel/dashboard?tab=planning', icon: Clock, label: 'Mon planning' },
     // FEAT 2
     { to: '/personnel/dashboard?tab=messages', icon: MessageSquare, label: 'Messagerie' },

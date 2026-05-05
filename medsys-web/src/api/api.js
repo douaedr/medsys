@@ -44,6 +44,8 @@ export const patientApi = {
   updateMe: (data) => PATIENT_API.patch('/patient/me', data),
   myDossier: () => PATIENT_API.get('/patient/me/dossier'),
   dossier: (id) => PATIENT_API.get(`/patients/${id}/dossier`),
+  getDossier: (id) => PATIENT_API.get(`/patients/${id}/dossier`),
+  updateDossier: (id, data) => PATIENT_API.put(`/patients/${id}/dossier`, data),
 
   notifications: () => PATIENT_API.get('/patient/me/notifications'),
 

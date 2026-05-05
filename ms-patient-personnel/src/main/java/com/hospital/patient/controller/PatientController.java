@@ -124,4 +124,12 @@ public class PatientController {
     public ResponseEntity<NextAvailableSlotDTO> getNextAvailableSlot(@PathVariable Long id) {
         return ResponseEntity.ok(dashboardService.suggestNextSlot(id));
     }
+
+    // ─── PUT /api/v1/patients/{id}/dossier ───────────────────────────────────
+    @PutMapping("/{id}/dossier")
+    public ResponseEntity<DossierMedicalDTO> updateDossierMedical(
+            @PathVariable Long id,
+            @RequestBody DossierMedicalUpdateDTO dto) {
+        return ResponseEntity.ok(patientService.updateDossierMedical(id, dto));
+    }
 }

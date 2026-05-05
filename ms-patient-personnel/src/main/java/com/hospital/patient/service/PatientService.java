@@ -5,6 +5,8 @@ import com.hospital.patient.entity.*;
 import com.hospital.patient.enums.*;
 import com.hospital.patient.exception.PatientAlreadyExistsException;
 import com.hospital.patient.exception.PatientNotFoundException;
+import com.hospital.patient.dto.DossierMedicalUpdateDTO;
+import com.hospital.patient.repository.DossierMedicalRepository;
 import com.hospital.patient.mapper.PatientMapper;
 import com.hospital.patient.repository.PatientRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +31,7 @@ public class PatientService {
 
     private final PatientRepository patientRepository;
     private final PatientMapper patientMapper;
+    private final DossierMedicalRepository dossierMedicalRepository;
 
     // ─── Création ────────────────────────────────────────────────────────────
 
@@ -191,6 +194,45 @@ public class PatientService {
         stats.put("masculins", patientRepository.countBySexe(Sexe.MASCULIN));
         stats.put("feminins", patientRepository.countBySexe(Sexe.FEMININ));
         return stats;
+    }
+
+    public DossierMedicalDTO updateDossierMedical(Long patientId, DossierMedicalUpdateDTO dto) {
+        Patient patient = patientRepository.findById(patientId)
+                .orElseThrow(() -> new PatientNotFoundException("Patient non trouve: " + patientId));
+        DossierMedical dossier = patient.getDossierMedical();
+        if (dossier == null) throw new PatientNotFoundException("Aucun dossier medical");
+
+        if (dto.getAntecedents() != null) {
+            dossier.getAntecedents().removeIf(a ->
+                a.getSource() == null ||
+                (!a.getSource().equals("ALLERGIES_LIBRES") && !a.getSource().equals("TRAITEMENTS_EN_COURS")));
+            for (DossierMedicalUpdateDTO.AntecedentItemDTO item : dto.getAntecedents()) {
+                dossier.getAntecedents().add(Antecedent.builder()
+                        .typeAntecedent(item.getTypeAntecedent() != null ? item.getTypeAntecedent() : TypeAntecedent.MEDICAL)
+                        .description(item.getDescription())
+                        .dateDiagnostic(item.getDateDiagnostic())
+                        .severite(item.getSeverite())
+                        .actif(item.getActif() != null ? item.getActif() : true)
+                        .source(item.getSource())
+                        .build());
+            }
+        }
+        if (dto.getAllergies() != null) {
+            dossier.getAntecedents().removeIf(a -> "ALLERGIES_LIBRES".equals(a.getSource()));
+            if (!dto.getAllergies().isBlank())
+                dossier.getAntecedents().add(Antecedent.builder()
+                        .typeAntecedent(TypeAntecedent.ALLERGIQUE)
+                        .description(dto.getAllergies()).actif(true).source("ALLERGIES_LIBRES").build());
+        }
+        if (dto.getTraitementsEnCours() != null) {
+            dossier.getAntecedents().removeIf(a -> "TRAITEMENTS_EN_COURS".equals(a.getSource()));
+            if (!dto.getTraitementsEnCours().isBlank())
+                dossier.getAntecedents().add(Antecedent.builder()
+                        .typeAntecedent(TypeAntecedent.MEDICAL)
+                        .description(dto.getTraitementsEnCours()).actif(true).source("TRAITEMENTS_EN_COURS").build());
+        }
+        dossierMedicalRepository.save(dossier);
+        return getDossierMedical(patientId);
     }
 
     // ─── Mappers internes ─────────────────────────────────────────────────────
