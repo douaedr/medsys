@@ -1,8 +1,7 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { useAuth } from '../../context/AuthContext'
 
-const API = 'http://localhost:8081/api/chef'
-
+const BASE = 'http://localhost:8081'
 const JOURS = ['LUNDI', 'MARDI', 'MERCREDI', 'JEUDI', 'VENDREDI', 'SAMEDI']
 const JOURS_FR = { LUNDI: 'Lundi', MARDI: 'Mardi', MERCREDI: 'Mercredi', JEUDI: 'Jeudi', VENDREDI: 'Vendredi', SAMEDI: 'Samedi' }
 const ACTIVITES = ['CONSULTATION', 'GARDE', 'REUNION', 'REPOS', 'AUTRE']
@@ -26,10 +25,16 @@ function duree(d, f) {
 function actColor(a) {
   return { CONSULTATION: '#0ea5e9', GARDE: '#dc2626', REUNION: '#8b5cf6', REPOS: '#10b981', AUTRE: '#64748b' }[a] || '#64748b'
 }
+function roleLabel(r) {
+  return { MEDECIN: 'Medecin', INFIRMIER: 'Infirmier(e)', SECRETARY: 'Secretaire', AIDE_SOIGNANT: 'Aide soignant', BRANCARDIER: 'Brancardier' }[r] || r
+}
+function roleColor(r) {
+  return { MEDECIN: '#0ea5e9', INFIRMIER: '#10b981', SECRETARY: '#f59e0b', AIDE_SOIGNANT: '#8b5cf6', BRANCARDIER: '#f97316' }[r] || '#64748b'
+}
 
 export default function GestionEmploiDuTemps() {
   const { user, token } = useAuth()
-  const chefId = user?.personnelId || user?.id
+  const chefId = user?.personnelId ?? user?.id ?? null
 
   const [personnel, setPersonnel] = useState([])
   const [selected, setSelected] = useState(null)
@@ -38,25 +43,36 @@ export default function GestionEmploiDuTemps() {
   const [editData, setEditData] = useState(null)
   const [loading, setLoading] = useState(false)
   const [alert, setAlert] = useState(null)
+  const [serviceCode, setServiceCode] = useState(null)
 
-  const headers = {
-    'Authorization': `Bearer ${token}`,
-    'X-Chef-Id': String(chefId),
-    'Content-Type': 'application/json'
+  function makeHeaders() {
+    return {
+      'Authorization': `Bearer ${token}`,
+      'X-Chef-Id': String(chefId),
+      'Content-Type': 'application/json'
+    }
   }
 
-  // Charger tout le personnel du service (tous roles)
   useEffect(() => {
-    const endpoints = [
-      { url: 'http://localhost:8081/api/v1/chef/medecins', role: 'MEDECIN' },
-      { url: 'http://localhost:8081/api/v1/chef/infirmiers', role: 'INFIRMIER' },
-      { url: 'http://localhost:8081/api/v1/chef/secretaires', role: 'SECRETARY' },
-      { url: 'http://localhost:8081/api/v1/chef/aides-soignants', role: 'AIDE_SOIGNANT' },
-      { url: 'http://localhost:8081/api/v1/chef/brancardiers', role: 'BRANCARDIER' },
+    if (!chefId || !token) return
+    fetch(`${BASE}/api/v1/chef/service`, { headers: makeHeaders() })
+      .then(r => r.ok ? r.json() : null)
+      .then(data => { if (data?.code) setServiceCode(data.code) })
+      .catch(() => {})
+  }, [chefId, token])
+
+  useEffect(() => {
+    if (!chefId || !token) return
+    const roles = [
+      { url: `${BASE}/api/v1/chef/medecins`, role: 'MEDECIN' },
+      { url: `${BASE}/api/v1/chef/infirmiers`, role: 'INFIRMIER' },
+      { url: `${BASE}/api/v1/chef/secretaires`, role: 'SECRETARY' },
+      { url: `${BASE}/api/v1/chef/aides-soignants`, role: 'AIDE_SOIGNANT' },
+      { url: `${BASE}/api/v1/chef/brancardiers`, role: 'BRANCARDIER' },
     ]
     Promise.all(
-      endpoints.map(e =>
-        fetch(e.url, { headers })
+      roles.map(e =>
+        fetch(e.url, { headers: makeHeaders() })
           .then(r => r.ok ? r.json() : [])
           .then(data => (Array.isArray(data) ? data : []).map(p => ({ ...p, role: p.role || e.role })))
           .catch(() => [])
@@ -66,16 +82,16 @@ export default function GestionEmploiDuTemps() {
       setPersonnel(list)
       if (list.length > 0) setSelected(list[0])
     })
-  }, [])
+  }, [chefId, token])
 
   useEffect(() => {
-    if (!selected) return
-    const pid = selected.personnelId || selected.id
-    fetch(`${API}/edt/personnel/${pid}`, { headers })
+    if (!selected || !chefId || !token) return
+    const pid = selected?.personnelId ?? selected?.userId ?? selected?.id
+    fetch(`${BASE}/api/chef/edt/personnel/${pid}`, { headers: makeHeaders() })
       .then(r => r.ok ? r.json() : [])
       .then(data => setPlannings(Array.isArray(data) ? data : []))
       .catch(() => setPlannings([]))
-  }, [selected])
+  }, [selected, chefId, token])
 
   function getParJour(jour) {
     return plannings.filter(p => p.jourSemaine === jour)
@@ -95,14 +111,18 @@ export default function GestionEmploiDuTemps() {
 
   async function sauvegarder() {
     if (toMins(editData.heureFin) <= toMins(editData.heureDebut)) {
-      setAlert({ type: 'error', message: "L'heure de fin doit être après l'heure de début." })
+      setAlert({ type: 'error', message: "L'heure de fin doit etre apres l'heure de debut." })
+      return
+    }
+    if (!serviceCode) {
+      setAlert({ type: 'error', message: "Service non charge. Rechargez la page." })
       return
     }
     setLoading(true)
-    const pid = selected?.personnelId || selected?.id
+    const pid = selected?.personnelId ?? selected?.userId ?? selected?.id
     const body = {
       personnelId: pid,
-      serviceId: 'CARDIO',
+      serviceId: serviceCode,
       jourSemaine: editData.jour,
       heureDebut: editData.heureDebut + ':00',
       heureFin: editData.heureFin + ':00',
@@ -110,35 +130,30 @@ export default function GestionEmploiDuTemps() {
       salle: editData.salle || null
     }
     try {
-      const url = editData.id ? `${API}/edt/${editData.id}` : `${API}/edt`
+      const url = editData.id ? `${BASE}/api/chef/edt/${editData.id}` : `${BASE}/api/chef/edt`
       const method = editData.id ? 'PUT' : 'POST'
-      const r = await fetch(url, { method, headers, body: JSON.stringify(body) })
+      const r = await fetch(url, { method, headers: makeHeaders(), body: JSON.stringify(body) })
       if (r.ok) {
-        setAlert({ type: 'success', message: 'Créneau enregistré !' })
+        setAlert({ type: 'success', message: 'Creneau enregistre !' })
         setModalOpen(false)
-        // recharger
-        const pid2 = selected?.personnelId || selected?.id
-        const res = await fetch(`${API}/edt/personnel/${pid2}`, { headers })
+        const res = await fetch(`${BASE}/api/chef/edt/personnel/${pid}`, { headers: makeHeaders() })
         if (res.ok) setPlannings(await res.json())
       } else {
         const err = await r.text()
-        setAlert({ type: 'error', message: err || 'Erreur.' })
+        setAlert({ type: 'error', message: err || 'Erreur serveur.' })
       }
-    } catch { setAlert({ type: 'error', message: 'Erreur réseau.' }) }
+    } catch { setAlert({ type: 'error', message: 'Erreur reseau.' }) }
     setLoading(false)
   }
 
   async function supprimer(id) {
-    if (!window.confirm('Supprimer ce créneau ?')) return
-    const r = await fetch(`${API}/edt/${id}`, { method: 'DELETE', headers })
+    if (!window.confirm('Supprimer ce creneau ?')) return
+    const r = await fetch(`${BASE}/api/chef/edt/${id}`, { method: 'DELETE', headers: makeHeaders() })
     if (r.ok) {
       setPlannings(p => p.filter(x => x.id !== id))
-      setAlert({ type: 'success', message: 'Créneau supprimé.' })
+      setAlert({ type: 'success', message: 'Creneau supprime.' })
     }
   }
-
-  const roleLabel = r => ({ MEDECIN: 'Médecin', INFIRMIER: 'Infirmier(e)', SECRETARY: 'Secrétaire', AIDE_SOIGNANT: 'Aide soignant', BRANCARDIER: 'Brancardier', PERSONNEL: 'Personnel' }[r] || r)
-  const roleColor = r => ({ MEDECIN: '#0ea5e9', INFIRMIER: '#10b981', SECRETARY: '#f59e0b', AIDE_SOIGNANT: '#8b5cf6', BRANCARDIER: '#f97316', PERSONNEL: '#64748b' }[r] || '#64748b')
 
   return (
     <div style={{ fontFamily: "'Segoe UI', system-ui, sans-serif" }}>
@@ -150,24 +165,23 @@ export default function GestionEmploiDuTemps() {
           justifyContent: 'space-between', marginBottom: 16
         }}>
           <span style={{ color: alert.type === 'success' ? '#15803d' : '#dc2626', fontSize: 14 }}>{alert.message}</span>
-          <button onClick={() => setAlert(null)} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 18 }}>×</button>
+          <button onClick={() => setAlert(null)} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 18 }}>x</button>
         </div>
       )}
 
       <div style={{ display: 'flex', gap: 16 }}>
-        {/* Liste personnel */}
         <div style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: 12, padding: 16, width: 220, flexShrink: 0 }}>
           <div style={{ fontSize: 12, fontWeight: 600, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 10 }}>Personnel</div>
           {personnel.length === 0 ? (
             <div style={{ fontSize: 13, color: '#94a3b8' }}>Chargement...</div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-              {personnel.map(p => {
+              {personnel.map((p, i) => {
                 const pid = p.personnelId || p.id
-                const spid = selected?.personnelId || selected?.id
+                const spid = selected?.personnelId ?? selected?.userId ?? selected?.id
                 const isSelected = pid === spid
                 return (
-                  <button key={p.id} onClick={() => setSelected(p)} style={{
+                  <button key={`${p.role}-${pid}-${i}`} onClick={() => setSelected(p)} style={{
                     display: 'flex', alignItems: 'center', gap: 8,
                     padding: '8px 10px', borderRadius: 8, border: 'none',
                     background: isSelected ? '#f0f9ff' : 'transparent',
@@ -195,7 +209,6 @@ export default function GestionEmploiDuTemps() {
           )}
         </div>
 
-        {/* Grille */}
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{
             background: '#fff', border: '1px solid #e2e8f0', borderRadius: 12,
@@ -204,21 +217,24 @@ export default function GestionEmploiDuTemps() {
           }}>
             <div>
               <div style={{ fontWeight: 600, fontSize: 15, color: '#0f172a' }}>
-                {selected ? (selected.prenom && selected.nom ? `${selected.prenom} ${selected.nom}` : selected.email) : 'Sélectionnez un membre'}
+                {selected ? (selected.prenom && selected.nom ? `${selected.prenom} ${selected.nom}` : selected.email) : 'Selectionnez un membre'}
               </div>
-              <div style={{ fontSize: 12, color: '#64748b' }}>Planning hebdomadaire récurrent</div>
+              <div style={{ fontSize: 12, color: '#64748b' }}>
+                Planning hebdomadaire
+                {serviceCode && <span style={{ marginLeft: 8, color: '#0ea5e9', fontWeight: 500 }}>- Service {serviceCode}</span>}
+              </div>
             </div>
             {selected && (
               <button onClick={() => ouvrirModal('LUNDI')} style={{
                 padding: '8px 16px', border: 'none', borderRadius: 8,
                 background: '#0ea5e9', color: '#fff', cursor: 'pointer', fontSize: 13, fontWeight: 500
-              }}>+ Nouveau créneau</button>
+              }}>+ Nouveau creneau</button>
             )}
           </div>
 
           {!selected ? (
             <div style={{ padding: 40, textAlign: 'center', color: '#94a3b8', background: '#fff', borderRadius: 12, border: '1px solid #e2e8f0' }}>
-              Sélectionnez un membre du personnel.
+              Selectionnez un membre du personnel.
             </div>
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 8 }}>
@@ -248,7 +264,7 @@ export default function GestionEmploiDuTemps() {
                             }}>
                               <div style={{ fontSize: 11, fontWeight: 600, color: actColor(item.activite) }}>{item.activite}</div>
                               <div style={{ fontSize: 12, fontWeight: 500, color: '#0f172a' }}>
-                                {item.heureDebut?.substring(0, 5)} – {item.heureFin?.substring(0, 5)}
+                                {item.heureDebut?.substring(0, 5)} - {item.heureFin?.substring(0, 5)}
                               </div>
                               <div style={{ fontSize: 11, color: '#64748b' }}>{duree(item.heureDebut, item.heureFin)}</div>
                               {item.salle && <div style={{ fontSize: 10, color: '#94a3b8' }}>Salle: {item.salle}</div>}
@@ -261,7 +277,7 @@ export default function GestionEmploiDuTemps() {
                                 <button onClick={() => supprimer(item.id)} style={{
                                   fontSize: 10, padding: '2px 6px', border: '1px solid #fca5a5',
                                   borderRadius: 4, background: 'none', color: '#dc2626', cursor: 'pointer'
-                                }}>×</button>
+                                }}>x</button>
                               </div>
                             </div>
                           ))}
@@ -281,7 +297,7 @@ export default function GestionEmploiDuTemps() {
           {plannings.length > 0 && (
             <div style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: 12, padding: 16, marginTop: 12, display: 'flex', gap: 24 }}>
               <div>
-                <div style={{ fontSize: 12, color: '#64748b' }}>Créneaux total</div>
+                <div style={{ fontSize: 12, color: '#64748b' }}>Creneaux total</div>
                 <div style={{ fontSize: 20, fontWeight: 700, color: '#0f172a' }}>{plannings.length}</div>
               </div>
               <div>
@@ -298,7 +314,6 @@ export default function GestionEmploiDuTemps() {
         </div>
       </div>
 
-      {/* Modal */}
       {modalOpen && (
         <div style={{
           position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)',
@@ -307,9 +322,9 @@ export default function GestionEmploiDuTemps() {
           <div style={{ background: '#fff', borderRadius: 16, padding: 28, width: '90%', maxWidth: 480 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 20 }}>
               <h3 style={{ margin: 0, fontSize: 17, fontWeight: 600, color: '#0f172a' }}>
-                {editData?.id ? 'Modifier' : 'Nouveau créneau'} — {JOURS_FR[editData?.jour]}
+                {editData?.id ? 'Modifier' : 'Nouveau creneau'} - {JOURS_FR[editData?.jour]}
               </h3>
-              <button onClick={() => setModalOpen(false)} style={{ background: 'none', border: 'none', fontSize: 20, cursor: 'pointer' }}>×</button>
+              <button onClick={() => setModalOpen(false)} style={{ background: 'none', border: 'none', fontSize: 20, cursor: 'pointer' }}>x</button>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
@@ -323,7 +338,7 @@ export default function GestionEmploiDuTemps() {
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                 <div>
-                  <label style={{ fontSize: 13, fontWeight: 500, color: '#374151', display: 'block', marginBottom: 6 }}>Heure début</label>
+                  <label style={{ fontSize: 13, fontWeight: 500, color: '#374151', display: 'block', marginBottom: 6 }}>Heure debut</label>
                   <select value={editData?.heureDebut} onChange={e => setEditData(d => ({ ...d, heureDebut: e.target.value }))}
                     style={{ width: '100%', padding: '8px 12px', border: '1px solid #e2e8f0', borderRadius: 8, fontSize: 14 }}>
                     {HEURES.map(h => <option key={h} value={h}>{h}</option>)}
@@ -340,12 +355,12 @@ export default function GestionEmploiDuTemps() {
 
               {editData?.heureDebut && editData?.heureFin && toMins(editData.heureFin) > toMins(editData.heureDebut) && (
                 <div style={{ background: '#f0fdf4', borderRadius: 8, padding: '8px 12px', fontSize: 13, color: '#15803d' }}>
-                  Durée : {duree(editData.heureDebut, editData.heureFin)}
+                  Duree : {duree(editData.heureDebut, editData.heureFin)}
                 </div>
               )}
 
               <div>
-                <label style={{ fontSize: 13, fontWeight: 500, color: '#374151', display: 'block', marginBottom: 6 }}>Activité</label>
+                <label style={{ fontSize: 13, fontWeight: 500, color: '#374151', display: 'block', marginBottom: 6 }}>Activite</label>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 6 }}>
                   {ACTIVITES.map(a => (
                     <button key={a} onClick={() => setEditData(d => ({ ...d, activite: a }))} style={{
@@ -384,3 +399,4 @@ export default function GestionEmploiDuTemps() {
     </div>
   )
 }
+
