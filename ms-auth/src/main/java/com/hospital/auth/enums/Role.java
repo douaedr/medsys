@@ -16,5 +16,9 @@ public enum Role {
     PERSONNEL,
     DIRECTEUR,
     // FEAT 1 — Chef de service
-    CHEF_SERVICE
+    CHEF_SERVICE,
+    // FEAT 12 - Personnel soignant
+    INFIRMIER,
+    AIDE_SOIGNANT,
+    BRANCARDIER
 }

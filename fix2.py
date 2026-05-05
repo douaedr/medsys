@@ -1,22 +1,15 @@
-﻿path = r"C:\Users\douae\Desktop\PFA\medsys-fixed\medsys-web\src\pages\PatientPortalPage.jsx"
+﻿path = r"C:\Users\douae\Desktop\PFA\medsys-fixed\medsys-web\src\pages\chef\GestionEmploiDuTemps.jsx"
+with open(path, "r", encoding="utf-8") as f:
+    content = f.read()
 
-with open(path, 'r', encoding='utf-8') as f:
-    lines = f.readlines()
+old = "roleLabel = r => ({ MEDECIN: 'M\u00e9decin', PERSONNEL: 'Personnel', SECRETARY: 'Secr\u00e9taire', NURSE: 'Infirmier(e)' }[r] || r)\n  const roleColor = r => ({ MEDECIN: '#0ea5e9', PERSONNEL: '#10b981', SECRETARY: '#f59e0b', NURSE: '#10b981' }[r] || '#64748b')"
 
-for i, line in enumerate(lines):
-    # Corriger la ligne avec description input cassee (ligne ~388)
-    if 'ant.description' in line and 'placeholder=' in line:
-        lines[i] = '                          className="input" placeholder="ex: Allergie a la penicilline" />\n'
-        print(f"Ligne {i+1} corrigee")
-    # Corriger les caracteres corrompus restants
-    if 'Ã†â€™Ã‚Â©' in line:
-        lines[i] = line.replace('Ã†â€™Ã‚Â©', 'e')
-        print(f"Ligne {i+1} encodage corrige")
-    if 'Ã¢â€â‚¬' in line:
-        lines[i] = line.replace('Ã¢â€â‚¬', '-')
-        print(f"Ligne {i+1} tiret corrige")
+new = "roleLabel = r => ({ MEDECIN: 'M\u00e9decin', INFIRMIER: 'Infirmier(e)', SECRETARY: 'Secr\u00e9taire', AIDE_SOIGNANT: 'Aide soignant', BRANCARDIER: 'Brancardier', PERSONNEL: 'Personnel' }[r] || r)\n  const roleColor = r => ({ MEDECIN: '#0ea5e9', INFIRMIER: '#10b981', SECRETARY: '#f59e0b', AIDE_SOIGNANT: '#8b5cf6', BRANCARDIER: '#f97316', PERSONNEL: '#64748b' }[r] || '#64748b')"
 
-with open(path, 'w', encoding='utf-8', newline='\n') as f:
-    f.writelines(lines)
-
-print("DONE!")
+if old in content:
+    content = content.replace(old, new)
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(content)
+    print("OK - roleLabel et roleColor mis a jour")
+else:
+    print("ERREUR - bloc non trouve")

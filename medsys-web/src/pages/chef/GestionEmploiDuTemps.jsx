@@ -45,28 +45,27 @@ export default function GestionEmploiDuTemps() {
     'Content-Type': 'application/json'
   }
 
-  // Charger personnel depuis user_accounts via auth
+  // Charger tout le personnel du service (tous roles)
   useEffect(() => {
-    fetch('http://localhost:8081/api/v1/chef/medecins', { headers })
-      .then(r => r.ok ? r.json() : [])
-      .then(data => {
-        const list = Array.isArray(data) ? data : []
-        setPersonnel(list)
-        if (list.length > 0) setSelected(list[0])
-      })
-      .catch(() => {
-        // fallback: charger les plannings du chef
-        fetch(`${API}/edt/chef/${chefId}`, { headers })
+    const endpoints = [
+      { url: 'http://localhost:8081/api/v1/chef/medecins', role: 'MEDECIN' },
+      { url: 'http://localhost:8081/api/v1/chef/infirmiers', role: 'INFIRMIER' },
+      { url: 'http://localhost:8081/api/v1/chef/secretaires', role: 'SECRETARY' },
+      { url: 'http://localhost:8081/api/v1/chef/aides-soignants', role: 'AIDE_SOIGNANT' },
+      { url: 'http://localhost:8081/api/v1/chef/brancardiers', role: 'BRANCARDIER' },
+    ]
+    Promise.all(
+      endpoints.map(e =>
+        fetch(e.url, { headers })
           .then(r => r.ok ? r.json() : [])
-          .then(data => {
-            if (Array.isArray(data) && data.length > 0) {
-              const ids = [...new Set(data.map(p => p.personnelId))]
-              const fakePersonnel = ids.map(id => ({ id, email: `Personnel #${id}`, role: 'PERSONNEL' }))
-              setPersonnel(fakePersonnel)
-              setSelected(fakePersonnel[0])
-            }
-          })
-      })
+          .then(data => (Array.isArray(data) ? data : []).map(p => ({ ...p, role: p.role || e.role })))
+          .catch(() => [])
+      )
+    ).then(results => {
+      const list = results.flat()
+      setPersonnel(list)
+      if (list.length > 0) setSelected(list[0])
+    })
   }, [])
 
   useEffect(() => {
@@ -138,8 +137,8 @@ export default function GestionEmploiDuTemps() {
     }
   }
 
-  const roleLabel = r => ({ MEDECIN: 'Médecin', PERSONNEL: 'Personnel', SECRETARY: 'Secrétaire', NURSE: 'Infirmier(e)' }[r] || r)
-  const roleColor = r => ({ MEDECIN: '#0ea5e9', PERSONNEL: '#10b981', SECRETARY: '#f59e0b', NURSE: '#10b981' }[r] || '#64748b')
+  const roleLabel = r => ({ MEDECIN: 'Médecin', INFIRMIER: 'Infirmier(e)', SECRETARY: 'Secrétaire', AIDE_SOIGNANT: 'Aide soignant', BRANCARDIER: 'Brancardier', PERSONNEL: 'Personnel' }[r] || r)
+  const roleColor = r => ({ MEDECIN: '#0ea5e9', INFIRMIER: '#10b981', SECRETARY: '#f59e0b', AIDE_SOIGNANT: '#8b5cf6', BRANCARDIER: '#f97316', PERSONNEL: '#64748b' }[r] || '#64748b')
 
   return (
     <div style={{ fontFamily: "'Segoe UI', system-ui, sans-serif" }}>

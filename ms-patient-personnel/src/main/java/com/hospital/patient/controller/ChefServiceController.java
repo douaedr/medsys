@@ -1,5 +1,7 @@
 package com.hospital.patient.controller;
 
+import com.hospital.patient.client.AuthServiceClient;
+import com.hospital.patient.client.AuthServiceClient;
 import com.hospital.patient.dto.*;
 import com.hospital.patient.entity.Service;
 import com.hospital.patient.security.JwtService;
@@ -24,6 +26,7 @@ public class ChefServiceController {
 
     private final ChefServiceManager manager;
     private final JwtService jwtService;
+    private final AuthServiceClient authServiceClient;
 
     /* ────── Service ────── */
 
@@ -83,6 +86,26 @@ public class ChefServiceController {
     }
 
     /* ────── Helpers ────── */
+
+    @GetMapping("/infirmiers")
+    public ResponseEntity<List<CollegueDTO>> getInfirmiers() {
+        return ResponseEntity.ok(authServiceClient.getByRole("INFIRMIER"));
+    }
+
+    @GetMapping("/secretaires")
+    public ResponseEntity<List<CollegueDTO>> getSecretaires() {
+        return ResponseEntity.ok(authServiceClient.getByRole("SECRETARY"));
+    }
+
+    @GetMapping("/aides-soignants")
+    public ResponseEntity<List<CollegueDTO>> getAidesSoignants() {
+        return ResponseEntity.ok(authServiceClient.getByRole("AIDE_SOIGNANT"));
+    }
+
+    @GetMapping("/brancardiers")
+    public ResponseEntity<List<CollegueDTO>> getBrancardiers() {
+        return ResponseEntity.ok(authServiceClient.getByRole("BRANCARDIER"));
+    }
 
     private Long chefId(HttpServletRequest req) {
         String token = extractToken(req);
