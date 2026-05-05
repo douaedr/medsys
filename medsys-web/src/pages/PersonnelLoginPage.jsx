@@ -19,7 +19,7 @@ export default function PersonnelLoginPage() {
     setLoading(true)
     try {
       const res = await authApi.login({ email, password })
-      // 🔧 FIX: backend renvoie un AuthResponse PLAT (token, role, email...)
+      // ðŸ”§ FIX: backend renvoie un AuthResponse PLAT (token, role, email...)
       const data = res.data
       const user = {
         userId: data.userId,
@@ -33,11 +33,13 @@ export default function PersonnelLoginPage() {
       }
       login(user, data.token)
 
-      // 🔧 FIX: SECRETARY ajouté dans la liste des rôles redirigés vers /personnel/dashboard
+      // ðŸ”§ FIX: SECRETARY ajoutÃ© dans la liste des rÃ´les redirigÃ©s vers /personnel/dashboard
       if (data.role === 'ADMIN') navigate('/admin')
       else if (data.role === 'DIRECTEUR') navigate('/directeur')
       else if (data.role === 'CHEF_SERVICE') navigate('/dashboard/chef')
-      else if (['MEDECIN', 'PERSONNEL', 'SECRETARY'].includes(data.role)) navigate('/personnel/dashboard')
+      else if (data.role === 'INFIRMIER') navigate('/infirmier/dashboard')
+      else if (data.role === 'BRANCARDIER') navigate('/brancardier/dashboard')
+      else if (['MEDECIN', 'PERSONNEL', 'SECRETARY', 'AIDE_SOIGNANT'].includes(data.role)) navigate('/personnel/dashboard')
       else navigate('/')
     } catch (err) {
       setError(err.response?.data?.message || 'Email ou mot de passe incorrect')
@@ -70,12 +72,12 @@ export default function PersonnelLoginPage() {
               Espace personnel<br />soignant
             </h2>
             <p className="text-lg opacity-90 max-w-md leading-relaxed">
-              Accédez à vos outils professionnels pour gérer patients, consultations
-              et dossiers médicaux en toute sécurité.
+              AccÃ©dez Ã  vos outils professionnels pour gÃ©rer patients, consultations
+              et dossiers mÃ©dicaux en toute sÃ©curitÃ©.
             </p>
           </div>
           <div className="text-sm opacity-80">
-            © 2026 MedSys — Sécurisé et conforme RGPD
+            Â© 2026 MedSys â€” SÃ©curisÃ© et conforme RGPD
           </div>
         </div>
       </div>
@@ -83,7 +85,7 @@ export default function PersonnelLoginPage() {
       {/* Right form */}
       <div className="flex-1 flex flex-col justify-center px-8 py-12 lg:px-16">
         <Link to="/" className="flex items-center gap-2 text-sm text-slate-500 hover:text-slate-900 mb-8 w-fit">
-          <ArrowLeft className="w-4 h-4" /> Retour à l'accueil
+          <ArrowLeft className="w-4 h-4" /> Retour Ã  l'accueil
         </Link>
 
         <div className="max-w-sm w-full mx-auto">
@@ -121,7 +123,7 @@ export default function PersonnelLoginPage() {
                   className="input pr-10"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
+                  placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
                   required
                 />
                 <button
@@ -135,12 +137,12 @@ export default function PersonnelLoginPage() {
             </div>
 
             <button type="submit" disabled={loading} className="btn-primary btn-lg w-full">
-              {loading ? <><Loader2 className="w-4 h-4 animate-spin" /> Connexion…</> : 'Se connecter'}
+              {loading ? <><Loader2 className="w-4 h-4 animate-spin" /> Connexionâ€¦</> : 'Se connecter'}
             </button>
 
             <div className="text-center text-sm">
               <Link to="/reset-password" className="text-primary-600 hover:text-primary-700 font-semibold">
-                Mot de passe oublié ?
+                Mot de passe oubliÃ© ?
               </Link>
             </div>
           </form>

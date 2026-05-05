@@ -50,33 +50,33 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/patients/**").permitAll()
                         .requestMatchers("/api/v1/medecins/**").permitAll()
 
-                        // ───────── FEAT 1 — Chef de service ─────────
+                        // â”€â”€â”€â”€â”€â”€â”€â”€â”€ FEAT 1 â€” Chef de service â”€â”€â”€â”€â”€â”€â”€â”€â”€
                         .requestMatchers("/api/v1/chef/**").hasRole("CHEF_SERVICE")
 
-                        // ───────── FEAT 5 — Organigramme ─────────
+                        // â”€â”€â”€â”€â”€â”€â”€â”€â”€ FEAT 5 â€” Organigramme â”€â”€â”€â”€â”€â”€â”€â”€â”€
                         .requestMatchers("/api/v1/organigramme/**")
                             .hasAnyRole("DIRECTEUR", "ADMIN", "CHEF_SERVICE")
 
-                        // ───────── FEAT 4 — Rapports directeur ─────────
-                        // (déjà couvert par /api/v1/directeur/** ci-dessous)
+                        // â”€â”€â”€â”€â”€â”€â”€â”€â”€ FEAT 4 â€” Rapports directeur â”€â”€â”€â”€â”€â”€â”€â”€â”€
+                        // (dÃ©jÃ  couvert par /api/v1/directeur/** ci-dessous)
 
-                        // ───────── FEAT 7 — Endpoints du PERSONNEL (infirmier/brancardier/aide-soignant) ─────────
+                        // â”€â”€â”€â”€â”€â”€â”€â”€â”€ FEAT 7 â€” Endpoints du PERSONNEL (infirmier/brancardier/aide-soignant) â”€â”€â”€â”€â”€â”€â”€â”€â”€
                         .requestMatchers("/api/v1/personnel/me/**").hasAnyRole("PERSONNEL", "MEDECIN", "CHEF_SERVICE")
 
-                        // ───────── FEAT 2 — Messagerie inter-personnel (tous rôles personnel) ─────────
+                        // â”€â”€â”€â”€â”€â”€â”€â”€â”€ FEAT 2 â€” Messagerie inter-personnel (tous rÃ´les personnel) â”€â”€â”€â”€â”€â”€â”€â”€â”€
                         .requestMatchers("/api/v1/personnel/messages/**", "/api/v1/personnel/collegues")
                             .hasAnyRole("MEDECIN", "PERSONNEL", "SECRETARY", "CHEF_SERVICE", "DIRECTEUR", "ADMIN")
 
-                        // ───────── Médecin / Chef ─────────
+                        // â”€â”€â”€â”€â”€â”€â”€â”€â”€ MÃ©decin / Chef â”€â”€â”€â”€â”€â”€â”€â”€â”€
                         .requestMatchers("/api/v1/medecin/**").hasAnyRole("MEDECIN", "CHEF_SERVICE")
 
-                        // ───────── Patient ─────────
+                        // â”€â”€â”€â”€â”€â”€â”€â”€â”€ Patient â”€â”€â”€â”€â”€â”€â”€â”€â”€
                         .requestMatchers("/api/v1/patient/**").hasRole("PATIENT")
 
-                        // ───────── Directeur ─────────
+                        // â”€â”€â”€â”€â”€â”€â”€â”€â”€ Directeur â”€â”€â”€â”€â”€â”€â”€â”€â”€
                         .requestMatchers("/api/v1/directeur/**").hasAnyRole("DIRECTEUR", "ADMIN")
 
-                        // ───────── Secrétaire ─────────
+                        // â”€â”€â”€â”€â”€â”€â”€â”€â”€ SecrÃ©taire â”€â”€â”€â”€â”€â”€â”€â”€â”€
                         .requestMatchers("/api/v1/secretaire/**").hasAnyRole("SECRETARY", "MEDECIN", "ADMIN", "CHEF_SERVICE")
 
                         .anyRequest().authenticated()
@@ -84,7 +84,7 @@ public class SecurityConfig {
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint((request, response, e) ->
-                                response.sendError(jakarta.servlet.http.HttpServletResponse.SC_UNAUTHORIZED, "Non authentifié"))
+                                response.sendError(jakarta.servlet.http.HttpServletResponse.SC_UNAUTHORIZED, "Non authentifiÃ©"))
                 );
 
         return http.build();
@@ -96,7 +96,7 @@ public class SecurityConfig {
         List<String> origins = Arrays.asList(allowedOrigins.split(","));
         config.setAllowedOriginPatterns(origins);
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept", "X-Requested-With", "X-Chef-Id"));
+        config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
         config.setMaxAge(3600L);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

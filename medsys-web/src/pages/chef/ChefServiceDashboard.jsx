@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../../context/AuthContext'
 import GestionEmploiDuTemps from '../chef/GestionEmploiDuTemps'
+import AppartenanceService from '../chef/AppartenanceService'
 import MessagesPanel from '../../components/messages/MessagesPanel'
 import OrganigrammeView from '../../components/messages/OrganigrammeView'
 import DashboardLayout from '../../components/layout/DashboardLayout'
@@ -23,7 +24,7 @@ function StatCard({ label, value, icon: Icon, color }) {
           <Icon className="w-6 h-6" />
         </div>
         <div>
-          <div className="text-2xl font-bold text-slate-900">{value ?? '—'}</div>
+          <div className="text-2xl font-bold text-slate-900">{value ?? '-'}</div>
           <div className="text-sm text-slate-500">{label}</div>
         </div>
       </div>
@@ -71,32 +72,32 @@ function TableauDeBord() {
             <span className="text-2xl">🏥</span>
             <div>
               <div className="font-bold text-blue-900 text-lg">{service.nom}</div>
-              {service.capaciteLits && <div className="text-sm text-blue-600">Capacité : {service.capaciteLits} lits</div>}
+              {service.capaciteLits && <div className="text-sm text-blue-600">Capacite : {service.capaciteLits} lits</div>}
             </div>
           </div>
         </div>
       )}
       <div className="grid md:grid-cols-4 gap-4">
-        <StatCard icon={Users} label="Médecins du service" value={stats?.nombreMedecins ?? medecins.length} color="blue" />
-        <StatCard icon={Calendar} label="Créneaux actifs" value={stats?.nombreCreneauxActifs ?? 0} color="green" />
+        <StatCard icon={Users} label="Medecins du service" value={stats?.nombreMedecins ?? medecins.length} color="blue" />
+        <StatCard icon={Calendar} label="Creneaux actifs" value={stats?.nombreCreneauxActifs ?? 0} color="green" />
         <StatCard icon={Activity} label="RDV aujourd'hui" value={stats?.nombreRdvAujourdhui ?? 0} color="amber" />
         <StatCard icon={Clock} label="Consultations" value={stats?.nombreConsultations ?? 0} color="purple" />
       </div>
       <div className="card">
         <div className="p-6 border-b border-slate-100">
-          <h3 className="font-bold text-slate-900">Médecins du service</h3>
-          <p className="text-sm text-slate-500 mt-0.5">{medecins.length} médecin(s)</p>
+          <h3 className="font-bold text-slate-900">Medecins du service</h3>
+          <p className="text-sm text-slate-500 mt-0.5">{medecins.length} medecin(s)</p>
         </div>
         {medecins.length === 0 ? (
-          <div className="p-8 text-center text-slate-400">Aucun médecin trouvé.</div>
+          <div className="p-8 text-center text-slate-400">Aucun medecin trouve.</div>
         ) : (
           <table className="w-full">
             <thead className="bg-slate-50">
               <tr className="text-left text-xs font-semibold text-slate-500 uppercase tracking-wide">
-                <th className="px-6 py-3">Médecin</th>
-                <th className="px-6 py-3">Spécialité</th>
+                <th className="px-6 py-3">Medecin</th>
+                <th className="px-6 py-3">Specialite</th>
                 <th className="px-6 py-3">Matricule</th>
-                <th className="px-6 py-3">Rôle</th>
+                <th className="px-6 py-3">Role</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
@@ -110,12 +111,12 @@ function TableauDeBord() {
                       <div className="font-semibold text-slate-900 text-sm">Dr. {m.prenom} {m.nom}</div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 text-sm text-slate-600">{m.specialite || '—'}</td>
-                  <td className="px-6 py-4 text-sm text-slate-500">{m.matricule || '—'}</td>
+                  <td className="px-6 py-4 text-sm text-slate-600">{m.specialite || '-'}</td>
+                  <td className="px-6 py-4 text-sm text-slate-500">{m.matricule || '-'}</td>
                   <td className="px-6 py-4">
                     {m.estChef
                       ? <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-purple-100 text-purple-700">Chef de service</span>
-                      : <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-blue-100 text-blue-700">Médecin</span>
+                      : <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-blue-100 text-blue-700">Medecin</span>
                     }
                   </td>
                 </tr>
@@ -143,11 +144,11 @@ function Medecins() {
       )}
       <div className="card">
         <div className="p-6 border-b border-slate-100">
-          <h3 className="font-bold text-slate-900">Liste des médecins</h3>
-          <p className="text-sm text-slate-500">{medecins.length} médecin(s) dans ce service</p>
+          <h3 className="font-bold text-slate-900">Liste des medecins</h3>
+          <p className="text-sm text-slate-500">{medecins.length} medecin(s) dans ce service</p>
         </div>
         {medecins.length === 0 ? (
-          <div className="p-8 text-center text-slate-400">Aucun médecin trouvé.</div>
+          <div className="p-8 text-center text-slate-400">Aucun medecin trouve.</div>
         ) : (
           <div className="divide-y divide-slate-100">
             {medecins.map((m, i) => (
@@ -157,11 +158,11 @@ function Medecins() {
                 </div>
                 <div className="flex-1">
                   <div className="font-semibold text-slate-900">Dr. {m.prenom} {m.nom}</div>
-                  <div className="text-sm text-slate-500">{m.specialite || '—'} · Matricule : {m.matricule || '—'}</div>
+                  <div className="text-sm text-slate-500">{m.specialite || '-'} · Matricule : {m.matricule || '-'}</div>
                 </div>
                 {m.estChef
                   ? <span className="text-xs font-medium px-3 py-1 rounded-full bg-purple-100 text-purple-700">Chef de service</span>
-                  : <span className="text-xs font-medium px-3 py-1 rounded-full bg-blue-100 text-blue-700">Médecin</span>
+                  : <span className="text-xs font-medium px-3 py-1 rounded-full bg-blue-100 text-blue-700">Medecin</span>
                 }
               </div>
             ))}
@@ -183,21 +184,21 @@ function Statistiques() {
             <span className="text-2xl">🏥</span>
             <div>
               <div className="font-bold text-blue-900 text-lg">{service.nom}</div>
-              {service.capaciteLits && <div className="text-sm text-blue-600">Capacité : {service.capaciteLits} lits</div>}
+              {service.capaciteLits && <div className="text-sm text-blue-600">Capacite : {service.capaciteLits} lits</div>}
             </div>
           </div>
         </div>
       )}
       <div className="grid md:grid-cols-2 gap-4">
         <div className="card p-6">
-          <h3 className="font-bold text-slate-900 mb-4">Activité du service</h3>
+          <h3 className="font-bold text-slate-900 mb-4">Activite du service</h3>
           <div className="space-y-4">
             <div className="flex justify-between items-center py-2 border-b border-slate-100">
-              <span className="text-slate-600">Médecins</span>
+              <span className="text-slate-600">Medecins</span>
               <span className="font-bold text-blue-600">{stats?.nombreMedecins ?? medecins.length}</span>
             </div>
             <div className="flex justify-between items-center py-2 border-b border-slate-100">
-              <span className="text-slate-600">Créneaux actifs</span>
+              <span className="text-slate-600">Creneaux actifs</span>
               <span className="font-bold text-emerald-600">{stats?.nombreCreneauxActifs ?? 0}</span>
             </div>
             <div className="flex justify-between items-center py-2 border-b border-slate-100">
@@ -211,15 +212,15 @@ function Statistiques() {
           </div>
         </div>
         <div className="card p-6">
-          <h3 className="font-bold text-slate-900 mb-4">Capacité</h3>
+          <h3 className="font-bold text-slate-900 mb-4">Capacite</h3>
           <div className="space-y-4">
             <div className="flex justify-between items-center py-2 border-b border-slate-100">
               <span className="text-slate-600">Lits disponibles</span>
-              <span className="font-bold text-blue-600">{service?.capaciteLits ?? '—'}</span>
+              <span className="font-bold text-blue-600">{service?.capaciteLits ?? '-'}</span>
             </div>
             <div className="flex justify-between items-center py-2">
               <span className="text-slate-600">Code service</span>
-              <span className="font-bold text-slate-900">{service?.code ?? '—'}</span>
+              <span className="font-bold text-slate-900">{service?.code ?? '-'}</span>
             </div>
           </div>
         </div>
@@ -246,6 +247,7 @@ export default function ChefServiceDashboard() {
           {tab === 'medecins' && <Medecins />}
           {tab === 'stats' && <Statistiques />}
           {tab === 'creneaux' && <GestionEmploiDuTemps />}
+          {tab === 'appartenance' && <AppartenanceService />}
           {tab === 'messages' && <MessagesPanel />}
           {tab === 'organigramme' && <OrganigrammeView />}
         </div>

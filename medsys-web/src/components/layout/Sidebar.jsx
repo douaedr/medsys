@@ -5,11 +5,10 @@ import { personnelMessagesApi } from '../../api/api'
 import {
   LayoutDashboard, Users, Calendar, FileText, MessageSquare,
   Settings, LogOut, Stethoscope, UserCog, BarChart3, Activity, User,
-  FolderOpen, Clock, ClipboardList, Network, Briefcase
+  FolderOpen, Clock, ClipboardList, Network, UserCheck, Truck
 } from 'lucide-react'
 import { cn } from '../../lib/utils'
 
-// FEAT 2 + 3 + 6 + 7 — menus enrichis pour tous les rôles
 const MENUS = {
   PATIENT: [
     { to: '/patient/dashboard', icon: LayoutDashboard, label: 'Tableau de bord' },
@@ -25,33 +24,45 @@ const MENUS = {
     { to: '/personnel/dashboard?tab=patients', icon: Users, label: 'Patients' },
     { to: '/personnel/dashboard?tab=consultations', icon: Stethoscope, label: 'Consultations' },
     { to: '/personnel/dashboard?tab=rdv', icon: Calendar, label: 'Rendez-vous' },
-    // FEAT 3 + 6
     { to: '/personnel/dashboard?tab=dossier', icon: FileText, label: 'Dossiers medicaux' },
     { to: '/personnel/dashboard?tab=planning', icon: Clock, label: 'Mon planning' },
-    // FEAT 2
     { to: '/personnel/dashboard?tab=messages', icon: MessageSquare, label: 'Messagerie' },
   ],
   PERSONNEL: [
     { to: '/personnel/dashboard', icon: LayoutDashboard, label: 'Tableau de bord' },
-    // FEAT 7
-    { to: '/personnel/dashboard?tab=taches', icon: ClipboardList, label: 'Mes tâches' },
+    { to: '/personnel/dashboard?tab=taches', icon: ClipboardList, label: 'Mes taches' },
     { to: '/personnel/dashboard?tab=patients', icon: Users, label: 'Patients' },
     { to: '/personnel/dashboard?tab=rdv', icon: Calendar, label: 'Rendez-vous' },
-    // FEAT 2
     { to: '/personnel/dashboard?tab=messages', icon: MessageSquare, label: 'Messagerie' },
   ],
   SECRETARY: [
     { to: '/personnel/dashboard', icon: LayoutDashboard, label: 'Tableau de bord' },
     { to: '/personnel/dashboard?tab=patients', icon: Users, label: 'Patients' },
     { to: '/personnel/dashboard?tab=rdv', icon: Calendar, label: 'Rendez-vous' },
-    // FEAT 2
     { to: '/personnel/dashboard?tab=messages', icon: MessageSquare, label: 'Messagerie' },
   ],
-  // FEAT 1 — Chef de service
+  INFIRMIER: [
+    { to: '/infirmier/dashboard', icon: LayoutDashboard, label: 'Tableau de bord' },
+    { to: '/infirmier/dashboard?tab=fiches', icon: FileText, label: 'Mes fiches transport' },
+    { to: '/infirmier/dashboard?tab=planning', icon: Clock, label: 'Mon planning' },
+    { to: '/infirmier/dashboard?tab=messages', icon: MessageSquare, label: 'Messagerie' },
+  ],
+  BRANCARDIER: [
+    { to: '/brancardier/dashboard', icon: LayoutDashboard, label: 'Tableau de bord' },
+    { to: '/brancardier/dashboard?tab=historique', icon: Clock, label: 'Historique transports' },
+    { to: '/brancardier/dashboard?tab=planning', icon: Clock, label: 'Mon planning' },
+    { to: '/brancardier/dashboard?tab=messages', icon: MessageSquare, label: 'Messagerie' },
+  ],
+  AIDE_SOIGNANT: [
+    { to: '/personnel/dashboard', icon: LayoutDashboard, label: 'Tableau de bord' },
+    { to: '/personnel/dashboard?tab=taches', icon: ClipboardList, label: 'Mes taches' },
+    { to: '/personnel/dashboard?tab=messages', icon: MessageSquare, label: 'Messagerie' },
+  ],
   CHEF_SERVICE: [
     { to: '/dashboard/chef', icon: LayoutDashboard, label: 'Tableau de bord' },
-    { to: '/dashboard/chef?tab=medecins', icon: Stethoscope, label: 'Médecins' },
-    { to: '/dashboard/chef?tab=creneaux', icon: Clock, label: 'Créneaux & planning' },
+    { to: '/dashboard/chef?tab=medecins', icon: Stethoscope, label: 'Medecins' },
+    { to: '/dashboard/chef?tab=appartenance', icon: UserCheck, label: 'Appartenance service' },
+    { to: '/dashboard/chef?tab=creneaux', icon: Clock, label: 'Creneaux & planning' },
     { to: '/dashboard/chef?tab=stats', icon: BarChart3, label: 'Statistiques' },
     { to: '/dashboard/chef?tab=organigramme', icon: Network, label: 'Organigramme' },
     { to: '/dashboard/chef?tab=messages', icon: MessageSquare, label: 'Messagerie' },
@@ -60,17 +71,15 @@ const MENUS = {
     { to: '/admin', icon: LayoutDashboard, label: 'Tableau de bord' },
     { to: '/admin?tab=users', icon: UserCog, label: 'Utilisateurs' },
     { to: '/admin?tab=personnel', icon: Users, label: 'Personnel' },
-    { to: '/admin?tab=settings', icon: Settings, label: 'Paramètres' },
+    { to: '/admin?tab=settings', icon: Settings, label: 'Parametres' },
   ],
   DIRECTEUR: [
     { to: '/directeur', icon: LayoutDashboard, label: 'Tableau de bord' },
     { to: '/directeur?tab=stats', icon: BarChart3, label: 'Statistiques' },
     { to: '/directeur?tab=patients', icon: Users, label: 'Patients' },
-    { to: '/directeur?tab=medecins', icon: Stethoscope, label: 'Médecins' },
+    { to: '/directeur?tab=medecins', icon: Stethoscope, label: 'Medecins' },
     { to: '/directeur?tab=rapports', icon: FileText, label: 'Rapports' },
-    // FEAT 5
     { to: '/directeur?tab=organigramme', icon: Network, label: 'Organigramme' },
-    // FEAT 2
     { to: '/directeur?tab=messages', icon: MessageSquare, label: 'Messagerie' },
   ],
 }
@@ -80,7 +89,6 @@ export default function Sidebar() {
   const navigate = useNavigate()
   const menu = MENUS[user?.role] || []
 
-  // FEAT 2 — badge messages non lus (polling toutes les 30s)
   const [unread, setUnread] = useState(0)
   useEffect(() => {
     if (!user || user.role === 'PATIENT') return
@@ -88,7 +96,7 @@ export default function Sidebar() {
       try {
         const res = await personnelMessagesApi.countNonLus()
         setUnread(res.data?.count || 0)
-      } catch { /* silently fail */ }
+      } catch { }
     }
     fetchUnread()
     const t = setInterval(fetchUnread, 30000)
@@ -115,7 +123,6 @@ export default function Sidebar() {
           </div>
         </div>
       </div>
-
       <nav className="flex-1 p-3 overflow-y-auto">
         {menu.map((item) => {
           const isMessages = item.label === 'Messagerie' && user?.role !== 'PATIENT'
@@ -144,25 +151,20 @@ export default function Sidebar() {
           )
         })}
       </nav>
-
       <div className="p-3 border-t border-slate-200">
         <div className="flex items-center gap-3 p-2 mb-2">
           <div className="w-9 h-9 rounded-full bg-gradient-to-br from-accent-500 to-primary-600 flex items-center justify-center text-white text-xs font-bold">
             {(user?.prenom?.[0] || '') + (user?.nom?.[0] || '')}
           </div>
           <div className="flex-1 min-w-0">
-            <div className="text-sm font-semibold text-slate-900 truncate">
-              {user?.prenom} {user?.nom}
-            </div>
+            <div className="text-sm font-semibold text-slate-900 truncate">{user?.prenom} {user?.nom}</div>
             <div className="text-xs text-slate-500 truncate">{user?.email}</div>
           </div>
         </div>
-        <button
-          onClick={handleLogout}
-          className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-red-50 hover:text-red-600 transition-all"
-        >
+        <button onClick={handleLogout}
+          className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-red-50 hover:text-red-600 transition-all">
           <LogOut className="w-4 h-4" />
-          Déconnexion
+          Deconnexion
         </button>
       </div>
     </aside>

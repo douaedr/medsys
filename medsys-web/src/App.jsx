@@ -8,8 +8,9 @@ import PatientDashboard from './pages/patient/PatientDashboard'
 import PersonnelDashboard from './pages/personnel/PersonnelDashboard'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import DirecteurDashboard from './pages/directeur/DirecteurDashboard'
-// FEAT 1 — Chef de service
 import ChefServiceDashboard from './pages/chef/ChefServiceDashboard'
+import InfirmierDashboard from './pages/InfirmierDashboard'
+import BrancardierDashboard from './pages/BrancardierDashboard'
 
 function ProtectedRoute({ children, allowedRoles }) {
   const { user, isAuthenticated } = useAuth()
@@ -25,13 +26,11 @@ function AppRoutes() {
       <Route path="/login/personnel" element={<PersonnelLoginPage />} />
       <Route path="/patient" element={<PatientPortalPage />} />
       <Route path="/reset-password" element={<ResetPasswordPage />} />
-
       <Route path="/patient/dashboard" element={
         <ProtectedRoute allowedRoles={['PATIENT']}><PatientDashboard /></ProtectedRoute>
       } />
-      {/* 🔧 SECRETARY + PERSONNEL (FEAT 7) accèdent au dashboard personnel */}
       <Route path="/personnel/dashboard" element={
-        <ProtectedRoute allowedRoles={['MEDECIN', 'PERSONNEL', 'SECRETARY']}><PersonnelDashboard /></ProtectedRoute>
+        <ProtectedRoute allowedRoles={['MEDECIN', 'PERSONNEL', 'SECRETARY', 'AIDE_SOIGNANT']}><PersonnelDashboard /></ProtectedRoute>
       } />
       <Route path="/admin" element={
         <ProtectedRoute allowedRoles={['ADMIN']}><AdminDashboard /></ProtectedRoute>
@@ -39,12 +38,15 @@ function AppRoutes() {
       <Route path="/directeur" element={
         <ProtectedRoute allowedRoles={['DIRECTEUR', 'ADMIN']}><DirecteurDashboard /></ProtectedRoute>
       } />
-
-      {/* ═══ FEAT 1 — Chef de service ═══ */}
       <Route path="/dashboard/chef" element={
         <ProtectedRoute allowedRoles={['CHEF_SERVICE']}><ChefServiceDashboard /></ProtectedRoute>
       } />
-
+      <Route path="/infirmier/dashboard" element={
+        <ProtectedRoute allowedRoles={['INFIRMIER']}><InfirmierDashboard /></ProtectedRoute>
+      } />
+      <Route path="/brancardier/dashboard" element={
+        <ProtectedRoute allowedRoles={['BRANCARDIER']}><BrancardierDashboard /></ProtectedRoute>
+      } />
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   )

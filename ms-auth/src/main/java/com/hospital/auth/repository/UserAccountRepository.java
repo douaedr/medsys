@@ -4,7 +4,6 @@ import com.hospital.auth.entity.UserAccount;
 import com.hospital.auth.enums.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -18,4 +17,6 @@ public interface UserAccountRepository extends JpaRepository<UserAccount, Long> 
     boolean existsByEmail(String email);
     boolean existsByCin(String cin);
     List<UserAccount> findByRole(Role role);
+    List<UserAccount> findByServiceId(String serviceId);
+    List<UserAccount> findByServiceIdAndRole(String serviceId, Role role);
 }
