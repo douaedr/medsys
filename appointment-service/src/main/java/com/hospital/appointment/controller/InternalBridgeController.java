@@ -244,4 +244,34 @@ public class InternalBridgeController {
             default -> "EN_ATTENTE";
         };
     }
+
+    /**
+     * GET /api/internal/slots/disponibles?medecinId=X&date=2025-01-15
+     */
+    @GetMapping("/slots/disponibles")
+    public ResponseEntity<List<Map<String, Object>>> getSlotsDisponibles(
+            @RequestParam Integer medecinId,
+            @RequestParam String date) {
+        try {
+            java.time.LocalDate d = java.time.LocalDate.parse(date);
+            java.time.LocalDateTime start = d.atStartOfDay();
+            java.time.LocalDateTime end = d.plusDays(1).atStartOfDay();
+            List<Map<String, Object>> result = timeSlotRepository
+                .findAvailableByDoctorAndDateRange(medecinId, start, end)
+                .stream()
+                .map(s -> {
+                    Map<String, Object> m = new java.util.LinkedHashMap<>();
+                    m.put("id", s.getId());
+                    m.put("heure", s.getStartTime().toLocalTime().toString().substring(0, 5));
+                    m.put("heureDebut", s.getStartTime().toLocalTime().toString().substring(0, 5));
+                    m.put("heureFin", s.getEndTime().toLocalTime().toString().substring(0, 5));
+                    return m;
+                })
+                .collect(java.util.stream.Collectors.toList());
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            log.warn("Erreur getSlotsDisponibles: {}", e.getMessage());
+            return ResponseEntity.ok(List.of());
+        }
+    }
 }

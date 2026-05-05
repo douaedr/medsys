@@ -21,13 +21,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Filtre exécuté à chaque requête : extrait le JWT du header Authorization
- * (ou du paramètre access_token pour les requêtes WebSocket),
- * valide le token, et place l'utilisateur authentifié dans le SecurityContext.
- *
- * Équivalent du paramétrage AddJwtBearer + Events.OnMessageReceived dans Program.cs (.NET).
- */
 @Component
 @RequiredArgsConstructor
 @Slf4j
@@ -48,17 +41,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             try {
                 if (jwtService.isValid(token)) {
                     Claims claims = jwtService.parseToken(token);
-                    Integer userId = Integer.parseInt(claims.getSubject());
+                    String subject = claims.getSubject();
                     String role = (String) claims.get("role");
 
-                    Optional<User> userOpt = userRepository.findById(userId);
+                    Optional<User> userOpt;
+                    try {
+                        Integer userId = Integer.parseInt(subject);
+                        userOpt = userRepository.findById(userId);
+                    } catch (NumberFormatException e) {
+                        userOpt = userRepository.findByEmail(subject);
+                    }
+
                     if (userOpt.isPresent()) {
-                        // Spring Security exige le préfixe "ROLE_" pour le matching @PreAuthorize
                         var authorities = List.of(new SimpleGrantedAuthority("ROLE_" + role));
                         var auth = new UsernamePasswordAuthenticationToken(
                                 userOpt.get(), null, authorities);
-                        auth.setDetails(new WebAuthenticationDetailsSource()
-                                .buildDetails(request));
+                        auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                         SecurityContextHolder.getContext().setAuthentication(auth);
                     }
                 }
@@ -70,26 +68,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         chain.doFilter(request, response);
     }
 
-    /**
-     * Extrait le token depuis :
-     * 1. Le header "Authorization: Bearer ..."
-     * 2. OU le paramètre "access_token" (pour les requêtes WebSocket)
-     */
     private String extractToken(HttpServletRequest request) {
         String header = request.getHeader("Authorization");
         if (header != null && header.startsWith("Bearer ")) {
             return header.substring(7);
         }
-
-        // Pour les WebSocket (équivalent SignalR)
         String pathInfo = request.getServletPath();
         if (pathInfo != null && pathInfo.startsWith("/hubs")) {
             String paramToken = request.getParameter("access_token");
-            if (paramToken != null && !paramToken.isBlank()) {
-                return paramToken;
-            }
+            if (paramToken != null && !paramToken.isBlank()) return paramToken;
         }
-
         return null;
     }
 }

@@ -64,6 +64,7 @@ export const patientApi = {
   getRdv: () => PATIENT_API.get('/patient/me/rdv'),
   annulerRdv: (id) => PATIENT_API.put(`/patient/me/rdv/${id}/annuler`),
   creerRdv: (data) => PATIENT_API.post('/patient/me/rdv', data),
+  getCreneauxMedecin: (medecinId, date) => PATIENT_API.get('/patient/medecins/' + medecinId + '/slots', { params: { date } }),
   getMedecins: () => PATIENT_API.get('/medecins'),
 }
 
