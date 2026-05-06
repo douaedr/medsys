@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+﻿import { useEffect, useState } from 'react'
 import { patientApi, medecinApi, secretaireApi, personnelApi } from '../../api/api'
 import { useAuth } from '../../context/AuthContext'
 import DashboardLayout from '../../components/layout/DashboardLayout'
@@ -12,6 +12,7 @@ import GestionRDVSecretaire from './GestionRDVSecretaire'
 import EditionPatient from './EditionPatient'
 import DossierMedicalMedecin from './DossierMedicalMedecin'
 import MessagesPanel from '../../components/messages/MessagesPanel'
+import AssignerTaches from './AssignerTaches'
 import { useTab } from '../../lib/useTab'
 import {
   Users, Calendar, Stethoscope, FileText, Search, Plus, Eye, X, Activity,
@@ -48,14 +49,14 @@ export default function PersonnelDashboard() {
     poids: '', taille: '', tensionSystolique: '', tensionDiastolique: '', temperature: ''
   })
 
-  // FEAT 6 aâ‚¬" Planning hebdomadaire
+  // FEAT 6 aÃ¢â€šÂ¬"Â Planning hebdomadaire
   const [planning, setPlanning] = useState([])
-  // FEAT 3 aâ‚¬" CrÂ©neaux bloquÂ©s
+  // FEAT 3 aÃ¢â€šÂ¬"Â CrÃ‚Â©neaux bloquÃ‚Â©s
   const [blockedSlots, setBlockedSlots] = useState([])
   const [showBlockForm, setShowBlockForm] = useState(false)
   const [blockForm, setBlockForm] = useState({ date: '', heureDebut: '08:00', heureFin: '12:00', raison: '' })
 
-  // FEAT 7 aâ‚¬" TÂ¢ches
+  // FEAT 7 aÃ¢â€šÂ¬"Â TÃ‚Â¢ches
   const [taches, setTaches] = useState([])
 
   const isMedecin = user?.role === 'MEDECIN'
@@ -95,7 +96,7 @@ export default function PersonnelDashboard() {
     }
   }, [tab])
 
-  // FEAT 3 + 6 aâ‚¬" Charger planning et crÂ©neaux bloquÂ©s
+  // FEAT 3 + 6 aÃ¢â€šÂ¬"Â Charger planning et crÃ‚Â©neaux bloquÃ‚Â©s
   useEffect(() => {
     if (tab === 'planning' && isMedecin) {
       (async () => {
@@ -109,7 +110,7 @@ export default function PersonnelDashboard() {
     }
   }, [tab])
 
-  // FEAT 7 aâ‚¬" Charger tÂ¢ches
+  // FEAT 7 aÃ¢â€šÂ¬"Â Charger tÃ‚Â¢ches
   useEffect(() => {
     if (tab === 'taches') {
       (async () => {
@@ -138,9 +139,9 @@ export default function PersonnelDashboard() {
       setConsultForm({ patientId: '', motif: '', diagnostic: '', observations: '', traitement: '', poids: '', taille: '', tensionSystolique: '', tensionDiastolique: '', temperature: '' })
       const cRes = await medecinApi.getConsultations()
       setConsultations(cRes.data || [])
-      alert('Consultation enregistrÂ©e avec succÂ¨s')
+      alert('Consultation enregistrÃ‚Â©e avec succÃ‚Â¨s')
     } catch (err) {
-      alert(err.response?.data?.message || 'Erreur lors de la crÂ©ation')
+      alert(err.response?.data?.message || 'Erreur lors de la crÃ‚Â©ation')
     }
   }
 
@@ -157,14 +158,14 @@ export default function PersonnelDashboard() {
       setBlockForm({ date: '', heureDebut: '08:00', heureFin: '12:00', raison: '' })
       const bl = await medecinApi.getSlots()
       setBlockedSlots(bl.data || [])
-      alert('CrÂ©neau bloquÂ©')
+      alert('CrÃ‚Â©neau bloquÃ‚Â©')
     } catch (err) {
       alert(err.response?.data?.message || err.response?.data?.error || 'Erreur lors du blocage')
     }
   }
 
   const handleUnblock = async (id) => {
-    if (!confirm('DÂ©bloquer ce crÂ©neau ?')) return
+    if (!confirm('DÃ‚Â©bloquer ce crÃ‚Â©neau ?')) return
     try {
       await medecinApi.supprimerSlot(id)
       const bl = await medecinApi.getSlots()
@@ -199,9 +200,9 @@ export default function PersonnelDashboard() {
       setShowCreate(false)
       setForm({ nom: '', prenom: '', cin: '', dateNaissance: '', sexe: 'MASCULIN', telephone: '', email: '', adresse: '', ville: '', groupeSanguin: '' })
       loadAll()
-      alert('Patient crÂ©Â© avec succÂ¨s')
+      alert('Patient crÃ‚Â©Ã‚Â© avec succÃ‚Â¨s')
     } catch (err) {
-      alert(err.response?.data?.message || 'Erreur lors de la crÂ©ation')
+      alert(err.response?.data?.message || 'Erreur lors de la crÃ‚Â©ation')
     }
   }
 
@@ -236,16 +237,16 @@ export default function PersonnelDashboard() {
     planning: 'Mon planning',
     messages: 'Messagerie',
     dossier: 'Dossier Medical',
-    taches: 'Mes tÂ¢ches',
+    taches: 'Mes tÃ‚Â¢ches',
   }
   const subtitles = {
-    dashboard: "Vue d'ensemble de votre activitÂ©",
+    dashboard: "Vue d'ensemble de votre activitÃ‚Â©",
     patients: 'Gestion des patients',
     consultations: 'Vos consultations',
     rdv: 'Planning des rendez-vous',
-    planning: 'Emploi du temps hebdomadaire et crÂ©neaux bloquÂ©s',
+    planning: 'Emploi du temps hebdomadaire et crÃ‚Â©neaux bloquÃ‚Â©s',
     messages: 'Messagerie inter-personnel',
-    taches: 'TÂ¢ches urgentes assignÂ©es',
+    taches: 'TÃ‚Â¢ches urgentes assignÃ‚Â©es',
   }
   // Dashboard Chef de Service
   if (user?.role === 'CHEF_SERVICE') {
@@ -293,15 +294,15 @@ export default function PersonnelDashboard() {
 
   return (
     <DashboardLayout title={titles[tab]} subtitle={subtitles[tab]}>
-      {/* a"¢Âa"¢Âa"¢Â Tableau de bord a"¢Âa"¢Âa"¢Â */}
+      {/* a"Â¢Ã‚Âa"Â¢Ã‚Âa"Â¢Ã‚Â Tableau de bord a"Â¢Ã‚Âa"Â¢Ã‚Âa"Â¢Ã‚Â */}
       {tab === 'dashboard' && (
         <>
-          {/* FEAT 7 aâ‚¬" Bandeau tÂ¢ches urgentes pour personnel */}
+          {/* FEAT 7 aÃ¢â€šÂ¬"Â Bandeau tÃ‚Â¢ches urgentes pour personnel */}
           {isPersonnel && taches.length > 0 && (
             <div className="card p-4 mb-4 bg-red-50 border-red-200">
               <div className="flex items-center gap-2 mb-2">
                 <AlertCircle className="w-5 h-5 text-red-600" />
-                <h3 className="font-bold text-red-900">TÂ¢ches urgentes ({taches.length})</h3>
+                <h3 className="font-bold text-red-900">TÃ‚Â¢ches urgentes ({taches.length})</h3>
               </div>
               <div className="space-y-2">
                 {taches.slice(0, 3).map(t => (
@@ -310,7 +311,7 @@ export default function PersonnelDashboard() {
                   </div>
                 ))}
               </div>
-              <button onClick={() => setTab('taches')} className="text-xs text-red-600 underline mt-2">Voir toutes les tÂ¢ches a" '</button>
+              <button onClick={() => setTab('taches')} className="text-xs text-red-600 underline mt-2">Voir toutes les tÃ‚Â¢ches a"Â '</button>
             </div>
           )}
 
@@ -323,7 +324,7 @@ export default function PersonnelDashboard() {
 
           <div className="grid md:grid-cols-2 gap-6">
             <div className="card p-6">
-              <h3 className="font-bold text-slate-900 mb-4">Patients rÂ©cents</h3>
+              <h3 className="font-bold text-slate-900 mb-4">Patients rÃ‚Â©cents</h3>
               {patients.slice(0, 5).map(p => (
                 <div key={p.id} className="flex items-center gap-3 py-2 border-b border-slate-100 last:border-0">
                   <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary-500 to-accent-600 flex items-center justify-center text-white text-xs font-bold">
@@ -331,7 +332,7 @@ export default function PersonnelDashboard() {
                   </div>
                   <div className="flex-1">
                     <div className="font-semibold text-slate-900 text-sm">{p.prenom} {p.nom}</div>
-                    <div className="text-xs text-slate-500">{p.email || p.telephone || 'aâ‚¬"'}</div>
+                    <div className="text-xs text-slate-500">{p.email || p.telephone || 'aÃ¢â€šÂ¬"Â'}</div>
                   </div>
                 </div>
               ))}
@@ -345,7 +346,7 @@ export default function PersonnelDashboard() {
                   <Users className="w-5 h-5 text-primary-600" />
                   <div>
                     <div className="font-semibold text-slate-900 text-sm">Voir tous les patients</div>
-                    <div className="text-xs text-slate-500">{patients.length} patient(s) enregistrÂ©(s)</div>
+                    <div className="text-xs text-slate-500">{patients.length} patient(s) enregistrÃ‚Â©(s)</div>
                   </div>
                 </button>
                 {isMedecin && (
@@ -357,11 +358,18 @@ export default function PersonnelDashboard() {
                         <div className="text-xs text-slate-500">Voir l'historique</div>
                       </div>
                     </button>
+                    <button onClick={() => setTab('assigner-taches')} className="w-full text-left p-3 rounded-lg hover:bg-slate-50 flex items-center gap-3 transition-all">
+                      <ClipboardList className="w-5 h-5 text-primary-600" />
+                      <div>
+                        <div className="font-semibold text-slate-900 text-sm">Assigner taches soins</div>
+                        <div className="text-xs text-slate-500">Assigner aux infirmiers</div>
+                      </div>
+                    </button>
                     <button onClick={() => setTab('planning')} className="w-full text-left p-3 rounded-lg hover:bg-slate-50 flex items-center gap-3 transition-all">
                       <Clock className="w-5 h-5 text-primary-600" />
                       <div>
                         <div className="font-semibold text-slate-900 text-sm">Mon planning</div>
-                        <div className="text-xs text-slate-500">Emploi du temps + crÂ©neaux bloquÂ©s</div>
+                        <div className="text-xs text-slate-500">Emploi du temps + crÃ‚Â©neaux bloquÃ‚Â©s</div>
                       </div>
                     </button>
                   </>
@@ -370,7 +378,7 @@ export default function PersonnelDashboard() {
                   <MessageSquare className="w-5 h-5 text-primary-600" />
                   <div>
                     <div className="font-semibold text-slate-900 text-sm">Messagerie</div>
-                    <div className="text-xs text-slate-500">Communiquer avec l'Â©quipe</div>
+                    <div className="text-xs text-slate-500">Communiquer avec l'Ã‚Â©quipe</div>
                   </div>
                 </button>
               </div>
@@ -379,14 +387,14 @@ export default function PersonnelDashboard() {
         </>
       )}
 
-      {/* a"¢Âa"¢Âa"¢Â Patients a"¢Âa"¢Âa"¢Â (inchangÂ© par rapport Â  votre version) */}
+      {/* a"Â¢Ã‚Âa"Â¢Ã‚Âa"Â¢Ã‚Â Patients a"Â¢Ã‚Âa"Â¢Ã‚Âa"Â¢Ã‚Â (inchangÃ‚Â© par rapport Ã‚Â  votre version) */}
       {tab === 'patients' && (
         <div className="card">
           <div className="p-6 border-b border-slate-100 flex items-center justify-between gap-4 flex-wrap">
             <div>
               <h3 className="font-bold text-slate-900">Liste des patients</h3>
               <p className="text-sm text-slate-500 mt-0.5">
-                {patients.length} patient(s) {search && `Â· recherche: "${search}"`}
+                {patients.length} patient(s) {search && `Ã‚Â· recherche: "${search}"`}
               </p>
             </div>
             <div className="flex items-center gap-3">
@@ -395,10 +403,10 @@ export default function PersonnelDashboard() {
                 <input
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  placeholder="Rechercher (nom, prÂ©nom, CIN)aâ‚¬Â¦"
+                  placeholder="Rechercher (nom, prÃ‚Â©nom, CIN)aÃ¢â€šÂ¬Ã‚Â¦"
                   className="pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none focus:border-primary-500 focus:bg-white w-72"
                 />
-                {searching && <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-primary-600">aâ‚¬Â¦</span>}
+                {searching && <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-primary-600">aÃ¢â€šÂ¬Ã‚Â¦</span>}
               </div>
               <button onClick={() => setShowCreate(!showCreate)} className="btn-primary btn-sm">
                 <Plus className="w-4 h-4" /> Nouveau patient
@@ -408,7 +416,7 @@ export default function PersonnelDashboard() {
 
           {showCreate && (
             <form onSubmit={handleCreatePatient} className="p-6 bg-slate-50 border-b border-slate-100 grid md:grid-cols-2 gap-4">
-              <div><label className="label">PrÂ©nom *</label>
+              <div><label className="label">PrÃ‚Â©nom *</label>
                 <input className="input" value={form.prenom} onChange={(e) => setForm({ ...form, prenom: e.target.value })} required /></div>
               <div><label className="label">Nom *</label>
                 <input className="input" value={form.nom} onChange={(e) => setForm({ ...form, nom: e.target.value })} required /></div>
@@ -419,9 +427,9 @@ export default function PersonnelDashboard() {
               <div><label className="label">Sexe</label>
                 <select className="input" value={form.sexe} onChange={(e) => setForm({ ...form, sexe: e.target.value })}>
                   <option value="MASCULIN">Masculin</option>
-                  <option value="FEMININ">FÂ©minin</option>
+                  <option value="FEMININ">FÃ‚Â©minin</option>
                 </select></div>
-              <div><label className="label">TÂ©lÂ©phone</label>
+              <div><label className="label">TÃ‚Â©lÃ‚Â©phone</label>
                 <input className="input" value={form.telephone} onChange={(e) => setForm({ ...form, telephone: e.target.value })} /></div>
               <div><label className="label">Email</label>
                 <input type="email" className="input" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} /></div>
@@ -431,7 +439,7 @@ export default function PersonnelDashboard() {
                 <input className="input" value={form.adresse} onChange={(e) => setForm({ ...form, adresse: e.target.value })} /></div>
               <div><label className="label">Groupe sanguin</label>
                 <select className="input" value={form.groupeSanguin} onChange={(e) => setForm({ ...form, groupeSanguin: e.target.value })}>
-                  <option value="">aâ‚¬"</option>
+                  <option value="">aÃ¢â€šÂ¬"Â</option>
                   <option value="A_POSITIF">A+</option><option value="A_NEGATIF">A-</option>
                   <option value="B_POSITIF">B+</option><option value="B_NEGATIF">B-</option>
                   <option value="AB_POSITIF">AB+</option><option value="AB_NEGATIF">AB-</option>
@@ -452,16 +460,16 @@ export default function PersonnelDashboard() {
                       <option value="COMPTE_RENDU">Compte-rendu</option>
                     </select>
                   </div>
-                  {fichiers.length > 0 && <p className="text-xs text-green-600 mt-1">{fichiers.length} fichier(s) sélectionné(s)</p>}
+                  {fichiers.length > 0 && <p className="text-xs text-green-600 mt-1">{fichiers.length} fichier(s) sÃ©lectionnÃ©(s)</p>}
                 </div>
-                <button type="submit" className="btn-primary">CrÂ©er le patient</button>
+                <button type="submit" className="btn-primary">CrÃ‚Â©er le patient</button>
                 <button type="button" onClick={() => setShowCreate(false)} className="btn-ghost">Annuler</button>
               </div>
             </form>
           )}
 
           {patients.length === 0 ? (
-            <EmptyState icon={Users} title="Aucun patient" description={search ? "Aucun rÂ©sultat pour cette recherche." : "Aucun patient enregistrÂ© pour le moment."} />
+            <EmptyState icon={Users} title="Aucun patient" description={search ? "Aucun rÃ‚Â©sultat pour cette recherche." : "Aucun patient enregistrÃ‚Â© pour le moment."} />
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full">
@@ -469,7 +477,7 @@ export default function PersonnelDashboard() {
                   <tr className="text-left text-xs font-semibold text-slate-500 uppercase tracking-wide">
                     <th className="px-6 py-3">Patient</th>
                     <th className="px-6 py-3">Date naissance</th>
-                    <th className="px-6 py-3">TÂ©lÂ©phone</th>
+                    <th className="px-6 py-3">TÃ‚Â©lÃ‚Â©phone</th>
                     <th className="px-6 py-3">Email</th>
                     <th className="px-6 py-3 text-right">Actions</th>
                   </tr>
@@ -484,13 +492,13 @@ export default function PersonnelDashboard() {
                           </div>
                           <div>
                             <div className="font-semibold text-slate-900 text-sm">{p.prenom} {p.nom}</div>
-                            <div className="text-xs text-slate-500">CIN: {p.cin || 'aâ‚¬"'}</div>
+                            <div className="text-xs text-slate-500">CIN: {p.cin || 'aÃ¢â€šÂ¬"Â'}</div>
                           </div>
                         </div>
                       </td>
                       <td className="px-6 py-4 text-sm text-slate-600">{formatDate(p.dateNaissance)}</td>
-                      <td className="px-6 py-4 text-sm text-slate-600">{p.telephone || 'aâ‚¬"'}</td>
-                      <td className="px-6 py-4 text-sm text-slate-600">{p.email || 'aâ‚¬"'}</td>
+                      <td className="px-6 py-4 text-sm text-slate-600">{p.telephone || 'aÃ¢â€šÂ¬"Â'}</td>
+                      <td className="px-6 py-4 text-sm text-slate-600">{p.email || 'aÃ¢â€šÂ¬"Â'}</td>
                       <td className="px-6 py-4 text-right">
                         <button onClick={() => handleViewPatient(p)} className="btn-ghost btn-sm" title="Voir le dossier">
                           <Eye className="w-4 h-4" />
@@ -510,7 +518,7 @@ export default function PersonnelDashboard() {
         </div>
       )}
 
-      {/* a"¢Âa"¢Âa"¢Â Consultations a"¢Âa"¢Âa"¢Â (inchangÂ©) */}
+      {/* a"Â¢Ã‚Âa"Â¢Ã‚Âa"Â¢Ã‚Â Consultations a"Â¢Ã‚Âa"Â¢Ã‚Âa"Â¢Ã‚Â (inchangÃ‚Â©) */}
       {tab === 'consultations' && (
         <div className="space-y-6">
           {isMedecin && (
@@ -528,7 +536,7 @@ export default function PersonnelDashboard() {
                   <label className="label">Patient *</label>
                   <select className="input" value={consultForm.patientId}
                     onChange={(e) => setConsultForm({ ...consultForm, patientId: e.target.value })} required>
-                    <option value="">aâ‚¬" SÂ©lectionner un patient aâ‚¬"</option>
+                    <option value="">aÃ¢â€šÂ¬"Â SÃ‚Â©lectionner un patient aÃ¢â€šÂ¬"Â</option>
                     {(medecinPatients.length > 0 ? medecinPatients : patients).map(p => (
                       <option key={p.id} value={p.id}>{p.prenom || p.nom ? `${p.prenom || ''} ${p.nom || ''}` : `Patient #${p.id}`}</option>
                     ))}
@@ -563,7 +571,7 @@ export default function PersonnelDashboard() {
                   <input type="number" className="input" value={consultForm.tensionSystolique} onChange={(e) => setConsultForm({ ...consultForm, tensionSystolique: e.target.value })} /></div>
                 <div><label className="label">Tension diastolique</label>
                   <input type="number" className="input" value={consultForm.tensionDiastolique} onChange={(e) => setConsultForm({ ...consultForm, tensionDiastolique: e.target.value })} /></div>
-                <div><label className="label">TempÂ©rature (Â°C)</label>
+                <div><label className="label">TempÃ‚Â©rature (Ã‚Â°C)</label>
                   <input type="number" step="0.1" className="input" value={consultForm.temperature} onChange={(e) => setConsultForm({ ...consultForm, temperature: e.target.value })} /></div>
                 <div className="md:col-span-2 flex gap-2 mt-4">
                   <button type="submit" className="btn-primary">Enregistrer</button>
@@ -578,7 +586,7 @@ export default function PersonnelDashboard() {
               <p className="text-sm text-slate-500 mt-0.5">{consultations.length} consultation(s)</p>
             </div>
             {consultLoading ? <div className="p-6"><LoadingState /></div>
-              : consultations.length === 0 ? <EmptyState icon={Stethoscope} title="Aucune consultation" description="Aucune consultation enregistrÂ©e." />
+              : consultations.length === 0 ? <EmptyState icon={Stethoscope} title="Aucune consultation" description="Aucune consultation enregistrÃ‚Â©e." />
               : <div className="divide-y divide-slate-100">
                   {consultations.map(c => (
                     <div key={c.id} className="p-6 hover:bg-slate-50">
@@ -588,7 +596,7 @@ export default function PersonnelDashboard() {
                           <div className="text-sm text-slate-500">{formatDateTime(c.dateConsultation)}</div>
                         </div>
                         <div className="flex items-center gap-2">
-                          {c.temperature && <span className="badge-neutral text-xs">{c.temperature}Â°C</span>}
+                          {c.temperature && <span className="badge-neutral text-xs">{c.temperature}Ã‚Â°C</span>}
                           {c.tensionSystolique && c.tensionDiastolique && (
                             <span className="badge-neutral text-xs">{c.tensionSystolique}/{c.tensionDiastolique} mmHg</span>
                           )}
@@ -605,7 +613,7 @@ export default function PersonnelDashboard() {
         </div>
       )}
 
-      {/* a"¢Âa"¢Âa"¢Â FEAT 6 aâ‚¬" Mon planning + FEAT 3 aâ‚¬" CrÂ©neaux bloquÂ©s a"¢Âa"¢Âa"¢Â */}
+      {/* a"Â¢Ã‚Âa"Â¢Ã‚Âa"Â¢Ã‚Â FEAT 6 aÃ¢â€šÂ¬"Â Mon planning + FEAT 3 aÃ¢â€šÂ¬"Â CrÃ‚Â©neaux bloquÃ‚Â©s a"Â¢Ã‚Âa"Â¢Ã‚Âa"Â¢Ã‚Â */}
       {tab === 'emploi' && <MonEmploiDuTemps />}
       {tab === 'planning' && isMedecin && (
         <div className="space-y-6">
@@ -614,15 +622,15 @@ export default function PersonnelDashboard() {
             <MonEmploiDuTemps />
           </div>
 
-          {/* FEAT 3 aâ‚¬" CrÂ©neaux bloquÂ©s datÂ©s */}
+          {/* FEAT 3 aÃ¢â€šÂ¬"Â CrÃ‚Â©neaux bloquÃ‚Â©s datÃ‚Â©s */}
           <div className="card">
             <div className="p-6 border-b border-slate-100 flex items-center justify-between">
               <div>
-                <h3 className="font-bold text-slate-900">CrÂ©neaux bloquÂ©s</h3>
-                <p className="text-sm text-slate-500 mt-0.5">{blockedSlots.length} crÂ©neau(x) bloquÂ©(s)</p>
+                <h3 className="font-bold text-slate-900">CrÃ‚Â©neaux bloquÃ‚Â©s</h3>
+                <p className="text-sm text-slate-500 mt-0.5">{blockedSlots.length} crÃ‚Â©neau(x) bloquÃ‚Â©(s)</p>
               </div>
               <button onClick={() => setShowBlockForm(!showBlockForm)} className="btn-primary btn-sm">
-                <Plus className="w-4 h-4" /> Bloquer un crÂ©neau
+                <Plus className="w-4 h-4" /> Bloquer un crÃ‚Â©neau
               </button>
             </div>
             {showBlockForm && (
@@ -630,8 +638,8 @@ export default function PersonnelDashboard() {
                 <div><label className="label">Date *</label>
                   <input type="date" className="input" value={blockForm.date} onChange={e => setBlockForm({ ...blockForm, date: e.target.value })} required /></div>
                 <div><label className="label">Raison</label>
-                  <input className="input" value={blockForm.raison} onChange={e => setBlockForm({ ...blockForm, raison: e.target.value })} placeholder="Ex: congÂ©s, formation..." /></div>
-                <div><label className="label">Heure dÂ©but *</label>
+                  <input className="input" value={blockForm.raison} onChange={e => setBlockForm({ ...blockForm, raison: e.target.value })} placeholder="Ex: congÃ‚Â©s, formation..." /></div>
+                <div><label className="label">Heure dÃ‚Â©but *</label>
                   <input type="time" className="input" value={blockForm.heureDebut} onChange={e => setBlockForm({ ...blockForm, heureDebut: e.target.value })} required /></div>
                 <div><label className="label">Heure fin *</label>
                   <input type="time" className="input" value={blockForm.heureFin} onChange={e => setBlockForm({ ...blockForm, heureFin: e.target.value })} required /></div>
@@ -642,7 +650,7 @@ export default function PersonnelDashboard() {
               </form>
             )}
             {blockedSlots.length === 0 ? (
-              <EmptyState icon={Clock} title="Aucun crÂ©neau bloquÂ©" description="Bloquez un crÂ©neau pour empÂªcher la prise de RDV sur cette plage." />
+              <EmptyState icon={Clock} title="Aucun crÃ‚Â©neau bloquÃ‚Â©" description="Bloquez un crÃ‚Â©neau pour empÃ‚Âªcher la prise de RDV sur cette plage." />
             ) : (
               <div className="divide-y divide-slate-100">
                 {blockedSlots.map(s => (
@@ -650,8 +658,8 @@ export default function PersonnelDashboard() {
                     <div>
                       <div className="font-semibold text-slate-900 text-sm">{formatDate(s.slotDate || s.date)}</div>
                       <div className="text-xs text-slate-500">
-                        {(s.heureDebut || '').substring(0,5)} aâ‚¬" {(s.heureFin || '').substring(0,5)}
-                        {s.raison && <span className="ml-2 italic">Â· {s.raison}</span>}
+                        {(s.heureDebut || '').substring(0,5)} aÃ¢â€šÂ¬" {(s.heureFin || '').substring(0,5)}
+                        {s.raison && <span className="ml-2 italic">Ã‚Â· {s.raison}</span>}
                       </div>
                     </div>
                     <button onClick={() => handleUnblock(s.id)} className="btn-ghost btn-sm text-red-600 hover:bg-red-50">
@@ -665,11 +673,12 @@ export default function PersonnelDashboard() {
         </div>
       )}
 
-      {/* a"¢Âa"¢Âa"¢Â FEAT 2 aâ‚¬" Messages a"¢Âa"¢Âa"¢Â */}
+      {/* a"Â¢Ã‚Âa"Â¢Ã‚Âa"Â¢Ã‚Â FEAT 2 aÃ¢â€šÂ¬"Â Messages a"Â¢Ã‚Âa"Â¢Ã‚Âa"Â¢Ã‚Â */}
       {tab === 'dossier' && isMedecin && <DossierMedicalMedecin />}
+  {tab === 'assigner-taches' && isMedecin && <AssignerTaches />}
       {tab === 'messages' && <MessagesPanel />}
 
-      {/* a"¢Âa"¢Âa"¢Â FEAT 7 aâ‚¬" TÂ¢ches (PERSONNEL ou MEDECIN) a"¢Âa"¢Âa"¢Â */}
+      {/* a"Â¢Ã‚Âa"Â¢Ã‚Âa"Â¢Ã‚Â FEAT 7 aÃ¢â€šÂ¬"Â TÃ‚Â¢ches (PERSONNEL ou MEDECIN) a"Â¢Ã‚Âa"Â¢Ã‚Âa"Â¢Ã‚Â */}
       {tab === 'taches' && (
         <div className="space-y-4">
           <div className="card p-6 bg-gradient-to-br from-emerald-50 to-teal-50 border-emerald-200">
@@ -678,14 +687,14 @@ export default function PersonnelDashboard() {
                 <Heart className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="font-bold text-slate-900">Mes tÂ¢ches assignÂ©es</h3>
-                <p className="text-xs text-slate-600">Messages urgents reÂ§us, Â  traiter en prioritÂ©</p>
+                <h3 className="font-bold text-slate-900">Mes tÃ‚Â¢ches assignÃ‚Â©es</h3>
+                <p className="text-xs text-slate-600">Messages urgents reÃ‚Â§us, Ã‚Â  traiter en prioritÃ‚Â©</p>
               </div>
             </div>
           </div>
 
           {taches.length === 0 ? (
-            <EmptyState icon={ClipboardList} title="Aucune tÂ¢che urgente" description="Vous n'avez pas de tÂ¢che urgente en attente." />
+            <EmptyState icon={ClipboardList} title="Aucune tÃ‚Â¢che urgente" description="Vous n'avez pas de tÃ‚Â¢che urgente en attente." />
           ) : (
             <div className="card divide-y divide-slate-100">
               {taches.map(t => (
@@ -708,22 +717,22 @@ export default function PersonnelDashboard() {
         </div>
       )}
 
-      {/* a"¢Âa"¢Âa"¢Â Rendez-vous a"¢Âa"¢Âa"¢Â */}
+      {/* a"Â¢Ã‚Âa"Â¢Ã‚Âa"Â¢Ã‚Â Rendez-vous a"Â¢Ã‚Âa"Â¢Ã‚Âa"Â¢Ã‚Â */}
       {tab === 'rdv' && (
         <div className="card p-6">
           <h3 className="font-bold text-slate-900 mb-4">Planning des rendez-vous</h3>
-          <EmptyState icon={Calendar} title="Module RDV" description="Les rendez-vous sont gÂ©rÂ©s par appointment-service." />
+          <EmptyState icon={Calendar} title="Module RDV" description="Les rendez-vous sont gÃ‚Â©rÃ‚Â©s par appointment-service." />
         </div>
       )}
 
-      {/* a"¢Âa"¢Âa"¢Â Modal patient a"¢Âa"¢Âa"¢Â (inchangÂ©) */}
+      {/* a"Â¢Ã‚Âa"Â¢Ã‚Âa"Â¢Ã‚Â Modal patient a"Â¢Ã‚Âa"Â¢Ã‚Âa"Â¢Ã‚Â (inchangÃ‚Â©) */}
       {selectedPatient && (
         <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4" onClick={() => { setSelectedPatient(null); setDossier(null) }}>
           <div className="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
             <div className="p-6 border-b border-slate-200 flex items-center justify-between sticky top-0 bg-white">
               <div>
                 <h3 className="font-bold text-slate-900 text-lg">{selectedPatient.prenom} {selectedPatient.nom}</h3>
-                <p className="text-sm text-slate-500">CIN: {selectedPatient.cin || 'aâ‚¬"'} Â· ID #{selectedPatient.id}</p>
+                <p className="text-sm text-slate-500">CIN: {selectedPatient.cin || 'aÃ¢â€šÂ¬"Â'} Ã‚Â· ID #{selectedPatient.id}</p>
               </div>
               <button onClick={() => { setSelectedPatient(null); setDossier(null) }} className="btn-ghost">
                 <X className="w-5 h-5" />
@@ -733,10 +742,10 @@ export default function PersonnelDashboard() {
               <div>
                 <h4 className="font-semibold text-slate-900 mb-3 text-sm uppercase tracking-wide">Informations</h4>
                 <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div><span className="text-slate-500">Naissance:</span> <span className="font-semibold">{formatDate(selectedPatient.dateNaissance) || 'aâ‚¬"'}</span></div>
-                  <div><span className="text-slate-500">Sexe:</span> <span className="font-semibold">{selectedPatient.sexe || 'aâ‚¬"'}</span></div>
-                  <div><span className="text-slate-500">TÂ©lÂ©phone:</span> <span className="font-semibold">{selectedPatient.telephone || 'aâ‚¬"'}</span></div>
-                  <div><span className="text-slate-500">Email:</span> <span className="font-semibold">{selectedPatient.email || 'aâ‚¬"'}</span></div>
+                  <div><span className="text-slate-500">Naissance:</span> <span className="font-semibold">{formatDate(selectedPatient.dateNaissance) || 'aÃ¢â€šÂ¬"Â'}</span></div>
+                  <div><span className="text-slate-500">Sexe:</span> <span className="font-semibold">{selectedPatient.sexe || 'aÃ¢â€šÂ¬"Â'}</span></div>
+                  <div><span className="text-slate-500">TÃ‚Â©lÃ‚Â©phone:</span> <span className="font-semibold">{selectedPatient.telephone || 'aÃ¢â€šÂ¬"Â'}</span></div>
+                  <div><span className="text-slate-500">Email:</span> <span className="font-semibold">{selectedPatient.email || 'aÃ¢â€šÂ¬"Â'}</span></div>
                 </div>
               </div>
               {dossier?.consultations?.length > 0 && (
@@ -759,3 +768,5 @@ export default function PersonnelDashboard() {
     </DashboardLayout>
   )
 }
+
+

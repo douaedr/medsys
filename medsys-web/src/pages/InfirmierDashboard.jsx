@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext'
 import DashboardLayout from '../components/layout/DashboardLayout'
-import { useTab } from '../lib/useTab'
 import { Plus, Clock, CheckCircle, XCircle, AlertTriangle } from 'lucide-react'
+import MesTaches from './infirmier/MesTaches'
 
 const API = 'http://localhost:8081'
 
@@ -148,9 +148,14 @@ function MesFiches({ infirmierId, token, refresh }) {
 
 export default function InfirmierDashboard() {
   const { user, token } = useAuth()
-  const [tab] = useTab('nouvelle')
+  const [tab, setTab] = useState('transport')
   const [refresh, setRefresh] = useState(0)
   const infirmierId = user?.personnelId || user?.id
+
+  const tabs = [
+    { id: 'transport', label: '🚑 Fiches Transport' },
+    { id: 'soins', label: '🩺 Tâches de Soins' },
+  ]
 
   return (
     <DashboardLayout>
@@ -159,14 +164,25 @@ export default function InfirmierDashboard() {
           <h1 className="text-2xl font-bold text-gray-800">Espace Infirmier(e)</h1>
           <p className="text-gray-500 text-sm">Bienvenue, {user?.prenom} {user?.nom}</p>
         </div>
+
+        {/* Onglets */}
+        <div className="flex gap-2 border-b border-slate-200">
+          {tabs.map(t => (
+            <button key={t.id} onClick={() => setTab(t.id)}
+              className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${tab === t.id ? 'border-primary-600 text-primary-600' : 'border-transparent text-slate-500 hover:text-slate-700'}`}>
+              {t.label}
+            </button>
+          ))}
+        </div>
+
         <div className="min-h-96">
-          {tab === 'nouvelle' && (
+          {tab === 'transport' && (
             <div className="space-y-6">
               <NouvelleFiche infirmierId={infirmierId} token={token} onCreated={() => setRefresh(r => r + 1)} />
               <MesFiches infirmierId={infirmierId} token={token} refresh={refresh} />
             </div>
           )}
-          {tab === 'fiches' && <MesFiches infirmierId={infirmierId} token={token} refresh={refresh} />}
+          {tab === 'soins' && <MesTaches />}
         </div>
       </div>
     </DashboardLayout>
