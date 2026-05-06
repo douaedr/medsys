@@ -1,23 +1,23 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from "react-router-dom"
 import {
   Activity, Shield, Users, Calendar, Stethoscope,
   ArrowRight, CheckCircle2, Hospital, FileText, MessageSquare
-} from 'lucide-react'
+} from "lucide-react"
 
 const FEATURES = [
-  { icon: Shield, title: 'Sécurité maximale', desc: 'Authentification JWT et chiffrement des données médicales' },
-  { icon: Users, title: 'Gestion multi-rôles', desc: 'Patients, médecins, administrateurs et directeurs' },
-  { icon: Calendar, title: 'Rendez-vous intelligents', desc: 'Planification en temps réel avec rappels automatiques' },
-  { icon: FileText, title: 'Dossier médical numérique', desc: 'Historique complet et accessible' },
-  { icon: MessageSquare, title: 'Messagerie intégrée', desc: 'Communication directe patient-médecin' },
-  { icon: Activity, title: 'Architecture microservices', desc: 'Performance et scalabilité garanties' },
+  { icon: Shield, title: "Sécurité maximale", desc: "Authentification JWT et chiffrement des données médicales" },
+  { icon: Users, title: "Gestion multi-rôles", desc: "Patients, médecins, administrateurs et directeurs" },
+  { icon: Calendar, title: "Rendez-vous intelligents", desc: "Planification en temps réel avec rappels automatiques" },
+  { icon: FileText, title: "Dossier médical numérique", desc: "Historique complet et accessible" },
+  { icon: MessageSquare, title: "Messagerie intégrée", desc: "Communication directe patient-médecin" },
+  { icon: Activity, title: "Architecture microservices", desc: "Performance et scalabilité garanties" },
 ]
 
 const STATS = [
-  { value: '6+', label: 'Microservices' },
-  { value: '4', label: 'Rôles utilisateurs' },
-  { value: '100%', label: 'Sécurisé' },
-  { value: '24/7', label: 'Disponibilité' },
+  { value: "6+", label: "Microservices" },
+  { value: "9", label: "Rôles utilisateurs" },
+  { value: "100%", label: "Sécurisé" },
+  { value: "24/7", label: "Disponibilité" },
 ]
 
 export default function LandingPage() {
@@ -34,16 +34,12 @@ export default function LandingPage() {
             </div>
             <div>
               <div className="font-bold text-slate-900 text-lg tracking-tight">MedSys</div>
-              <div className="text-[10px] text-slate-500 uppercase tracking-wider font-semibold">
-                Hospital Management
-              </div>
+              <div className="text-[10px] text-slate-500 uppercase tracking-wider font-semibold">Hospital Management</div>
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <button onClick={() => navigate('/login/personnel')} className="btn-ghost">
-              Personnel
-            </button>
-            <button onClick={() => navigate('/patient')} className="btn-primary">
+            <button onClick={() => navigate("/login/personnel")} className="btn-ghost">Personnel</button>
+            <button onClick={() => navigate("/patient")} className="btn-primary">
               Espace patient <ArrowRight className="w-4 h-4" />
             </button>
           </div>
@@ -69,23 +65,18 @@ export default function LandingPage() {
               et personnel, avec une architecture moderne et sécurisée.
             </p>
             <div className="flex flex-wrap gap-3">
-              <button onClick={() => navigate('/patient')} className="btn-primary btn-lg">
-                Commencer en tant que patient
-                <ArrowRight className="w-4 h-4" />
+              <button onClick={() => navigate("/patient")} className="btn-primary btn-lg">
+                Commencer en tant que patient <ArrowRight className="w-4 h-4" />
               </button>
-              <button onClick={() => navigate('/login/personnel')} className="btn-outline btn-lg">
+              <button onClick={() => navigate("/login/personnel")} className="btn-outline btn-lg">
                 Accès personnel soignant
               </button>
             </div>
-
-            {/* Stats */}
             <div className="grid grid-cols-4 gap-6 mt-12 pt-8 border-t border-slate-100">
               {STATS.map((s) => (
                 <div key={s.label}>
                   <div className="text-2xl font-bold text-slate-900">{s.value}</div>
-                  <div className="text-xs text-slate-500 uppercase tracking-wide font-semibold mt-1">
-                    {s.label}
-                  </div>
+                  <div className="text-xs text-slate-500 uppercase tracking-wide font-semibold mt-1">{s.label}</div>
                 </div>
               ))}
             </div>
@@ -93,7 +84,7 @@ export default function LandingPage() {
 
           {/* Visual */}
           <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary-100 via-accent-100 to-transparent rounded-3xl blur-3xl opacity-60"></div>
+            <div className="absolute inset-0 bg-gradient-to-br from-primary-100 via-primary-50 to-transparent rounded-3xl blur-3xl opacity-60"></div>
             <div className="relative grid grid-cols-2 gap-4">
               <div className="card p-6 space-y-3">
                 <Hospital className="w-8 h-8 text-primary-600" />
@@ -103,14 +94,14 @@ export default function LandingPage() {
                 </div>
               </div>
               <div className="card p-6 space-y-3 mt-8">
-                <Stethoscope className="w-8 h-8 text-accent-500" />
+                <Stethoscope className="w-8 h-8 text-primary-500" />
                 <div>
                   <div className="font-bold text-slate-900">Soins coordonnés</div>
                   <div className="text-sm text-slate-500 mt-1">Communication fluide</div>
                 </div>
               </div>
               <div className="card p-6 space-y-3">
-                <Shield className="w-8 h-8 text-emerald-600" />
+                <Shield className="w-8 h-8 text-primary-600" />
                 <div>
                   <div className="font-bold text-slate-900">100% sécurisé</div>
                   <div className="text-sm text-slate-500 mt-1">Conformité RGPD</div>
@@ -129,21 +120,19 @@ export default function LandingPage() {
       </section>
 
       {/* Features */}
-      <section className="bg-slate-50 py-20 border-t border-slate-100">
+      <section className="bg-primary-50 py-20 border-t border-primary-100">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-14 max-w-2xl mx-auto">
             <h2 className="text-3xl font-bold text-slate-900 tracking-tight mb-4">
               Tout ce dont votre établissement a besoin
             </h2>
-            <p className="text-slate-600 text-lg">
-              Une suite complète d'outils pour moderniser la gestion hospitalière
-            </p>
+            <p className="text-slate-600 text-lg">Une suite complète d-outils pour moderniser la gestion hospitalière</p>
           </div>
           <div className="grid md:grid-cols-3 gap-5">
             {FEATURES.map((f) => (
               <div key={f.title} className="card-hover p-6">
-                <div className="w-11 h-11 rounded-xl bg-primary-50 flex items-center justify-center mb-4">
-                  <f.icon className="w-5 h-5 text-primary-600" strokeWidth={2} />
+                <div className="w-11 h-11 rounded-xl bg-primary-100 flex items-center justify-center mb-4">
+                  <f.icon className="w-5 h-5 text-primary-700" strokeWidth={2} />
                 </div>
                 <h3 className="font-bold text-slate-900 mb-2">{f.title}</h3>
                 <p className="text-sm text-slate-600 leading-relaxed">{f.desc}</p>
@@ -156,7 +145,7 @@ export default function LandingPage() {
       {/* Footer */}
       <footer className="py-8 border-t border-slate-100">
         <div className="max-w-7xl mx-auto px-6 text-center text-sm text-slate-500">
-          © 2026 MedSys. Projet de fin d'année — Architecture microservices.
+          © 2026 MedSys. Projet de fin d-année — Architecture microservices.
         </div>
       </footer>
     </div>
