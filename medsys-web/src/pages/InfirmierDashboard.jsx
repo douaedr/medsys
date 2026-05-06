@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext'
 import DashboardLayout from '../components/layout/DashboardLayout'
 import { Plus, Clock, CheckCircle, XCircle, AlertTriangle } from 'lucide-react'
 import MesTaches from './infirmier/MesTaches'
+import AssignerTachesHygiene from './infirmier/AssignerTachesHygiene'
 
 const API = 'http://localhost:8081'
 
@@ -155,6 +156,7 @@ export default function InfirmierDashboard() {
   const tabs = [
     { id: 'transport', label: '🚑 Fiches Transport' },
     { id: 'soins', label: '🩺 Tâches de Soins' },
+    { id: 'hygiene', label: '🧹 Tâches Hygiène' },
   ]
 
   return (
@@ -183,6 +185,7 @@ export default function InfirmierDashboard() {
             </div>
           )}
           {tab === 'soins' && <MesTaches />}
+          {tab === 'hygiene' && <AssignerTachesHygiene />}
         </div>
       </div>
     </DashboardLayout>

@@ -13,6 +13,8 @@ import InfirmierDashboard from './pages/InfirmierDashboard'
 import BrancardierDashboard from './pages/BrancardierDashboard'
 import AssignerTaches from './pages/medecin/AssignerTaches'
 import MesTaches from './pages/infirmier/MesTaches'
+import AssignerTachesHygiene from './pages/infirmier/AssignerTachesHygiene'
+import AideSoignantDashboard from './pages/aidesoignant/AideSoignantDashboard'
 
 function ProtectedRoute({ children, allowedRoles }) {
   const { user, isAuthenticated } = useAuth()
@@ -54,6 +56,12 @@ function AppRoutes() {
       } />
       <Route path="/infirmier/taches" element={
         <ProtectedRoute allowedRoles={['INFIRMIER']}><MesTaches /></ProtectedRoute>
+      } />
+      <Route path="/infirmier/hygiene" element={
+        <ProtectedRoute allowedRoles={['INFIRMIER']}><AssignerTachesHygiene /></ProtectedRoute>
+      } />
+      <Route path="/aide-soignant/dashboard" element={
+        <ProtectedRoute allowedRoles={['AIDE_SOIGNANT']}><AideSoignantDashboard /></ProtectedRoute>
       } />
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
