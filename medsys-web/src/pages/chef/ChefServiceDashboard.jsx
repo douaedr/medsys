@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { useToast } from '../components/shared/Toast'
 import { useAuth } from '../../context/AuthContext'
 import GestionEmploiDuTemps from '../chef/GestionEmploiDuTemps'
 import AppartenanceService from '../chef/AppartenanceService'

@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { useToast } from '../components/shared/Toast'
 import { useAuth } from '../context/AuthContext'
 import DashboardLayout from '../components/layout/DashboardLayout'
 import MonEmploiDuTemps from './personnel/MonEmploiDuTemps'
@@ -171,13 +170,6 @@ export default function BrancardierDashboard() {
   const [refresh, setRefresh] = useState(0)
   const brancardierId = user?.personnelId || user?.userId
 
-  const tabs = [
-    { id: 'dashboard', label: '🚑 Transports' },
-    { id: 'historique', label: '📋 Historique' },
-    { id: 'planning', label: '📅 Mon planning' },
-    { id: 'messages', label: '💬 Messagerie' },
-  ]
-
   return (
     <DashboardLayout>
       <div className="p-6 space-y-6">
@@ -185,18 +177,7 @@ export default function BrancardierDashboard() {
           <h1 className="text-2xl font-bold text-gray-800">Espace Brancardier</h1>
           <p className="text-gray-500 text-sm">Bienvenue, {user?.prenom} {user?.nom}</p>
         </div>
-
-        <div className="flex gap-2 border-b border-slate-200">
-          {tabs.map(t => (
-            <a key={t.id} href={"?tab=" + t.id}
-              className={"px-4 py-2 text-sm font-medium border-b-2 transition-colors -mb-px " +
-                (tab === t.id ? "border-primary-600 text-primary-600" : "border-transparent text-slate-500 hover:text-slate-700")}>
-              {t.label}
-            </a>
-          ))}
-        </div>
-
-        <div className="min-h-96">
+        <div className="min-h-96 space-y-6">
           {tab === 'dashboard' && (
             <div className="space-y-6">
               <FichesEnAttente brancardierId={brancardierId} token={token} refresh={refresh} onAction={() => setRefresh(r => r + 1)} />

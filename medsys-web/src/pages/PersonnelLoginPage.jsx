@@ -39,8 +39,7 @@ export default function PersonnelLoginPage() {
       else if (data.role === 'CHEF_SERVICE') navigate('/dashboard/chef')
       else if (data.role === 'INFIRMIER') navigate('/infirmier/dashboard')
       else if (data.role === 'BRANCARDIER') navigate('/brancardier/dashboard')
-      else if (data.role === 'AIDE_SOIGNANT') navigate('/aide-soignant/dashboard')
-      else if (['MEDECIN', 'PERSONNEL', 'SECRETARY'].includes(data.role)) navigate('/personnel/dashboard')
+      else if (['MEDECIN', 'PERSONNEL', 'SECRETARY', 'AIDE_SOIGNANT'].includes(data.role)) navigate('/personnel/dashboard')
       else navigate('/')
     } catch (err) {
       setError(err.response?.data?.message || 'Email ou mot de passe incorrect')

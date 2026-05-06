@@ -11,12 +11,6 @@ import DirecteurDashboard from './pages/directeur/DirecteurDashboard'
 import ChefServiceDashboard from './pages/chef/ChefServiceDashboard'
 import InfirmierDashboard from './pages/InfirmierDashboard'
 import BrancardierDashboard from './pages/BrancardierDashboard'
-import AssignerTaches from './pages/medecin/AssignerTaches'
-import MesTaches from './pages/infirmier/MesTaches'
-import AssignerTachesHygiene from './pages/infirmier/AssignerTachesHygiene'
-import AideSoignantDashboard from './pages/aidesoignant/AideSoignantDashboard'
-import NotFoundPage from './pages/NotFoundPage'
-import { ToastProvider } from './components/shared/Toast'
 
 function ProtectedRoute({ children, allowedRoles }) {
   const { user, isAuthenticated } = useAuth()
@@ -53,19 +47,7 @@ function AppRoutes() {
       <Route path="/brancardier/dashboard" element={
         <ProtectedRoute allowedRoles={['BRANCARDIER']}><BrancardierDashboard /></ProtectedRoute>
       } />
-      <Route path="/medecin/taches" element={
-        <ProtectedRoute allowedRoles={['MEDECIN']}><AssignerTaches /></ProtectedRoute>
-      } />
-      <Route path="/infirmier/taches" element={
-        <ProtectedRoute allowedRoles={['INFIRMIER']}><MesTaches /></ProtectedRoute>
-      } />
-      <Route path="/infirmier/hygiene" element={
-        <ProtectedRoute allowedRoles={['INFIRMIER']}><AssignerTachesHygiene /></ProtectedRoute>
-      } />
-      <Route path="/aide-soignant/dashboard" element={
-        <ProtectedRoute allowedRoles={['AIDE_SOIGNANT']}><AideSoignantDashboard /></ProtectedRoute>
-      } />
-      <Route path="*" element={<NotFoundPage />} />
+      <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   )
 }
@@ -74,9 +56,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <ToastProvider>
-          <AppRoutes />
-        </ToastProvider>
+        <AppRoutes />
       </AuthProvider>
     </BrowserRouter>
   )

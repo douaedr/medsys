@@ -6,12 +6,12 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 /**
- * Rendez-vous médical.
- * Migré depuis Models/Appointment.cs (.NET).
+ * Rendez-vous mÃ©dical.
+ * MigrÃ© depuis Models/Appointment.cs (.NET).
  */
 @Entity
 @Table(name = "Appointments", indexes = {
-        @Index(name = "ux_appointments_timeslot", columnList = "timeSlotId", unique = true)
+        @Index(name = "ux_appointments_timeslot", columnList = "timeSlotId", unique = false)
 })
 @Getter
 @Setter
@@ -24,7 +24,7 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "timeSlotId", nullable = false, unique = true)
+    @Column(name = "timeSlotId", nullable = false)
     private Integer timeSlotId;
 
     @Column(name = "patientId", nullable = false)
@@ -55,7 +55,7 @@ public class Appointment {
     @Builder.Default
     private LocalDateTime updatedAt = LocalDateTime.now();
 
-    // ── Navigation ──────────────────────────────────────────────────
+    // â”€â”€ Navigation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "timeSlotId", referencedColumnName = "id",
             insertable = false, updatable = false)
@@ -88,3 +88,4 @@ public class Appointment {
         updatedAt = LocalDateTime.now();
     }
 }
+
