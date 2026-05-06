@@ -47,6 +47,7 @@ const MENUS = {
     { to: '/infirmier/dashboard?tab=transport', icon: Truck, label: 'Fiches transport' },
     { to: '/infirmier/dashboard?tab=soins', icon: Heart, label: 'Taches de soins' },
     { to: '/infirmier/dashboard?tab=hygiene', icon: ClipboardList, label: 'Taches hygiene' },
+    { to: '/infirmier/dashboard?tab=messages', icon: MessageSquare, label: 'Messagerie' },
   ],
   BRANCARDIER: [
     { to: '/brancardier/dashboard', icon: LayoutDashboard, label: 'Tableau de bord' },
