@@ -26,6 +26,7 @@ const MENUS = {
     { to: '/personnel/dashboard?tab=rdv', icon: Calendar, label: 'Rendez-vous' },
     { to: '/personnel/dashboard?tab=dossier', icon: FileText, label: 'Dossiers medicaux' },
     { to: '/personnel/dashboard?tab=planning', icon: Clock, label: 'Mon planning' },
+    { to: '/personnel/dashboard?tab=assigner-taches', icon: ClipboardList, label: 'Assigner taches' },
     { to: '/personnel/dashboard?tab=messages', icon: MessageSquare, label: 'Messagerie' },
   ],
   PERSONNEL: [
@@ -43,9 +44,9 @@ const MENUS = {
   ],
   INFIRMIER: [
     { to: '/infirmier/dashboard', icon: LayoutDashboard, label: 'Tableau de bord' },
-    { to: '/infirmier/dashboard?tab=fiches', icon: FileText, label: 'Mes fiches transport' },
-    { to: '/infirmier/dashboard?tab=planning', icon: Clock, label: 'Mon planning' },
-    { to: '/infirmier/dashboard?tab=messages', icon: MessageSquare, label: 'Messagerie' },
+    { to: '/infirmier/dashboard?tab=transport', icon: FileText, label: 'Fiches transport' },
+    { to: '/infirmier/dashboard?tab=soins', icon: ClipboardList, label: 'Taches de soins' },
+    { to: '/infirmier/dashboard?tab=hygiene', icon: Users, label: 'Taches hygiene' },
   ],
   BRANCARDIER: [
     { to: '/brancardier/dashboard', icon: LayoutDashboard, label: 'Tableau de bord' },
@@ -54,9 +55,10 @@ const MENUS = {
     { to: '/brancardier/dashboard?tab=messages', icon: MessageSquare, label: 'Messagerie' },
   ],
   AIDE_SOIGNANT: [
-    { to: '/personnel/dashboard', icon: LayoutDashboard, label: 'Tableau de bord' },
-    { to: '/personnel/dashboard?tab=taches', icon: ClipboardList, label: 'Mes taches' },
-    { to: '/personnel/dashboard?tab=messages', icon: MessageSquare, label: 'Messagerie' },
+    { to: '/aide-soignant/dashboard', icon: LayoutDashboard, label: 'Tableau de bord' },
+    { to: '/aide-soignant/dashboard?tab=taches', icon: ClipboardList, label: 'Mes taches' },
+    { to: '/aide-soignant/dashboard?tab=planning', icon: Clock, label: 'Mon planning' },
+    { to: '/aide-soignant/dashboard?tab=messages', icon: MessageSquare, label: 'Messagerie' },
   ],
   CHEF_SERVICE: [
     { to: '/dashboard/chef', icon: LayoutDashboard, label: 'Tableau de bord' },
