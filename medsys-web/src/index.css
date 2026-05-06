@@ -1,19 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  * {
-    @apply border-slate-200;
-  }
-  html {
-    scroll-behavior: smooth;
-  }
-  body {
-    @apply bg-slate-50 text-slate-900 font-sans antialiased;
-  }
+  * { @apply border-slate-200; }
+  html { scroll-behavior: smooth; }
+  body { @apply bg-slate-50 text-slate-900 font-sans antialiased; }
   ::-webkit-scrollbar { @apply w-1.5 h-1.5; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { @apply bg-slate-300 rounded-full; }
@@ -37,6 +30,9 @@
   .btn-danger {
     @apply btn bg-danger text-white hover:bg-red-600 shadow-sm;
   }
+  .btn-success {
+    @apply btn bg-accent-600 text-white hover:bg-accent-700 shadow-sm;
+  }
   .btn-lg { @apply px-6 py-3 text-base rounded-xl; }
   .btn-sm { @apply px-3 py-1.5 text-xs; }
 
@@ -50,10 +46,13 @@
 
   /* Cards */
   .card {
-    @apply bg-white rounded-xl border border-slate-200 shadow-soft;
+    @apply bg-white rounded-xl border border-slate-100 shadow-soft;
   }
   .card-hover {
     @apply card hover:shadow-card hover:-translate-y-0.5 transition-all;
+  }
+  .card-medical {
+    @apply bg-white rounded-2xl border border-slate-100 shadow-soft p-6;
   }
 
   /* Badges */
@@ -63,8 +62,30 @@
   .badge-success { @apply badge bg-emerald-100 text-emerald-700; }
   .badge-warning { @apply badge bg-amber-100 text-amber-700; }
   .badge-danger  { @apply badge bg-red-100 text-red-700; }
-  .badge-info    { @apply badge bg-sky-100 text-sky-700; }
+  .badge-info    { @apply badge bg-blue-100 text-blue-700; }
   .badge-neutral { @apply badge bg-slate-100 text-slate-700; }
+
+  /* Statuts taches */
+  .statut-en-attente { @apply badge bg-amber-100 text-amber-700; }
+  .statut-en-cours   { @apply badge bg-blue-100 text-blue-700; }
+  .statut-validee    { @apply badge bg-emerald-100 text-emerald-700; }
+  .statut-annule     { @apply badge bg-red-100 text-red-700; }
+
+  /* Page header */
+  .page-header {
+    @apply mb-6;
+  }
+  .page-title {
+    @apply text-2xl font-bold text-slate-900 tracking-tight;
+  }
+  .page-subtitle {
+    @apply text-sm text-slate-500 mt-1;
+  }
+
+  /* Section */
+  .section-title {
+    @apply text-sm font-semibold text-slate-500 uppercase tracking-wider mb-3;
+  }
 }
 
 /* Animations */
@@ -73,3 +94,9 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 .animate-fade-in { animation: fade-in 0.3s ease-out; }
+
+@keyframes slide-in {
+  from { opacity: 0; transform: translateX(-8px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.animate-slide-in { animation: slide-in 0.2s ease-out; }

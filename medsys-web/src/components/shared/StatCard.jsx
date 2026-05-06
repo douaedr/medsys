@@ -1,32 +1,28 @@
 import { cn } from '../../lib/utils'
-
 export default function StatCard({ icon: Icon, label, value, trend, color = 'primary' }) {
-  const colors = {
-    primary: 'bg-primary-50 text-primary-600',
-    accent:  'bg-accent-50 text-accent-600',
-    success: 'bg-emerald-50 text-emerald-600',
-    warning: 'bg-amber-50 text-amber-600',
-    danger:  'bg-red-50 text-red-600',
+  const configs = {
+    primary: { bg: 'bg-primary-50', text: 'text-primary-600', border: 'border-primary-100' },
+    accent:  { bg: 'bg-emerald-50', text: 'text-emerald-600', border: 'border-emerald-100' },
+    success: { bg: 'bg-emerald-50', text: 'text-emerald-600', border: 'border-emerald-100' },
+    warning: { bg: 'bg-amber-50',   text: 'text-amber-600',   border: 'border-amber-100' },
+    danger:  { bg: 'bg-red-50',     text: 'text-red-600',     border: 'border-red-100' },
   }
+  const c = configs[color] || configs.primary
   return (
-    <div className="card p-6">
+    <div className="bg-white rounded-2xl border border-slate-100 shadow-soft p-6 hover:shadow-card transition-all">
       <div className="flex items-start justify-between">
-        <div>
-          <div className="text-xs text-slate-500 uppercase tracking-wide font-semibold mb-2">
-            {label}
-          </div>
-          <div className="text-3xl font-bold text-slate-900 tracking-tight">{value}</div>
-          {trend && (
-            <div className={cn(
-              'text-xs font-semibold mt-2',
-              trend > 0 ? 'text-emerald-600' : 'text-red-600'
-            )}>
-              {trend > 0 ? '↑' : '↓'} {Math.abs(trend)}% ce mois
+        <div className="flex-1">
+          <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold mb-3">{label}</div>
+          <div className="text-3xl font-bold text-slate-900 tracking-tight">{value ?? '-'}</div>
+          {trend !== undefined && (
+            <div className={cn('text-xs font-semibold mt-2 flex items-center gap-1', trend > 0 ? 'text-emerald-600' : 'text-red-500')}>
+              <span>{trend > 0 ? '↑' : '↓'}</span>
+              <span>{Math.abs(trend)}% ce mois</span>
             </div>
           )}
         </div>
-        <div className={cn('w-11 h-11 rounded-xl flex items-center justify-center', colors[color])}>
-          <Icon className="w-5 h-5" strokeWidth={2} />
+        <div className={cn('w-12 h-12 rounded-2xl flex items-center justify-center border', c.bg, c.border)}>
+          <Icon className={cn('w-5 h-5', c.text)} strokeWidth={2} />
         </div>
       </div>
     </div>
