@@ -14,6 +14,7 @@ import DossierMedicalMedecin from './DossierMedicalMedecin'
 import MessagesPanel from '../../components/messages/MessagesPanel'
 import AssignerTaches from './AssignerTaches'
 import { useTab } from '../../lib/useTab'
+import { useToast } from '../../components/shared/Toast'
 import {
   Users, Calendar, Stethoscope, FileText, Search, Plus, Eye, X, Activity,
   Clock, ClipboardList, MessageSquare, AlertCircle, Heart
@@ -22,6 +23,7 @@ import { formatDate, formatDateTime } from '../../lib/utils'
 
 export default function PersonnelDashboard() {
   const { user, token, logout } = useAuth()
+  const toast = useToast()
   const [tab, setTab] = useTab('dashboard')
   useEffect(() => { if (user?.role === 'SECRETARY') setTab('rdv') }, [user])
   const [patients, setPatients] = useState([])
@@ -171,7 +173,7 @@ export default function PersonnelDashboard() {
       const bl = await medecinApi.getSlots()
       setBlockedSlots(bl.data || [])
     } catch (err) {
-      alert('Erreur lors de la suppression')
+      toast({ message: 'Erreur lors de la suppression', type: 'error' })
     }
   }
 
@@ -222,7 +224,7 @@ export default function PersonnelDashboard() {
         await patientApi.delete(p.id)
         loadAll()
       } catch (err) {
-        alert('Erreur lors de la suppression')
+        toast({ message: 'Erreur lors de la suppression', type: 'error' })
       }
     }
   }

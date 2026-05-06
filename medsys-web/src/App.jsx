@@ -15,6 +15,8 @@ import AssignerTaches from './pages/medecin/AssignerTaches'
 import MesTaches from './pages/infirmier/MesTaches'
 import AssignerTachesHygiene from './pages/infirmier/AssignerTachesHygiene'
 import AideSoignantDashboard from './pages/aidesoignant/AideSoignantDashboard'
+import NotFoundPage from './pages/NotFoundPage'
+import { ToastProvider } from './components/shared/Toast'
 
 function ProtectedRoute({ children, allowedRoles }) {
   const { user, isAuthenticated } = useAuth()
@@ -63,7 +65,7 @@ function AppRoutes() {
       <Route path="/aide-soignant/dashboard" element={
         <ProtectedRoute allowedRoles={['AIDE_SOIGNANT']}><AideSoignantDashboard /></ProtectedRoute>
       } />
-      <Route path="*" element={<Navigate to="/" />} />
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   )
 }
@@ -72,7 +74,9 @@ export default function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <AppRoutes />
+        <ToastProvider>
+          <AppRoutes />
+        </ToastProvider>
       </AuthProvider>
     </BrowserRouter>
   )

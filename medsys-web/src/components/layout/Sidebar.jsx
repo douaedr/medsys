@@ -106,7 +106,7 @@ const ROLE_COLORS = {
   PATIENT: 'from-teal-500 to-teal-700',
 }
 
-export default function Sidebar() {
+export default function Sidebar({ onClose }) {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
   const menu = MENUS[user?.role] || []
@@ -127,6 +127,7 @@ export default function Sidebar() {
   }, [user])
 
   const handleLogout = () => { logout(); navigate('/') }
+  const handleNav = () => { if (onClose) onClose() }
 
   return (
     <aside className="w-64 flex flex-col h-screen sticky top-0 bg-white border-r border-slate-100 shadow-soft">
@@ -154,6 +155,7 @@ export default function Sidebar() {
               key={item.to}
               to={item.to}
               end={!item.to.includes('?')}
+              onClick={handleNav}
               className={({ isActive }) =>
                 cn(
                   'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all',
