@@ -23,3 +23,16 @@ Thumbs.db
 ms-personnel/PersonnelMS_FRONTEND_react/PersonnelMSFE/personnelms-app/node_modules/
 
 application-local.properties
+
+# Added by repository cleanup
+.vs/
+*.suo
+*.user
+target/
+bin/Debug/
+bin/Release/
+obj/
+*.class
+.env
+!.env.example
+token.txt
