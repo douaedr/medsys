@@ -407,7 +407,7 @@ spring:
             - name: LoggingFilter
 
 jwt:
-  secret: ${JWT_SECRET:medsys-hospital-jwt-secret-key-2026-very-long-and-secure-string-please-change-in-prod}
+  secret: ${JWT_SECRET:DEVONLYCHANGEMEDEVONLYCHANGEMEDEVONLYCHANGEMEDEVONLYCHANGEMEDEVONLYCHANGEMEDEVONLYCHA}
 
 management:
   endpoints:
@@ -3746,7 +3746,7 @@ spring.jpa.open-in-view=false
 
 # ═══ JWT ═══
 # 🔧 FIX: Secret aligné sur celui de ms-auth pour que les tokens soient compatibles entre microservices
-app.jwt.secret=medsys-hospital-jwt-secret-key-2026-very-long-and-secure-string-please-change-in-prod
+app.jwt.secret=DEVONLYCHANGEMEDEVONLYCHANGEMEDEVONLYCHANGEMEDEVONLYCHANGEMEDEVONLYCHANGEMEDEVONLYCHA
 app.jwt.issuer=MedicalAppointmentsAPI
 app.jwt.audience=MedicalAppointmentsClients
 app.jwt.expiration-hours=8
@@ -6392,7 +6392,7 @@ spring:
     virtual-host: ${RABBITMQ_VHOST:/}
 
 jwt:
-  secret: ${JWT_SECRET:medsys-hospital-jwt-secret-key-2026-very-long-and-secure-string-please-change-in-prod}
+  secret: ${JWT_SECRET:DEVONLYCHANGEMEDEVONLYCHANGEMEDEVONLYCHANGEMEDEVONLYCHANGEMEDEVONLYCHANGEMEDEVONLYCHA}
   expiration: 86400000
   refresh-expiration: ${JWT_REFRESH_EXPIRATION:604800000}
 
@@ -364266,7 +364266,7 @@ import java.util.Map;
 @Service
 public class JwtService {
 
-    @Value("${jwt.secret:medsys-hospital-jwt-secret-key-2026-very-long-and-secure-string-please-change-in-prod}")
+    @Value("${jwt.secret:DEVONLYCHANGEMEDEVONLYCHANGEMEDEVONLYCHANGEMEDEVONLYCHANGEMEDEVONLYCHANGEMEDEVONLYCHA}")
     private String secretKey;
 
     @Value("${jwt.expiration:86400000}")
@@ -366130,7 +366130,7 @@ logging:
 
 
 jwt:
-  secret: ${JWT_SECRET:medsys-hospital-jwt-secret-key-2026-very-long-and-secure-string-please-change-in-prod}
+  secret: ${JWT_SECRET:DEVONLYCHANGEMEDEVONLYCHANGEMEDEVONLYCHANGEMEDEVONLYCHANGEMEDEVONLYCHANGEMEDEVONLYCHA}
   expiration: ${JWT_EXPIRATION:86400000}
 
 app:
